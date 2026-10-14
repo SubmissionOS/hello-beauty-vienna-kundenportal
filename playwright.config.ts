@@ -33,6 +33,8 @@ export default defineConfig({
       NEXT_PUBLIC_DATA_ADAPTER: backend,
       NEXT_PUBLIC_AUTH_ADAPTER: backend,
       STRIPE_WEBHOOK_SECRET: process.env.E2E_WEBHOOK_SECRET,
+      // die abgeschaltete CRM-Schnittstelle bleibt getestet
+      CRM_API_ENABLED: 'true',
     },
   },
 });

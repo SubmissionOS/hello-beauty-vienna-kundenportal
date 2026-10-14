@@ -73,6 +73,10 @@ export const privateVars = [
   'STRIPE_SECRET_KEY',
   'STRIPE_WEBHOOK_SECRET',
   'SMS_API_KEY',
+  'TEAM_DEMO_PASSWORD_OWNER',
+  'TEAM_DEMO_PASSWORD_STAFF1',
+  'TEAM_DEMO_PASSWORD_STAFF2',
+  'ANTHROPIC_API_KEY',
 ];
 
 /** Erlaubt sind nur .env.example (Vorlage ohne Werte). */

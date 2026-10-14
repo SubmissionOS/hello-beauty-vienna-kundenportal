@@ -32,6 +32,10 @@ export const vars = [
   ['STRIPE_SECRET_KEY', '', 'PRIVAT, später. Schlüssel der Plattform (Stripe Connect), sk_… bzw. rk_…. Vercel: später, als Sensitive.', false],
   ['STRIPE_WEBHOOK_SECRET', '', 'PRIVAT, später. Stripe → Webhooks → Endpoint /api/payments/webhook → Signing secret (whsec_…). Vercel: später, als Sensitive.', false],
   ['STRIPE_CONNECT_ACCOUNT_ID', '', 'Später. Verbundenes Konto des Salons bei Stripe Connect (acct_…). Vercel: später.', false],
+  ['TEAM_DEMO_PASSWORD_OWNER', '', 'PRIVAT. Passwort des Demo-Zugangs inhaberin.demo@example.com (CRM). Wird mit env:ensure erzeugt und per crm:env ins CRM übernommen. Vercel: nein.', false],
+  ['TEAM_DEMO_PASSWORD_STAFF1', '', 'PRIVAT. Passwort des Demo-Zugangs mitarbeiterin1.demo@example.com (CRM). Vercel: nein.', false],
+  ['TEAM_DEMO_PASSWORD_STAFF2', '', 'PRIVAT. Passwort des Demo-Zugangs mitarbeiterin2.demo@example.com (CRM). Vercel: nein.', false],
+  ['CRM_API_ENABLED', '', 'Signierte CRM-Schnittstelle /api/crm/v1 (Teil 4). Leer/aus: abgeschaltet, weil das CRM direkt auf die gemeinsame DB zugreift. Vercel: nicht setzen.', false],
   ['CRM_BRIDGE_SECRET', '', 'PRIVAT, nur Server. HMAC-Schlüssel der CRM-Schnittstelle /api/crm/v1 (Schlüssel-ID hello-beauty-crm). Wird mit env:ensure erzeugt; derselbe Wert kommt ins CRM. Vercel: ja, als Sensitive.', false],
   ['NEXT_PUBLIC_VAPID_PUBLIC_KEY', '', 'Öffentlich. Web-Push (VAPID, P-256), wird mit env:ensure erzeugt. Vercel: ja.', false],
   ['VAPID_PRIVATE_KEY', '', 'PRIVAT, nur Server. Gehört zum öffentlichen VAPID-Schlüssel – nie einzeln tauschen. Vercel: ja, als Sensitive.', false],
@@ -53,6 +57,9 @@ const vapidPair = () => {
 const generators = {
   CRM_BRIDGE_SECRET: secret,
   NOTIFY_WORKER_SECRET: secret,
+  TEAM_DEMO_PASSWORD_OWNER: () => randomBytes(18).toString('base64url'),
+  TEAM_DEMO_PASSWORD_STAFF1: () => randomBytes(18).toString('base64url'),
+  TEAM_DEMO_PASSWORD_STAFF2: () => randomBytes(18).toString('base64url'),
   NEXT_PUBLIC_VAPID_PUBLIC_KEY: () => vapidPair().pub,
   VAPID_PRIVATE_KEY: () => vapidPair().priv,
 };

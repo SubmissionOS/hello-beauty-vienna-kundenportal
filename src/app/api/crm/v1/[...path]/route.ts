@@ -45,6 +45,8 @@ function str(v: unknown, max: number): string | null {
 }
 
 async function handle(req: Request, ctx: { params: Promise<{ path: string[] }> }) {
+  // Abgeschaltet, seit das CRM direkt auf die gemeinsame DB zugreift (docs/crm-zusammenfuehrung.md). Code bleibt.
+  if (process.env.CRM_API_ENABLED !== 'true') return json({ error: 'disabled' }, 404);
   const raw = await req.text();
   if (raw.length > MAX_BODY) return json({ error: 'too_large' }, 413);
   const auth = await verifyCrmRequest(req, raw);

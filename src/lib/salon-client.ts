@@ -38,7 +38,11 @@ async function rpc<T>(fn: string, args?: Record<string, unknown>): Promise<T> {
 export async function currentMember(): Promise<Member | null> {
   const { data: s } = await salonDb().auth.getSession();
   if (!s.session) return null;
-  const { data } = await salonDb().from('salon_members').select('tenant_id, display_name, role').maybeSingle();
+  const { data } = await salonDb()
+    .from('salon_members')
+    .select('tenant_id, display_name, role')
+    .eq('user_id', s.session.user.id)
+    .maybeSingle();
   return data ? { tenantId: data.tenant_id, displayName: data.display_name, role: data.role } : null;
 }
 

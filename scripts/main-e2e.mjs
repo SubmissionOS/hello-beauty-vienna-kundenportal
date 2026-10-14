@@ -13,7 +13,7 @@ const wt = resolve(root, '.worktrees', 'main');
 if (!existsSync(wt)) {
   execFileSync('git', ['worktree', 'add', '--detach', wt, 'main'], { stdio: 'inherit' });
 } else {
-  execFileSync('git', ['-C', wt, 'checkout', '--detach', 'main'], { stdio: 'inherit' });
+  execFileSync('git', ['-C', wt, 'checkout', '--force', '--detach', 'main'], { stdio: 'inherit' }); // Testartefakte (Screenshots) im Worktree verwerfen
 }
 // Eigene Installation aus der Lock-Datei von main (Turbopack erlaubt keine verlinkten node_modules).
 // Neu installieren nur, wenn sich die Lock-Datei geändert hat.
