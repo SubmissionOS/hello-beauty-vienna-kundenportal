@@ -16,9 +16,13 @@
     "scan:secrets": "node scripts/scan-secrets.mjs --build",
     "hooks:install": "git config core.hooksPath .githooks",
     "env:init": "node scripts/env-local.mjs init",
-    "env:check": "node scripts/env-local.mjs check"
+    "env:check": "node scripts/env-local.mjs check",
+    "db:link": "node scripts/supabase-cli.mjs link",
+    "db:push": "node scripts/supabase-cli.mjs db push",
+    "db:seed": "node --experimental-strip-types --no-warnings scripts/seed.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.117.2",
     "next": "16.3.7",
     "qrcode-generator": "2.0.4",
     "react": "19.3.0",
