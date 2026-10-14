@@ -1,4 +1,4 @@
-import { addDays, nowWall, todayIso, wallToDate, weekday } from '../../format';
+import { addDays, nowWall, todayIso, wallToDate, wallToInstant, weekday } from '../../format';
 import { salon } from '../../salon';
 import type { DataAdapter } from '../adapter';
 import {
@@ -544,7 +544,7 @@ export class MockDataAdapter implements DataAdapter {
   private changeable(db: MockDb, appointmentId: string): Appointment {
     const a = db.appointments.find((x) => x.id === appointmentId && x.customerId === me());
     if (!a || (a.status !== 'confirmed' && a.status !== 'pending')) throw new DataError('not_found');
-    if (wallToDate(a.start).getTime() - Date.now() < salon.changeNoticeHours * 3_600_000) throw new DataError('too_late');
+    if (wallToInstant(a.start) - Date.now() < salon.changeNoticeHours * 3_600_000) throw new DataError('too_late');
     return a;
   }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import type { Appointment, Service } from '@/lib/data';
+import type { Appointment, Payment, Service } from '@/lib/data';
 import { formatDateLong, formatDay, formatPrice, formatTime, wallToDate } from '@/lib/format';
 import { intlLocale, type Lang } from '@/lib/i18n';
 import { useI18n } from '@/lib/i18n/use-i18n';
@@ -12,9 +12,28 @@ export function serviceLabel(serviceId: string, fallback: string, services: Serv
   return s?.nameI18n?.[lang] ?? s?.name ?? fallback;
 }
 
-export function ApptCard({ appt, services }: { appt: Appointment; services: Service[] }) {
+export function ApptCard({
+  appt,
+  services,
+  payment,
+  children,
+}: {
+  appt: Appointment;
+  services: Service[];
+  /** Teil 4: Zahlungsstatus des Termins (undefined = nicht anzeigen) */
+  payment?: Payment | null;
+  children?: React.ReactNode;
+}) {
   const { t, lang } = useI18n();
   const month = new Intl.DateTimeFormat(intlLocale[lang], { month: 'short', timeZone: 'UTC' }).format(wallToDate(appt.start));
+  const payLabel =
+    payment === undefined
+      ? null
+      : !payment
+        ? t.appt.pay.none
+        : payment.status === 'paid' && payment.kind === 'deposit'
+          ? t.appt.pay.paidDeposit
+          : t.appt.pay[payment.status];
   return (
     <article className={`card ${st.appt}`}>
       <div className={st.apptDate} aria-hidden="true">
@@ -30,9 +49,18 @@ export function ApptCard({ appt, services }: { appt: Appointment; services: Serv
           {appt.staffName} · {t.common.minutes.replace('{n}', String(appt.durationMinutes))} ·{' '}
           {formatPrice(appt.priceEur, lang)}
         </p>
-        <span className={st.status} data-status={appt.status}>
-          {t.appointments.status[appt.status]}
-        </span>
+        <div className={st.chips}>
+          <span className={st.status} data-status={appt.status}>
+            {t.appointments.status[appt.status]}
+          </span>
+          {payLabel && (
+            <span className={st.status} data-pay={payment?.status ?? 'none'} data-testid="pay-status">
+              {payLabel}
+              {payment && payment.status !== 'cancelled' && payment.status !== 'expired' && ` · ${formatPrice(payment.amountCents / 100, lang)}`}
+            </span>
+          )}
+        </div>
+        {children}
       </div>
     </article>
   );

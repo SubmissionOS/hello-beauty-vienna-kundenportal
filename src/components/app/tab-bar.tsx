@@ -2,27 +2,40 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { IconCalendar, IconHome, IconPlusCircle, IconUser } from '@/components/icons';
+import { IconBell, IconCalendar, IconHome, IconPlusCircle, IconUser } from '@/components/icons';
 import { useI18n } from '@/lib/i18n/use-i18n';
+import { useUnread } from '@/lib/unread';
 import st from './app.module.css';
 
 export function TabBar() {
   const { t } = useI18n();
   const path = usePathname();
+  const unread = useUnread();
   const tabs = [
-    { href: '/app', label: t.nav.start, Icon: IconHome },
-    { href: '/app/termine', label: t.nav.appointments, Icon: IconCalendar },
-    { href: '/app/buchen', label: t.nav.book, Icon: IconPlusCircle },
-    { href: '/app/profil', label: t.nav.profile, Icon: IconUser },
+    { href: '/app', label: t.nav.start, Icon: IconHome, badge: unread.offers + unread.chat },
+    { href: '/app/termine', label: t.nav.appointments, Icon: IconCalendar, badge: 0 },
+    { href: '/app/buchen', label: t.nav.book, Icon: IconPlusCircle, badge: 0 },
+    { href: '/app/neuigkeiten', label: t.nav.news, Icon: IconBell, badge: unread.news },
+    { href: '/app/profil', label: t.nav.profile, Icon: IconUser, badge: 0 },
   ];
   return (
     <nav className={st.tabbar} aria-label={t.nav.label}>
-      {tabs.map(({ href, label, Icon }) => {
+      {tabs.map(({ href, label, Icon, badge }) => {
         const active = href === '/app' ? path === '/app' : path.startsWith(href);
         return (
           <Link key={href} href={href} className={st.tab} aria-current={active ? 'page' : undefined} prefetch>
-            <Icon size={26} />
-            <span>{label}</span>
+            <span className={st.tabIcon}>
+              <Icon size={26} />
+              {badge > 0 && (
+                <span className={st.badge} data-testid={`badge-${href.split('/').pop()}`}>
+                  {badge > 9 ? '9+' : badge}
+                </span>
+              )}
+            </span>
+            <span>
+              {label}
+              {badge > 0 && <span className="visually-hidden"> ({badge})</span>}
+            </span>
           </Link>
         );
       })}
