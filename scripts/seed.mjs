@@ -33,15 +33,15 @@ const tenant = must(
 must(
   await db.from('tenant_domains').upsert(
     [
-      { tenant_id: tenant.id, host: 'localhost', note: 'lokale Entwicklung' },
-      { tenant_id: tenant.id, host: '127.0.0.1', note: 'lokale Entwicklung' },
+      { tenant_id: tenant.id, host: 'localhost', is_pattern: false, note: 'lokale Entwicklung' },
+      { tenant_id: tenant.id, host: '127.0.0.1', is_pattern: false, note: 'lokale Entwicklung' },
       {
         tenant_id: tenant.id,
         host: 'hello-beauty-vienna-kundenportal*.vercel.app',
         is_pattern: true,
         note: '[PLATZHALTER: Vercel-Projektname prüfen, sobald deployt]',
       },
-      { tenant_id: tenant.id, host: 'subdomain.platzhalter.invalid', note: '[PLATZHALTER: Subdomain]' },
+      { tenant_id: tenant.id, host: 'subdomain.platzhalter.invalid', is_pattern: false, note: '[PLATZHALTER: Subdomain]' },
     ],
     { onConflict: 'host' },
   ),

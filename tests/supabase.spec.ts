@@ -22,14 +22,18 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('Demo-Kundin: Termine aus der DB, Buchung, Export', async ({ page }) => {
+  const startedAt = new Date().toISOString();
   await page.goto('/app');
   await page.getByRole('button', { name: 'Als Demo-Kundin ansehen' }).click();
   await page.waitForURL(/\/app$/);
   await expect(page.getByRole('heading', { name: /Lena/ })).toBeVisible();
   await expect(page.getByText('Ihr nächster Termin')).toBeVisible();
+  // Sitzung liegt im App-Speicher, nicht in Cookies (§ 165 Abs. 3 TKG: kein Banner nötig)
+  expect(await page.context().cookies()).toEqual([]);
 
   await page.getByRole('link', { name: 'Termine', exact: true }).click();
   await expect(page.getByRole('tab', { name: /Vergangen \(3\)/ })).toBeVisible();
+  const before = Number((await page.getByRole('tab', { name: /Kommend/ }).innerText()).match(/\((\d+)\)/)![1]);
 
   await page.getByRole('link', { name: 'Buchen', exact: true }).click();
   await page.getByRole('button', { name: /^Kosmetik/ }).click();
@@ -44,7 +48,7 @@ test('Demo-Kundin: Termine aus der DB, Buchung, Export', async ({ page }) => {
   await page.getByRole('button', { name: 'Jetzt verbindlich buchen' }).click();
   await expect(page.getByRole('heading', { name: 'Termin gebucht' })).toBeVisible();
   await page.getByRole('link', { name: 'Zu meinen Terminen' }).click();
-  await expect(page.getByRole('tab', { name: /Kommend \(3\)/ })).toBeVisible();
+  await expect(page.getByRole('tab', { name: new RegExp(`Kommend \\(${before + 1}\\)`) })).toBeVisible();
 
   await page.getByRole('link', { name: 'Profil', exact: true }).click();
   const download = page.waitForEvent('download');
@@ -53,6 +57,10 @@ test('Demo-Kundin: Termine aus der DB, Buchung, Export', async ({ page }) => {
   const json = JSON.parse(await (await import('node:fs/promises')).readFile(file!, 'utf8'));
   expect(json.profile.firstName).toBe('Lena');
   expect(json.appointments.length).toBeGreaterThanOrEqual(6);
+
+  // Testbuchung wieder entfernen, damit die Demo-Daten gleich bleiben
+  const { data: demo } = await admin().from('customers').select('id').eq('email', 'lena.musterfrau@example.com').single();
+  await admin().from('appointments').delete().eq('customer_id', demo!.id).gte('created_at', startedAt);
 });
 
 test('Registrierung mit echtem Code, Profil, Konto löschen', async ({ page }) => {
