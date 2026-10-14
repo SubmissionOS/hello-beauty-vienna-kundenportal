@@ -1,6 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 import { emulateStandalone, phone, shotDir, UA } from './devices';
 
+// Mock-spezifisch (Code wird angezeigt); mit Supabase deckt tests/supabase.spec.ts denselben Ablauf ab
+test.skip(process.env.E2E_BACKEND === 'supabase', 'nur Mock-Adapter');
 test.use(phone(UA.iphone));
 
 async function shot(page: Page, name: string) {

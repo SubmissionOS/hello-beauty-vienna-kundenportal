@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light only" />
+    <title>Hello Beauty</title>
+  </head>
+  <!--
+    Hello Beauty – E-Mail mit 6-stelligem Code. Für die Supabase-Vorlagen „Magic Link“ UND „Confirm signup“
+    (gleicher Inhalt). Sprache aus user_metadata.language (de/en/hu), Standard Deutsch.
+    Bewusst KEIN Link/Button: {{ .Token }} statt {{ .ConfirmationURL }} – ein Link würde auf dem iPhone Safari öffnen
+    statt der installierten App.
+  -->
+  <body style="margin:0;padding:0;background:#f5f2eb;font-family:Arial,Helvetica,sans-serif;color:#2b2618;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f2eb;padding:32px 12px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#ffffff;border:1px solid #e6dfcf;border-radius:16px;">
+            <tr>
+              <td style="padding:32px 32px 8px;text-align:center;">
+                <div style="font-family:Georgia,'Times New Roman',serif;font-size:28px;letter-spacing:1px;color:#9e8832;">Hello&nbsp;Beauty</div>
+                <div style="height:1px;background:#ddc87c;margin:16px auto 0;width:64px;"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 32px 0;text-align:center;font-size:16px;line-height:1.5;">
+                {{ if eq .Data.language "en" }}Your sign-in code for the Hello Beauty app:{{ else if eq .Data.language "hu" }}Az Ön bejelentkezési kódja a Hello Beauty alkalmazáshoz:{{ else }}Ihr Anmeldecode für die Hello-Beauty-App:{{ end }}
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px 32px;text-align:center;">
+                <div style="display:inline-block;padding:16px 24px;border-radius:12px;background:#f1ead3;font-family:'Courier New',Courier,monospace;font-size:40px;font-weight:bold;letter-spacing:10px;color:#2b2618;">{{ .Token }}</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 8px;text-align:center;font-size:15px;line-height:1.5;color:#635b4a;">
+                {{ if eq .Data.language "en" }}Enter this code in the app. It is valid for a limited time and can only be used once.{{ else if eq .Data.language "hu" }}Írja be ezt a kódot az alkalmazásban. Korlátozott ideig érvényes, és csak egyszer használható.{{ else }}Geben Sie diesen Code in der App ein. Er gilt nur kurze Zeit und nur einmal.{{ end }}
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 32px 32px;text-align:center;font-size:13px;line-height:1.5;color:#8c8270;">
+                {{ if eq .Data.language "en" }}Didn’t request a code? Simply ignore this email.{{ else if eq .Data.language "hu" }}Nem Ön kérte a kódot? Hagyja figyelmen kívül ezt az e-mailt.{{ else }}Sie haben keinen Code angefordert? Dann ignorieren Sie diese E-Mail einfach.{{ end }}
+              </td>
+            </tr>
+          </table>
+          <p style="margin:16px 0 0;font-size:12px;color:#8c8270;">Hello Beauty · Barnabitengasse 7 · 1060 Wien</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

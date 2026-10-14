@@ -19,7 +19,9 @@
     "env:check": "node scripts/env-local.mjs check",
     "db:link": "node scripts/supabase-cli.mjs link",
     "db:push": "node scripts/supabase-cli.mjs db push",
-    "db:seed": "node --experimental-strip-types --no-warnings scripts/seed.mjs"
+    "db:seed": "node --experimental-strip-types --no-warnings scripts/seed.mjs",
+    "test:security": "node scripts/security-test.mjs",
+    "test:supabase": "node -e \"process.env.E2E_BACKEND='supabase';require('child_process').execSync('npx --no-install playwright test',{stdio:'inherit',env:process.env})\""
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
