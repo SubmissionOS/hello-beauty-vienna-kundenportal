@@ -25,6 +25,7 @@
     "check:tokens": "node scripts/check-tokens.mjs",
     "test:security:teil4": "node scripts/security-test-teil4.mjs",
     "test:security:crm": "node scripts/security-test-crm.mjs",
+    "test:crossapp": "playwright test -c playwright.crossapp.config.ts",
     "env:ensure": "node scripts/env-local.mjs ensure",
     "env:example": "node scripts/env-local.mjs example",
     "db:seed:teil4": "node --experimental-strip-types --no-warnings scripts/seed-teil4.mjs",

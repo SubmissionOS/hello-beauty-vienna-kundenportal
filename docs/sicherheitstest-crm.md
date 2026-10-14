@@ -1,8 +1,8 @@
 # Sicherheitstest gemeinsame Datenbank (CRM + Kundenportal)
 
-Lauf: 2026-10-14 21:47 UTC gegen das echte Projekt. Alle Prüfungen mit dem **Publishable Key** und echten Logins (Kundinnen a, b, m · Mitarbeiterin · Inhaberin · anonym). Secret Key nur für Auf- und Abbau. Skript: `scripts/security-test-crm.mjs` (`npm run test:security:crm`).
+Lauf: 2026-10-14 21:59 UTC gegen das echte Projekt. Alle Prüfungen mit dem **Publishable Key** und echten Logins (Kundinnen a, b, m · Mitarbeiterin · Inhaberin · anonym). Secret Key nur für Auf- und Abbau. Skript: `scripts/security-test-crm.mjs` (`npm run test:security:crm`).
 
-**Ergebnis: 72 von 72 Prüfungen bestanden.**
+**Ergebnis: 80 von 80 Prüfungen bestanden.**
 
 | Bereich | Prüfung | Ergebnis |
 |---|---|---|
@@ -51,6 +51,14 @@ Lauf: 2026-10-14 21:47 UTC gegen das echte Projekt. Alle Prüfungen mit dem **Pu
 | Team | Mitarbeiterin sieht Bestandskundin | bestanden |
 | Team | Mitarbeiterin sieht Chat von a | bestanden |
 | Team | Ansicht staff_appointments liefert Zeilen | bestanden |
+| Team ohne Origin | Leistungen mit Kategorie (Join) sichtbar | bestanden |
+| Team ohne Origin | staff_hours lesbar (ohne Fehler) | bestanden |
+| Team ohne Origin | staff sichtbar | bestanden |
+| Team ohne Origin | staff_services sichtbar | bestanden |
+| Team ohne Origin | opening_hours sichtbar | bestanden |
+| Team ohne Origin | customers sichtbar | bestanden |
+| Team ohne Origin | staff_appointments sichtbar | bestanden |
+| Kundin ohne Origin | keine Team-Katalogrechte (staff_services leer) | bestanden |
 | Team | interne Notiz anlegen erlaubt | bestanden |
 | Kundin | a sieht die interne Notiz über sich nicht | bestanden |
 | Team | Antwort im Chat senden | bestanden |

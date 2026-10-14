@@ -152,6 +152,16 @@ try {
   check('Team', 'Mitarbeiterin sieht Bestandskundin', rows(await staff.client.from('customers').select('id').eq('id', legacy.id)) === 1);
   check('Team', 'Mitarbeiterin sieht Chat von a', rows(await staff.client.from('chat_messages').select('id').eq('customer_id', a.customerId)) >= 1);
   check('Team', 'Ansicht staff_appointments liefert Zeilen', rows(await staff.client.from('staff_appointments').select('id').limit(5)) > 0);
+  // Das CRM fragt serverseitig OHNE Origin-Header ab – der Katalog muss trotzdem vollständig sichtbar sein
+  const bare = createClient(URL_, PUB, { auth: noSession, global: { headers: { Authorization: `Bearer ${staff.token}` } } });
+  check('Team ohne Origin', 'Leistungen mit Kategorie (Join) sichtbar', rows(await bare.from('services').select('id, service_categories!inner(key)').eq('active', true)) > 0);
+  // staff_hours ist leer (ohne eigene Arbeitszeiten gelten die Öffnungszeiten) – Lesbarkeit: kein Fehler
+  check('Team ohne Origin', 'staff_hours lesbar (ohne Fehler)', rows(await bare.from('staff_hours').select('*').limit(3)) >= 0);
+  for (const t of ['staff', 'staff_services', 'opening_hours', 'customers', 'staff_appointments']) {
+    check('Team ohne Origin', `${t} sichtbar`, rows(await bare.from(t).select('*').limit(3)) > 0);
+  }
+  const bareCustomer = createClient(URL_, PUB, { auth: noSession, global: { headers: { Authorization: `Bearer ${a.token}` } } });
+  check('Kundin ohne Origin', 'keine Team-Katalogrechte (staff_services leer)', none(await bareCustomer.from('staff_services').select('*').limit(3)));
   const note = await staff.client.from('internal_notes').insert({ tenant_id: tenantId, customer_id: a.customerId, body: 'Testnotiz', created_by: 'team:test' }).select('id');
   check('Team', 'interne Notiz anlegen erlaubt', rows(note) === 1);
   check('Kundin', 'a sieht die interne Notiz über sich nicht', rows(await a.client.from('internal_notes').select('id').eq('customer_id', a.customerId)) <= 0);
