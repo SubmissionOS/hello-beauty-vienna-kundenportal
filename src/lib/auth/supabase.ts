@@ -49,6 +49,18 @@ function mapError(e: SbAuthError | null, fallback: AuthError['code'] = 'unknown'
 }
 
 export class SupabaseAuthAdapter implements AuthAdapter {
+  private creating: Promise<string> | null = null;
+  private createdFor: { email: string; id: string } | null = null;
+
+  private sessionFor(s: SbSession, email: string, customerId: string): Session {
+    return {
+      customerId,
+      email,
+      isDemo: s.user.app_metadata?.demo === true,
+      expiresAt: new Date((s.expires_at ?? 0) * 1000).toISOString(),
+    };
+  }
+
   private get sb() {
     return supabaseBrowser();
   }
@@ -60,8 +72,15 @@ export class SupabaseAuthAdapter implements AuthAdapter {
     let customerId = await getData().findCustomerIdByEmail(email);
     if (!customerId) {
       const pending = readPending();
-      if (pending?.email !== email) return null;
-      customerId = (await getData().createCustomer(pending.data)).id;
+      // parallel gerade angelegt (Angaben schon gelöscht) → dieselbe Kundin
+      if (pending?.email !== email) return this.createdFor?.email === email ? this.sessionFor(s, email, this.createdFor.id) : null;
+      // Anmeldung löst zusätzlich onAuthStateChange aus – die Kundin nur einmal anlegen (gleich wie Hotfix auf main)
+      this.creating ??= getData()
+        .createCustomer(pending.data)
+        .then((c) => c.id)
+        .finally(() => (this.creating = null));
+      customerId = await this.creating;
+      this.createdFor = { email, id: customerId };
       writePending(null);
     }
     return {

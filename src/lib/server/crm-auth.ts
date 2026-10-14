@@ -12,7 +12,7 @@ import { supabaseAdmin } from './supabase';
  *   X-HB-Timestamp  Unix-Sekunden; höchstens 5 Minuten Abweichung
  *   X-HB-Nonce      16–100 zufällige Zeichen, je Schlüssel nur einmal verwendbar (Wiederholungsschutz)
  *   X-HB-Signature  hex(HMAC-SHA256(CRM_BRIDGE_SECRET, Kanon))
- * Kanon = `${timestamp}\n${nonce}\n${METHOD}\n${Pfad inkl. Query}\n${hex(SHA-256(Body))}`
+ * Kanon = `${timestamp}\n${nonce}\n${METHOD}\n${Pfad}[?${Query sortiert, URLSearchParams-kodiert}]\n${hex(SHA-256(Body))}`
  *
  * Reihenfolge: Format → Zeitfenster → Signatur (konstante Zeit) → DB (Nonce, Rate-Limit, Tenant).
  * Der Tenant kommt ausschließlich aus dem Schlüssel, nie aus der Anfrage.
@@ -27,6 +27,15 @@ export type CrmAuthError = 'unauthorized' | 'stale' | 'bad_signature' | 'replay'
 /** Schlüssel-ID → Geheimnis. Weitere Salons bekommen eigene IDs und eigene Geheimnisse. */
 function secretFor(keyId: string): string | null {
   return keyId === CRM_KEY_ID ? serverEnv.crmBridgeSecret() : null;
+}
+
+/** Pfad + Query in fester Form: Parameter sortiert und einheitlich kodiert (unabhängig davon, wie Proxy/Client kodieren) */
+export function canonicalPath(rawUrl: string): string {
+  const url = new URL(rawUrl, 'http://x');
+  const qs = new URLSearchParams(url.search);
+  qs.sort();
+  const q = qs.toString();
+  return q ? `${url.pathname}?${q}` : url.pathname;
 }
 
 export function canonical(ts: string, nonce: string, method: string, pathWithQuery: string, body: string): string {
@@ -53,8 +62,7 @@ export async function verifyCrmRequest(
   const secret = secretFor(keyId);
   if (!secret) return { ok: false, error: serverEnv.crmBridgeSecret() ? 'unauthorized' : 'not_configured' };
   if (Math.abs(now / 1000 - Number(ts)) > MAX_SKEW_S) return { ok: false, error: 'stale' };
-  const url = new URL(req.url);
-  const expected = signRequest(secret, ts, nonce, req.method, url.pathname + url.search, body);
+  const expected = signRequest(secret, ts, nonce, req.method, canonicalPath(req.url), body);
   if (!safeEqual(signature, expected)) return { ok: false, error: 'bad_signature' };
 
   // erst nach gültiger Signatur in die DB: Nonce verbrauchen, Rate-Limit, Tenant aus dem Schlüssel

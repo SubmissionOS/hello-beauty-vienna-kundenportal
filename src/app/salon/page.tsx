@@ -88,9 +88,9 @@ export default function SalonPage() {
       <div className={st.content}>
         <h1 className={st.title}>Salon</h1>
         <p className="muted">Angemeldet als {member.displayName}</p>
-        <div className="segmented" role="tablist" aria-label="Bereiche">
+        <div className={st.chipRow} role="tablist" aria-label="Bereiche">
           {tabs.map(([k, label]) => (
-            <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => setTab(k)}>
+            <button key={k} type="button" role="tab" className={st.chipToggle} aria-selected={tab === k} onClick={() => setTab(k)}>
               {label}
             </button>
           ))}

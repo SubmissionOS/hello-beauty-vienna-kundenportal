@@ -58,9 +58,10 @@ test('Demo-Kundin: Termine aus der DB, Buchung, Export', async ({ page }) => {
   expect(json.profile.firstName).toBe('Lena');
   expect(json.appointments.length).toBeGreaterThanOrEqual(6);
 
-  // Testbuchung wieder entfernen, damit die Demo-Daten gleich bleiben
+  // Testbuchung und ihren Zähler fürs Buchungs-Limit wieder entfernen, damit die Demo-Daten gleich bleiben
   const { data: demo } = await admin().from('customers').select('id').eq('email', 'lena.musterfrau@example.com').single();
   await admin().from('appointments').delete().eq('customer_id', demo!.id).gte('created_at', startedAt);
+  await admin().from('booking_attempts').delete().eq('customer_id', demo!.id).gte('created_at', startedAt);
 });
 
 test('Registrierung mit echtem Code, Profil, Konto löschen', async ({ page }) => {

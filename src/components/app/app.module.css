@@ -807,6 +807,9 @@
   align-items: end;
 }
 .composerInput {
+  /* Höhe wächst mit dem Text, die Breite bleibt in der Spalte (sonst schiebt sich das Feld über „Senden“) */
+  width: 100%;
+  min-width: 0;
   resize: none;
   max-height: 160px;
   field-sizing: content;
@@ -909,7 +912,8 @@
   font-size: var(--fs-small);
   font-weight: var(--fw-medium);
 }
-.chipToggle[aria-pressed='true'] {
+.chipToggle[aria-pressed='true'],
+.chipToggle[aria-selected='true'] {
   border-color: var(--primary);
   background: var(--primary);
   color: var(--on-primary);
