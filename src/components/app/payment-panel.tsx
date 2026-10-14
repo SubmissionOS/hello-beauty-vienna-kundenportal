@@ -12,7 +12,10 @@ import { leftText, useNow } from './countdown';
 /**
  * Bezahlschritt für eine reservierte Buchung. Solange kein Zahlungsanbieter verbunden ist, läuft die
  * „Test-Zahlung“ (Mock-Anbieter) – gleicher Weg wie später der Stripe-Webhook, es werden keine Kartendaten erfasst.
+ * Mit NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY geht es stattdessen zu Stripe Checkout (Zahlungsseite von Stripe, kein Script hier).
  */
+const stripeEnabled = !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+
 export function PaymentPanel({
   payment,
   holdExpiresAt,
@@ -34,6 +37,10 @@ export function PaymentPanel({
     setBusy(true);
     setError(null);
     try {
+      if (stripeEnabled) {
+        window.location.assign(await getData().startCheckout(payment.id));
+        return;
+      }
       onPaid(await getData().completeTestPayment(payment.id));
     } catch (e) {
       setError(e instanceof DataError && e.code === 'too_late' ? t.pay.expired : t.errors.unknown);
@@ -48,8 +55,8 @@ export function PaymentPanel({
           <IconCard />
         </span>
         <div>
-          <p className={st.payTitle}>{t.pay.testTitle}</p>
-          <p className="hint">{t.pay.testText}</p>
+          <p className={st.payTitle}>{stripeEnabled ? t.pay.title : t.pay.testTitle}</p>
+          {!stripeEnabled && <p className="hint">{t.pay.testText}</p>}
         </div>
       </div>
       {holdExpiresAt && (
@@ -64,7 +71,7 @@ export function PaymentPanel({
       )}
       <button type="button" className="btn btn-primary btn-lg btn-block" onClick={pay} disabled={busy || expired}>
         {busy && <span className="spinner" aria-hidden="true" />}
-        {busy ? t.pay.paying : fmt(t.pay.testPay, { amount })}
+        {busy ? t.pay.paying : stripeEnabled ? `${t.appt.payNow} · ${amount}` : fmt(t.pay.testPay, { amount })}
       </button>
     </div>
   );

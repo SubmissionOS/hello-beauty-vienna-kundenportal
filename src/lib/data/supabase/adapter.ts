@@ -391,6 +391,16 @@ export class SupabaseDataAdapter implements DataAdapter {
     return (await res.json()) as Payment;
   }
 
+  async startCheckout(paymentId: string): Promise<string> {
+    const res = await fetch('/api/payments/checkout', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${await this.token()}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ paymentId }),
+    });
+    if (!res.ok) throw new DataError(res.status === 409 ? 'too_late' : 'unknown');
+    return ((await res.json()) as { url: string }).url;
+  }
+
   async savePushSubscription(sub: PushSubscriptionInput): Promise<void> {
     await this.rpc('save_push_subscription', {
       p_endpoint: sub.endpoint,

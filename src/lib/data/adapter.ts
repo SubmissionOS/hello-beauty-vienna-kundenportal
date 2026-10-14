@@ -93,6 +93,8 @@ export interface DataAdapter {
   listPayments(): Promise<Payment[]>;
   /** Test-Zahlung (Mock-Anbieter) abschließen – solange kein echter Zahlungsanbieter eingerichtet ist */
   completeTestPayment(paymentId: string): Promise<Payment>;
+  /** Stripe Checkout starten (nur mit echtem Anbieter): URL der Zahlungsseite von Stripe */
+  startCheckout(paymentId: string): Promise<string>;
 
   // Web-Push
   savePushSubscription(sub: PushSubscriptionInput): Promise<void>;

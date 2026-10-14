@@ -653,6 +653,11 @@ export class MockDataAdapter implements DataAdapter {
     return clone(p);
   }
 
+  async startCheckout(): Promise<string> {
+    // Mock kennt nur die Test-Zahlung
+    throw new DataError('invalid');
+  }
+
   async savePushSubscription(sub: PushSubscriptionInput): Promise<void> {
     const db = loadDb();
     const list = (extra(db).push[me()] ??= []).filter((s) => s.endpoint !== sub.endpoint);
