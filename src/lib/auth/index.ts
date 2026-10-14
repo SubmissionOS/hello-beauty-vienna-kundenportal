@@ -42,7 +42,7 @@ export function getAuth(): AuthAdapter {
       };
     },
     register: async (input) => keepStorage(await (await impl()).register(input)),
-    signIn: async (email, password) => keepStorage(await (await impl()).signIn(email, password)),
+    signIn: async (email, password, remember) => keepStorage(await (await impl()).signIn(email, password, remember)),
     requestPasswordReset: async (email) => (await impl()).requestPasswordReset(email),
     beginPasswordReset: async () => (await impl()).beginPasswordReset(),
     updatePassword: async (password) => keepStorage(await (await impl()).updatePassword(password)),

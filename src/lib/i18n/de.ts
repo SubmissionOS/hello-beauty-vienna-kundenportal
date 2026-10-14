@@ -136,6 +136,7 @@ export const de = {
     confirmText: 'Wir haben eine E-Mail an {email} gesendet. Öffnen Sie den Link darin und melden Sie sich danach hier mit Ihrem Passwort an.',
     haveAccount: 'Schon registriert?',
     toLogin: 'Anmelden',
+    emailTakenLink: 'jetzt anmelden?',
   },
   login: {
     title: 'Anmelden',
@@ -145,6 +146,8 @@ export const de = {
     forgot: 'Passwort vergessen?',
     noAccount: 'Noch kein Konto?',
     toRegister: 'Registrieren',
+    remember: 'Angemeldet bleiben',
+    rememberHint: 'Aus: Sie werden beim Schließen der App abgemeldet.',
   },
   password: {
     show: 'Passwort anzeigen',
@@ -173,7 +176,7 @@ export const de = {
     email: 'Bitte eine gültige E-Mail-Adresse eingeben.',
     phone: 'Bitte eine gültige Telefonnummer eingeben, z. B. +43 660 1234567.',
     password_short: 'Bitte mindestens 10 Zeichen eingeben.',
-    email_taken: 'Zu dieser E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich an.',
+    email_taken: 'Für diese E-Mail gibt es schon ein Konto –',
     invalid_credentials: 'E-Mail-Adresse oder Passwort stimmen nicht.',
     weak_password: 'Dieses Passwort ist nicht geeignet. Bitte wählen Sie ein anderes mit mindestens 10 Zeichen.',
     reset_invalid: 'Der Link ist nicht mehr gültig. Bitte fordern Sie einen neuen an.',
@@ -534,5 +537,11 @@ export const de = {
     on: 'Ein',
     off: 'Aus',
     deleteText: 'Ihr Konto, Ihre Termine, Nachrichten, Wartelisten-Einträge, Ihr Profilbild und alle Mitteilungs-Abos werden gelöscht. Das lässt sich nicht rückgängig machen. Zahlungsbelege bewahren wir nur so lange auf, wie das Gesetz es verlangt.',
+  },
+  update: {
+    available: 'Neue Version verfügbar',
+    action: 'Jetzt aktualisieren',
+    updating: 'App wird aktualisiert …',
+    unsaved: 'Sie haben ungespeicherte Eingaben. Trotzdem jetzt aktualisieren?',
   },
 };

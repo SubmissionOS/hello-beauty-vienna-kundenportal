@@ -25,6 +25,7 @@ import {
   type WaitlistEntry,
   type WaitlistOffer,
 } from '../types';
+import { sessionStore } from '../../auth/remember';
 import { categories, services, staff } from './catalog';
 import { extra, loadDb, newCustomerNumber, newId, saveDb, type MockDb } from './db';
 
@@ -123,7 +124,7 @@ function defaultPref(kind: NotifyKind, ch: Channel): boolean {
 /** Angemeldete Kundin (Mock-Sitzung aus lib/auth/mock.ts) */
 function me(): string {
   try {
-    const s = JSON.parse(localStorage.getItem('hb-mock-session') ?? 'null') as { customerId?: string } | null;
+    const s = JSON.parse(sessionStore.getItem('hb-mock-session') ?? 'null') as { customerId?: string } | null;
     if (s?.customerId && loadDb().customers[s.customerId]) return s.customerId;
   } catch {
     /* privater Modus */

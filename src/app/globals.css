@@ -663,3 +663,25 @@ html[lang='hu'] [data-l]:not([data-l='hu']) {
 :lang(hu) q {
   quotes: '„' '”' '»' '«';
 }
+
+/* ---------- Update-Hinweis (neue App-Version) ---------- */
+.update-bar {
+  position: fixed;
+  left: max(var(--gutter), var(--safe-left));
+  right: max(var(--gutter), var(--safe-right));
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--s-3));
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: var(--fw-medium);
+  box-shadow: var(--shadow-raised);
+  border: 1px solid var(--line);
+}

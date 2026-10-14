@@ -3,6 +3,7 @@ import { getData } from '../data';
 import type { NewCustomer } from '../data/types';
 import { env } from '../env';
 import { supabaseBrowser } from '../supabase/client';
+import { setRemember } from './remember';
 import { AuthError, PASSWORD_MIN, type AuthAdapter, type Registration, type Session } from './types';
 
 /**
@@ -140,6 +141,7 @@ export class SupabaseAuthAdapter implements AuthAdapter {
   }
 
   async register(input: Registration) {
+    setRemember(true, ['hb-auth', CUSTOMER_KEY]);
     if (input.password.length < PASSWORD_MIN) throw new AuthError('weak_password');
     const email = norm(input.email);
     const { password, ...data } = input;
@@ -161,7 +163,8 @@ export class SupabaseAuthAdapter implements AuthAdapter {
     return { status: 'signed_in' as const, session: await this.sessionOrFail(res.session, 'unknown') };
   }
 
-  async signIn(raw: string, password: string) {
+  async signIn(raw: string, password: string, remember = true) {
+    setRemember(remember, ['hb-auth', CUSTOMER_KEY]);
     const { data, error } = await this.sb.auth.signInWithPassword({ email: norm(raw), password });
     if (error || !data.session) {
       // nie unterscheiden zwischen „kein Konto“, „falsches Passwort“ und „nicht bestätigt“
@@ -212,6 +215,7 @@ export class SupabaseAuthAdapter implements AuthAdapter {
   }
 
   async signInDemo(): Promise<Session> {
+    setRemember(true, ['hb-auth', CUSTOMER_KEY]);
     if (!env.demoMode) throw new AuthError('unknown');
     const res = await fetch('/api/demo-login', { method: 'POST' });
     if (!res.ok) throw new AuthError('unknown');

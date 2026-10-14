@@ -52,7 +52,8 @@ export interface AuthAdapter {
   /** Benachrichtigt bei An-/Abmeldung; gibt eine Abmeldefunktion zurück */
   onChange(listener: (session: Session | null) => void): () => void;
   register(input: Registration): Promise<RegisterResult>;
-  signIn(email: string, password: string): Promise<Session>;
+  /** remember = „Angemeldet bleiben“ (Standard AN) */
+  signIn(email: string, password: string, remember?: boolean): Promise<Session>;
   /** Sendet den Link zum Zurücksetzen; antwortet immer gleich, egal ob es das Konto gibt */
   requestPasswordReset(email: string): Promise<ResetRequest>;
   /** Auf /app/passwort-neu: übernimmt die Wiederherstellungs-Sitzung aus dem Link; E-Mail des Kontos oder null (Link ungültig) */

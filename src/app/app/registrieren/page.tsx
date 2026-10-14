@@ -166,7 +166,7 @@ export default function RegisterPage() {
             {formError && (
               <p className="alert alert-error" role="alert">
                 {formError}{' '}
-                {formError === t.errors.email_taken && <Link href="/app/anmelden">{t.register.toLogin}</Link>}
+                {formError === t.errors.email_taken && <Link href="/app/anmelden">{t.register.emailTakenLink}</Link>}
               </p>
             )}
             <button type="submit" className="btn btn-primary btn-lg btn-block" disabled={busy}>

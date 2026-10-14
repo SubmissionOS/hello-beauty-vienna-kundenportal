@@ -138,6 +138,7 @@ export const hu: Dict = {
     confirmText: 'E-mailt küldtünk ide: {email}. Nyisd meg a benne lévő linket, majd jelentkezz be itt a jelszavaddal.',
     haveAccount: 'Már regisztráltál?',
     toLogin: 'Bejelentkezés',
+    emailTakenLink: 'bejelentkezel most?',
   },
   login: {
     title: 'Bejelentkezés',
@@ -147,6 +148,8 @@ export const hu: Dict = {
     forgot: 'Elfelejtetted a jelszavad?',
     noAccount: 'Még nincs fiókod?',
     toRegister: 'Regisztráció',
+    remember: 'Bejelentkezve maradok',
+    rememberHint: 'Ki: az alkalmazás bezárásakor kijelentkezel.',
   },
   password: {
     show: 'Jelszó megjelenítése',
@@ -175,7 +178,7 @@ export const hu: Dict = {
     email: 'Adj meg egy érvényes e-mail-címet.',
     phone: 'Adj meg egy érvényes telefonszámot, pl. +43 660 1234567.',
     password_short: 'Adj meg legalább 10 karaktert.',
-    email_taken: 'Ehhez az e-mail-címhez már tartozik fiók. Jelentkezz be.',
+    email_taken: 'Ehhez az e-mail-címhez már van fiók –',
     invalid_credentials: 'Az e-mail-cím vagy a jelszó nem megfelelő.',
     weak_password: 'Ez a jelszó nem használható. Válassz egy másikat, legalább 10 karakterrel.',
     reset_invalid: 'A link már nem érvényes. Kérj újat.',
@@ -536,5 +539,11 @@ export const hu: Dict = {
     on: 'Be',
     off: 'Ki',
     deleteText: 'Töröljük a fiókodat, az időpontjaidat, üzeneteidet, várólistás bejegyzéseidet, a profilképedet és minden értesítés-feliratkozást. Ez nem vonható vissza. A fizetési bizonylatokat csak addig őrizzük, ameddig a törvény előírja.',
+  },
+  update: {
+    available: 'Új verzió érhető el',
+    action: 'Frissítés most',
+    updating: 'Az alkalmazás frissül …',
+    unsaved: 'Vannak el nem mentett adataid. Mégis frissítesz most?',
   },
 };

@@ -200,6 +200,7 @@ test('Registrierung mit vergebener Adresse: Hinweis statt Fehler, kein zweites K
   await page.getByLabel('E-Mail', { exact: true }).fill('lena.musterfrau@example.com');
   await page.locator('#password').fill('Irgendein-Passwort-9');
   await page.getByRole('button', { name: 'Konto erstellen' }).click();
-  await expect(page.locator('p.alert[role="alert"]')).toContainText('Zu dieser E-Mail-Adresse gibt es bereits ein Konto.');
+  await expect(page.locator('p.alert[role="alert"]')).toContainText('Für diese E-Mail gibt es schon ein Konto –');
+  await expect(page.locator('p.alert[role="alert"]').getByRole('link', { name: 'jetzt anmelden?' })).toHaveAttribute('href', '/app/anmelden');
   expect(await lenaCount()).toBe(before);
 });

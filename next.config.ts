@@ -48,8 +48,12 @@ const securityHeaders = [
   },
 ];
 
+/** Version des Builds – steckt in der Service-Worker-URL, damit jede Auslieferung als Update erkannt wird */
+const appVersion = (process.env.VERCEL_GIT_COMMIT_SHA ?? '').slice(0, 8) || Date.now().toString(36);
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  env: { NEXT_PUBLIC_APP_VERSION: appVersion },
   poweredByHeader: false,
   // keine automatisch erzeugten AGENTS.md/CLAUDE.md im Projekt
   agentRules: false,

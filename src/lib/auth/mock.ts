@@ -6,6 +6,7 @@
 import { getData } from '../data';
 import { env } from '../env';
 import { DEMO_CUSTOMER_ID, DEMO_EMAIL, ensureDemoCustomer, loadDb, saveDb } from '../data/mock/db';
+import { sessionStore, setRemember } from './remember';
 import { AuthError, PASSWORD_MIN, type AuthAdapter, type Registration, type Session } from './types';
 
 const SESSION_KEY = 'hb-mock-session';
@@ -80,17 +81,18 @@ export class MockAuthAdapter implements AuthAdapter {
       isDemo,
       expiresAt: new Date(Date.now() + TOKEN_HOURS * 3_600_000).toISOString(),
     };
-    write(SESSION_KEY, session);
+    sessionStore.setItem(SESSION_KEY, JSON.stringify(session));
     this.emit(session);
     return session;
   }
 
   /** Sitzung gilt bis zum Abmelden (wie bei Supabase mit Refresh-Token) */
   async getSession() {
-    const s = read<Session>(SESSION_KEY);
+    const raw = sessionStore.getItem(SESSION_KEY);
+    const s = raw ? (JSON.parse(raw) as Session) : null;
     if (!s) return null;
     if (!loadDb().customers[s.customerId]) {
-      write(SESSION_KEY, null);
+      sessionStore.removeItem(SESSION_KEY);
       return null;
     }
     return s;
@@ -104,6 +106,7 @@ export class MockAuthAdapter implements AuthAdapter {
   }
 
   async register(input: Registration) {
+    setRemember(true, [SESSION_KEY]);
     await wait(350);
     if (input.password.length < PASSWORD_MIN) throw new AuthError('weak_password');
     const email = norm(input.email);
@@ -114,8 +117,9 @@ export class MockAuthAdapter implements AuthAdapter {
     return { status: 'signed_in' as const, session: this.startSession(profile.id, email, false) };
   }
 
-  async signIn(rawEmail: string, password: string) {
+  async signIn(rawEmail: string, password: string, remember = true) {
     await wait(350);
+    setRemember(remember, [SESSION_KEY]);
     const email = norm(rawEmail);
     const customerId = await getData().findCustomerIdByEmail(email);
     if (!(await passwordMatches(email, password)) || !customerId) throw new AuthError('invalid_credentials');
@@ -151,11 +155,12 @@ export class MockAuthAdapter implements AuthAdapter {
   async signInDemo() {
     if (!env.demoMode) throw new AuthError('unknown');
     saveDb(ensureDemoCustomer(loadDb()));
+    setRemember(true, [SESSION_KEY]);
     return this.startSession(DEMO_CUSTOMER_ID, DEMO_EMAIL, true);
   }
 
   async signOut() {
-    write(SESSION_KEY, null);
+    sessionStore.removeItem(SESSION_KEY);
     this.emit(null);
   }
 }

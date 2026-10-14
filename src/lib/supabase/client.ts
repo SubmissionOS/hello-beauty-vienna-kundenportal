@@ -1,8 +1,9 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { sessionStore } from '../auth/remember';
 
 /**
  * Supabase im Browser – nur mit dem öffentlichen Publishable Key; die Daten schützt RLS.
- * Sitzung im localStorage der jeweiligen Umgebung (installierte App hat eigenen Speicher):
+ * Sitzung im localStorage (bzw. sessionStorage bei „Angemeldet bleiben“ AUS) der jeweiligen Umgebung:
  * keine Cookies, automatische Token-Erneuerung. Der Tenant ergibt sich in der DB aus dem Origin der Seite.
  */
 let client: SupabaseClient | null = null;
@@ -15,6 +16,7 @@ export function supabaseBrowser(): SupabaseClient {
   client = createClient(url, key, {
     auth: {
       storageKey: 'hb-auth',
+      storage: sessionStore,
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: false,

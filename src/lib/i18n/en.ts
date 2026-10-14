@@ -137,6 +137,7 @@ export const en: Dict = {
     confirmText: 'We have sent an email to {email}. Open the link in it, then sign in here with your password.',
     haveAccount: 'Already registered?',
     toLogin: 'Sign in',
+    emailTakenLink: 'sign in now?',
   },
   login: {
     title: 'Sign in',
@@ -146,6 +147,8 @@ export const en: Dict = {
     forgot: 'Forgot password?',
     noAccount: 'No account yet?',
     toRegister: 'Register',
+    remember: 'Stay signed in',
+    rememberHint: 'Off: you will be signed out when you close the app.',
   },
   password: {
     show: 'Show password',
@@ -174,7 +177,7 @@ export const en: Dict = {
     email: 'Please enter a valid email address.',
     phone: 'Please enter a valid phone number, e.g. +43 660 1234567.',
     password_short: 'Please enter at least 10 characters.',
-    email_taken: 'An account with this email already exists. Please sign in.',
+    email_taken: 'There is already an account for this email –',
     invalid_credentials: 'Email address or password is not correct.',
     weak_password: 'This password cannot be used. Please choose another one with at least 10 characters.',
     reset_invalid: 'This link is no longer valid. Please request a new one.',
@@ -535,5 +538,11 @@ export const en: Dict = {
     on: 'On',
     off: 'Off',
     deleteText: 'Your account, appointments, messages, waiting list entries, profile photo and all notification subscriptions will be deleted. This cannot be undone. We keep payment records only as long as the law requires.',
+  },
+  update: {
+    available: 'New version available',
+    action: 'Update now',
+    updating: 'Updating the app …',
+    unsaved: 'You have unsaved input. Update now anyway?',
   },
 };

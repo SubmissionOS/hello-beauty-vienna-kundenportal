@@ -15,6 +15,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(true);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
@@ -33,7 +34,7 @@ export default function LoginPage() {
     }
     setBusy(true);
     try {
-      await getAuth().signIn(email, password);
+      await getAuth().signIn(email, password, remember);
       router.replace('/app');
     } catch (err) {
       setFormError(t.errors[err instanceof AuthError ? err.code : 'unknown']);
@@ -80,6 +81,13 @@ export default function LoginPage() {
             onChange={setPassword}
             error={passwordError}
           />
+          <label className="check">
+            <input type="checkbox" name="remember" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
+            <span>
+              {t.login.remember}
+              {!remember && <span className="hint" style={{ display: 'block' }}>{t.login.rememberHint}</span>}
+            </span>
+          </label>
           {formError && (
             <p className="alert alert-error" role="alert">
               {formError}
