@@ -3,7 +3,7 @@
  * Cacht NUR statische Dateien (Build-Assets, Schriften, Icons, Bilder) und die Offline-Seite.
  * Seiten (HTML), API-Antworten und alles mit personenbezogenen Daten gehen immer direkt ans Netz.
  */
-const VERSION = 'hb-v1';
+const VERSION = 'hb-v2';
 const STATIC_CACHE = `${VERSION}-static`;
 const OFFLINE_URL = '/offline';
 
@@ -61,6 +61,45 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => cached);
       return cached || network;
+    }),
+  );
+});
+
+/*
+ * Web-Push (Teil 4): Der Server schickt verschlüsselt (RFC 8291) ein JSON { title, body, url, tag }.
+ * Nur eigene Pfade werden geöffnet – fremde URLs ignoriert der Service Worker.
+ */
+self.addEventListener('push', (event) => {
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch {
+    data = { body: event.data ? event.data.text() : '' };
+  }
+  const url = typeof data.url === 'string' && data.url.startsWith('/') && !data.url.startsWith('//') ? data.url : '/app';
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'Hello Beauty', {
+      body: data.body || '',
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      tag: data.tag || undefined,
+      renotify: !!data.tag,
+      data: { url },
+    }),
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const target = new URL((event.notification.data && event.notification.data.url) || '/app', self.location.origin).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+      for (const client of list) {
+        if (new URL(client.url).origin === self.location.origin && 'navigate' in client) {
+          return client.focus().then(() => client.navigate(target));
+        }
+      }
+      return self.clients.openWindow(target);
     }),
   );
 });

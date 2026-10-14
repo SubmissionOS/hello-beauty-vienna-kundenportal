@@ -36,7 +36,7 @@
   inset: auto 0 0 0;
   z-index: 30;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   padding: var(--s-1) max(var(--s-2), var(--safe-right)) calc(var(--safe-bottom) + var(--s-1)) max(var(--s-2), var(--safe-left));
   background: var(--bg);
   border-top: 1px solid var(--line);
@@ -66,6 +66,28 @@
 }
 .tab[aria-current='page'] {
   color: var(--link);
+}
+.tabIcon {
+  position: relative;
+  display: grid;
+}
+/* Ungelesen-Zähler am Tab */
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -10px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: grid;
+  place-items: center;
+  font-size: var(--fs-tab);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  color: var(--on-primary);
+  background: var(--primary);
+  border-radius: var(--r-pill);
+  box-shadow: 0 0 0 2px var(--bg);
 }
 
 /* ---------- Willkommen / Anmeldung ---------- */
@@ -573,4 +595,325 @@
   font-size: var(--fs-xs);
   text-align: center;
   color: var(--text-muted);
+}
+
+/* ---------- Teil 3/4 ---------- */
+
+/* Leer-, Fehler- und Offline-Zustände */
+.stateIcon {
+  color: var(--text-muted);
+}
+.stateTitle {
+  font-weight: var(--fw-semibold);
+}
+
+/* Chips (Status, Zahlung, Art der Neuigkeit) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.chips .status {
+  margin-top: var(--s-2);
+}
+.status[data-pay='paid'],
+.status[data-pay='refunded'],
+.status[data-pay='partially_refunded'] {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.status[data-pay='requires_payment'],
+.status[data-pay='processing'],
+.status[data-pay='refund_pending'],
+.status[data-news='offer'],
+.status[data-news='free_slot'],
+.status[data-status='new'] {
+  color: var(--link);
+}
+.status[data-pay='failed'],
+.status[data-pay='expired'] {
+  background: var(--error-bg);
+  color: var(--error);
+}
+.status[data-status='cancelled'] {
+  text-decoration: line-through;
+}
+.apptActions {
+  display: grid;
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line);
+}
+.sheetTall {
+  max-height: 92dvh;
+  overflow-y: auto;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+/* Countdown (nächster Termin, Angebote, Reservierung) */
+.countdown,
+.holdLeft {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  color: var(--link);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Wartelisten-Angebot */
+.offerBanner {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-4) 16px;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid var(--brand-line);
+}
+.offerBannerText {
+  font-weight: var(--fw-medium);
+}
+.offerTimer {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-2);
+  padding: var(--s-5) 16px;
+  text-align: center;
+}
+.offerClock {
+  font-family: var(--font-serif);
+  font-size: var(--fs-display);
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--text);
+}
+.offerTimer .progressBar {
+  width: 100%;
+}
+.offerActions {
+  display: grid;
+  gap: var(--s-3);
+}
+.doneIcon[data-tone='neutral'] {
+  background: var(--surface-soft);
+  color: var(--link);
+}
+
+/* Bezahlen */
+.payInfo,
+.payPanel {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-4) 16px;
+}
+.payPanel {
+  gap: var(--s-3);
+}
+.payHead {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-3);
+  align-items: start;
+}
+.payTitle {
+  font-weight: var(--fw-semibold);
+}
+
+/* Neuigkeiten */
+.news {
+  display: grid;
+  overflow: hidden;
+  padding: 0;
+}
+.news[data-highlight='true'] {
+  box-shadow: var(--focus-ring);
+}
+.newsImg {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.newsBody {
+  display: grid;
+  gap: var(--s-2);
+  padding: 12px 16px 16px;
+}
+.newsText {
+  white-space: pre-line;
+}
+
+/* Chat */
+.chat {
+  display: grid;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chatItem {
+  display: grid;
+  gap: 2px;
+  justify-items: start;
+}
+.chatItem[data-sender='customer'] {
+  justify-items: end;
+}
+.chatDay {
+  justify-self: center;
+  margin: var(--s-2) 0;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.bubble {
+  max-width: 82%;
+  padding: 10px 14px;
+  border-radius: var(--r-lg);
+  border-bottom-left-radius: var(--r-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-cells);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.chatItem[data-sender='customer'] .bubble {
+  border-bottom-left-radius: var(--r-lg);
+  border-bottom-right-radius: var(--r-sm);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.chatMeta {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.composer {
+  position: sticky;
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--s-3));
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--s-2);
+  align-items: end;
+}
+.composerInput {
+  /* Höhe wächst mit dem Text, die Breite bleibt in der Spalte (sonst schiebt sich das Feld über „Senden“) */
+  width: 100%;
+  min-width: 0;
+  resize: none;
+  max-height: 160px;
+  field-sizing: content;
+}
+.composerSend {
+  width: var(--btn-h);
+  padding: 0;
+}
+
+/* Mitteilungen (Erklär-Screen) */
+.pushCard {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-5) 16px;
+}
+.checkList {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.checkList li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-2);
+  align-items: start;
+}
+.checkList svg {
+  color: var(--success);
+  margin-top: 3px;
+}
+
+/* Profil: Foto, Kundennummer, Benachrichtigungen */
+.profileAvatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.fileBtn {
+  cursor: pointer;
+}
+.fileBtn:focus-within {
+  box-shadow: var(--focus-ring);
+}
+.customerNumber {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.qrSheet {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-3);
+  text-align: center;
+}
+.prefRow {
+  flex-wrap: wrap;
+  row-gap: var(--s-2);
+}
+.prefRow .row-main {
+  flex-basis: 100%;
+}
+.prefChannels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s-2);
+  width: 100%;
+}
+.prefChannel {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+/* Formulare der Warteliste */
+.fieldset {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.chipToggle {
+  min-height: var(--tap);
+  padding: 0 14px;
+  border: 1px solid var(--field);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+}
+.chipToggle[aria-pressed='true'],
+.chipToggle[aria-selected='true'] {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.chipToggle:disabled {
+  opacity: 0.45;
+}
+.chipToggle:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }

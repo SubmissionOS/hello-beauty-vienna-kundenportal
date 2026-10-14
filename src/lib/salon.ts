@@ -18,6 +18,8 @@ export const salon = {
   openDays: [1, 2, 3, 4, 5, 6] as readonly number[],
   openHour: 9,
   closeHour: 19,
+  /** Absagen/Verschieben bis so viele Stunden vorher (Spiegel von tenants.change_notice_hours; die DB prüft verbindlich) */
+  changeNoticeHours: 24,
   website: websiteBase,
   mapsUrl: 'https://maps.apple.com/?q=Hello+Beauty&address=Barnabitengasse+7,+1060+Wien,+%C3%96sterreich&ll=48.1986658,16.353555',
 } as const;

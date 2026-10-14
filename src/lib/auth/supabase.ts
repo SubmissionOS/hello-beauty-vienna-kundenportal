@@ -74,7 +74,16 @@ export class SupabaseAuthAdapter implements AuthAdapter {
     }
     if (!customerId) {
       const pending = readPending();
-      if (pending?.email !== email) return null;
+      if (pending?.email !== email) {
+        // Wettlauf mit signUp: die Kundin wurde gerade parallel angelegt (Angaben schon gelöscht) → dieselbe Kundin
+        if (this.creating) customerId = await this.creating;
+        else {
+          const cached = read<{ userId: string; customerId: string }>(CUSTOMER_KEY);
+          if (cached?.userId !== s.user.id) return null;
+          customerId = cached.customerId;
+        }
+        return { customerId, email, isDemo: s.user.app_metadata?.demo === true, expiresAt: new Date((s.expires_at ?? 0) * 1000).toISOString() };
+      }
       // signUp löst zusätzlich onAuthStateChange aus – die Kundin nur einmal anlegen
       this.creating ??= getData()
         .createCustomer(pending.data)

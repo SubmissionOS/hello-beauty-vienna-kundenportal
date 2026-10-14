@@ -1,0 +1,27 @@
+-- Rückrollung von 20261014210000_teil4_kundennummer_crm.sql
+drop function if exists public.my_account();
+drop function if exists public.svc_crm_chat_read(uuid, uuid, text);
+drop function if exists public.svc_crm_chat_send(uuid, uuid, text, text);
+drop function if exists public.svc_crm_chat_messages(uuid, uuid);
+drop function if exists public.svc_crm_chat_threads(uuid);
+drop function if exists public.svc_crm_appointments(uuid, uuid);
+drop function if exists public.svc_crm_customer(uuid, uuid);
+drop function if exists public.svc_crm_unlink(uuid, uuid, text);
+drop function if exists public.svc_crm_link(uuid, uuid, text, text);
+drop function if exists public.svc_crm_link_suggestions(uuid, text, text);
+drop function if exists public.svc_crm_search(uuid, text);
+drop function if exists public.svc_crm_admit(text, text, int);
+drop table if exists public.crm_rate;
+drop table if exists public.crm_request_nonces;
+drop table if exists public.crm_bridge_keys;
+drop trigger if exists crm_audit_no_update on public.crm_audit_log;
+drop table if exists public.crm_audit_log;
+drop table if exists public.crm_links;
+drop function if exists app.customer_json(public.customers);
+drop function if exists app.audit(uuid, text, text, uuid, text, jsonb);
+drop function if exists app.audit_immutable();
+drop trigger if exists customers_assign_number on public.customers;
+drop function if exists app.assign_customer_number();
+drop function if exists app.new_customer_number(uuid);
+drop index if exists public.customers_tenant_number;
+alter table public.customers drop column if exists customer_number;

@@ -10,6 +10,39 @@ export function wallToDate(wall: string): Date {
   return new Date(`${wall}:00Z`);
 }
 
+/** Echter Zeitpunkt (ms seit 1970) einer Wandzeit in Wien – für Countdowns und Fristen. */
+export function wallToInstant(wall: string): number {
+  const guess = wallToDate(wall).getTime();
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: salon.timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(new Date(guess));
+  const get = (t: string) => Number(parts.find((p) => p.type === t)?.value ?? 0);
+  const asWall = Date.UTC(get('year'), get('month') - 1, get('day'), get('hour'), get('minute'));
+  // Differenz = Versatz Wiens zu UTC an diesem Tag (Sommer-/Winterzeit)
+  return guess - (asWall - guess);
+}
+
+/** Wandzeit in Wien für einen echten Zeitpunkt */
+export function instantToWall(ms: number): string {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: salon.timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(new Date(ms));
+  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? '00';
+  return `${get('year')}-${get('month')}-${get('day')}T${get('hour')}:${get('minute')}`;
+}
+
 /** Aktuelle Wandzeit in Wien als 'YYYY-MM-DDTHH:mm'. */
 export function nowWall(): string {
   const parts = new Intl.DateTimeFormat('en-CA', {

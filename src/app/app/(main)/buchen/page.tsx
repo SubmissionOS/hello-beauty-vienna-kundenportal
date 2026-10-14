@@ -1,36 +1,37 @@
 'use client';
 
 /* eslint-disable @next/next/no-img-element -- vorab skalierte Kategoriefotos */
-import { useMemo, useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { AppPage, PageSkeleton } from '@/components/app/app-page';
 import { serviceLabel } from '@/components/app/appt-card';
 import st from '@/components/app/app.module.css';
+import { LoadError } from '@/components/app/load-state';
+import { PaymentPanel } from '@/components/app/payment-panel';
+import { SlotStep } from '@/components/app/slot-step';
 import { useLoad } from '@/components/app/use-load';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconClock } from '@/components/icons';
 import { useSession } from '@/lib/auth/use-session';
-import { DataError, getData, type Category, type PaymentMethod, type Service, type Slot, type StaffMember } from '@/lib/data';
-import {
-  addDays,
-  formatDateFull,
-  formatDay,
-  formatPrice,
-  formatTime,
-  formatWeekdayShort,
-  todayIso,
-  weekday,
-} from '@/lib/format';
+import { DataError, getData, type BookingResult, type Category, type Service, type Slot, type StaffMember } from '@/lib/data';
+import { formatDateFull, formatPrice, formatTime, instantToWall } from '@/lib/format';
 import { fmt } from '@/lib/i18n';
 import { useI18n } from '@/lib/i18n/use-i18n';
 import { salon } from '@/lib/salon';
 
-const DAYS_SHOWN = 21;
-
 export default function BookPage() {
-  const { t, lang } = useI18n();
-  const session = useSession();
-  const customerId = session.status === 'in' ? session.session.customerId : null;
-  const { state } = useLoad(
+  // useSearchParams braucht eine Suspense-Grenze (die Seite bleibt statisch)
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <Book />
+    </Suspense>
+  );
+}
+
+function Book() {
+  const { t } = useI18n();
+  const params = useSearchParams();
+  const { state, reload } = useLoad(
     async () => {
       const data = getData();
       const [categories, services, staff] = await Promise.all([data.listCategories(), data.listServices(), data.listStaff()]);
@@ -39,18 +40,43 @@ export default function BookPage() {
     'catalog',
   );
 
-  const [step, setStep] = useState(0);
-  const [category, setCategory] = useState<Category | null>(null);
-  const [service, setService] = useState<Service | null>(null);
-  const [staffId, setStaffId] = useState<string | null | undefined>(undefined);
+  if (state.status === 'error') {
+    return (
+      <AppPage title={t.book.title}>
+        <LoadError onRetry={reload} />
+      </AppPage>
+    );
+  }
+  if (state.status !== 'ready') return <PageSkeleton />;
+  return <Flow catalog={state.data} preService={params.get('service')} preStaff={params.get('staff')} />;
+}
+
+interface Catalog {
+  categories: Category[];
+  services: Service[];
+  staff: StaffMember[];
+}
+
+function Flow({ catalog, preService, preStaff }: { catalog: Catalog; preService: string | null; preStaff: string | null }) {
+  const { t, lang } = useI18n();
+  const session = useSession();
+  const signedIn = session.status === 'in';
+  const { categories, services, staff } = catalog;
+  // „Erneut buchen“: Leistung und Mitarbeiterin aus dem Link vorauswählen, direkt zur Terminwahl
+  const pre = services.find((x) => x.id === preService) ?? null;
+  const [step, setStep] = useState(pre ? 3 : 0);
+  const [category, setCategory] = useState<Category | null>(pre ? (categories.find((c) => c.id === pre.categoryId) ?? null) : null);
+  const [service, setService] = useState<Service | null>(pre);
+  const [staffId, setStaffId] = useState<string | null | undefined>(
+    pre ? (preStaff && staff.some((m) => m.id === preStaff) ? preStaff : null) : undefined,
+  );
   const [slot, setSlot] = useState<Slot | null>(null);
-  const [payment, setPayment] = useState<PaymentMethod>('in_salon');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [booked, setBooked] = useState<{ start: string } | null>(null);
+  const [result, setResult] = useState<BookingResult | null>(null);
+  const [paid, setPaid] = useState(false);
+  const quote = useLoad(service ? () => getData().getPaymentQuote(service.id) : null, `quote-${service?.id}`);
 
-  if (state.status !== 'ready') return <PageSkeleton />;
-  const { categories, services, staff } = state.data;
   const total = t.book.steps.length;
 
   const go = (n: number) => {
@@ -60,15 +86,16 @@ export default function BookPage() {
   };
 
   const confirm = async () => {
-    if (!customerId || !service || !slot) return;
+    if (!signedIn || !service || !slot) return;
     setBusy(true);
     setError(null);
     try {
-      const a = await getData().createAppointment({ customerId, serviceId: service.id, staffId: slot.staffId, start: slot.start, payment });
-      setBooked({ start: a.start });
+      setResult(await getData().bookWithPayment({ serviceId: service.id, staffId: slot.staffId, start: slot.start }));
+      window.scrollTo({ top: 0 });
     } catch (e) {
-      setError(t.errors[e instanceof DataError && e.code === 'slot_taken' ? 'slot_taken' : 'unknown']);
-      if (e instanceof DataError && e.code === 'slot_taken') {
+      const code = e instanceof DataError ? e.code : 'unknown';
+      setError(code === 'slot_taken' ? t.errors.slot_taken : code === 'offline' ? t.state.offlineText : t.errors.unknown);
+      if (code === 'slot_taken') {
         setSlot(null);
         setStep(3);
       }
@@ -77,7 +104,33 @@ export default function BookPage() {
     }
   };
 
-  if (booked) {
+  // Zahlung fällig: Termin ist reserviert, bis bezahlt oder die Haltezeit abläuft
+  if (result && result.payment && !paid) {
+    const a = result.appointment;
+    return (
+      <AppPage title={t.pay.title}>
+        <div className={st.stepPane}>
+          <p className="muted">
+            {serviceLabel(a.serviceId, a.serviceName, services, lang)} · {formatDateFull(a.start, lang)}, {formatTime(a.start, lang)}
+          </p>
+          <PaymentPanel payment={result.payment} holdExpiresAt={a.holdExpiresAt ?? null} onPaid={() => setPaid(true)} />
+          <Link href="/app/termine" className="btn btn-ghost btn-block">
+            {t.pay.later}
+          </Link>
+          {a.holdExpiresAt && (
+            <p className="hint" style={{ textAlign: 'center' }}>
+              {fmt(t.pay.laterHint, {
+                time: formatTime(instantToWall(Date.parse(a.holdExpiresAt)), lang),
+              })}
+            </p>
+          )}
+        </div>
+      </AppPage>
+    );
+  }
+
+  if (result) {
+    const booked = result.appointment;
     return (
       <AppPage title={t.book.title}>
         <div className={st.done} role="status">
@@ -85,6 +138,7 @@ export default function BookPage() {
             <IconCheck size={36} />
           </span>
           <h2 className={st.stepTitle}>{t.book.successTitle}</h2>
+          {paid && <p className="alert alert-success">{t.pay.paidTitle}</p>}
           <p className="muted">
             {fmt(t.book.successText, { date: formatDateFull(booked.start, lang), time: formatTime(booked.start, lang) })}
           </p>
@@ -234,24 +288,48 @@ export default function BookPage() {
             </div>
           </dl>
 
-          <fieldset className="group" style={{ margin: 0, padding: 0 }}>
-            <legend className="section-title" style={{ padding: '0 0 8px', float: 'left', width: '100%' }}>
+          <section aria-labelledby="pay-title" className={st.section}>
+            <h3 id="pay-title" className="section-title">
               {t.book.payment}
-            </legend>
-            {(['in_salon', 'online_demo'] as const).map((m) => (
-              <label key={m} className={st.payOption} style={{ clear: 'both' }}>
-                <input type="radio" name="payment" value={m} checked={payment === m} onChange={() => setPayment(m)} />
-                <span>
-                  <strong>{m === 'in_salon' ? t.book.payInSalon : t.book.payOnline}</strong>
-                  <span className="row-sub" style={{ display: 'block' }}>
-                    {m === 'in_salon' ? t.book.payInSalonHint : t.book.payOnlineHint}
-                  </span>
-                </span>
-              </label>
-            ))}
-          </fieldset>
+            </h3>
+            {quote.state.status === 'ready' ? (
+              <div className={`card ${st.payInfo}`} data-testid="payment-rule">
+                {quote.state.data.dueOnlineCents > 0 ? (
+                  <>
+                    <strong>
+                      {fmt(quote.state.data.mode === 'full' ? t.pay.full : t.pay.deposit, {
+                        amount: formatPrice(quote.state.data.dueOnlineCents / 100, lang),
+                      })}
+                    </strong>
+                    {quote.state.data.mode !== 'full' && (
+                      <span className="hint">
+                        {fmt(t.pay.depositHint, {
+                          rest: formatPrice((quote.state.data.totalCents - quote.state.data.dueOnlineCents) / 100, lang),
+                        })}
+                      </span>
+                    )}
+                    <span className="hint">{fmt(t.pay.holdHint, { min: quote.state.data.holdMinutes })}</span>
+                  </>
+                ) : (
+                  <>
+                    <strong>{t.pay.onSite}</strong>
+                    <span className="hint">{t.pay.onSiteHint}</span>
+                  </>
+                )}
+              </div>
+            ) : quote.state.status === 'error' ? (
+              <LoadError onRetry={quote.reload} />
+            ) : (
+              <div className="skeleton" style={{ height: 72 }} />
+            )}
+          </section>
 
-          <button type="button" className={`btn btn-primary btn-lg btn-block ${st.stickyCta}`} onClick={confirm} disabled={busy}>
+          <button
+            type="button"
+            className={`btn btn-primary btn-lg btn-block ${st.stickyCta}`}
+            onClick={confirm}
+            disabled={busy || quote.state.status !== 'ready'}
+          >
             {busy && <span className="spinner" aria-hidden="true" />}
             {busy ? t.book.booking : t.book.confirm}
           </button>
@@ -292,85 +370,6 @@ function StaffStep({ staff, onPick }: { staff: StaffMember[]; onPick: (id: strin
           </button>
         ))}
       </div>
-    </div>
-  );
-}
-
-function SlotStep({
-  service,
-  staffId,
-  selected,
-  onPick,
-}: {
-  service: Service;
-  staffId: string | null;
-  selected: Slot | null;
-  onPick: (s: Slot) => void;
-}) {
-  const { t, lang } = useI18n();
-  const days = useMemo(() => Array.from({ length: DAYS_SHOWN }, (_, i) => addDays(todayIso(), i)), []);
-  const firstOpen = days.find((d) => salon.openDays.includes(weekday(d))) ?? days[0]!;
-  const [day, setDay] = useState(selected?.start.slice(0, 10) ?? firstOpen);
-  const { state } = useLoad(() => getData().listAvailableSlots({ serviceId: service.id, staffId, date: day }), `${service.id}|${staffId}|${day}`);
-  const open = salon.openDays.includes(weekday(day));
-
-  const groups =
-    state.status === 'ready'
-      ? [
-          { title: t.book.morning, items: state.data.filter((s) => s.start.slice(11, 13) < '12') },
-          { title: t.book.afternoon, items: state.data.filter((s) => s.start.slice(11, 13) >= '12') },
-        ].filter((g) => g.items.length)
-      : [];
-
-  return (
-    <div className={st.stepPane} key="slot">
-      <h2 className={st.stepTitle}>{t.book.chooseSlot}</h2>
-      <div className={st.days} role="group" aria-label={t.book.date}>
-        {days.map((d) => {
-          const isOpen = salon.openDays.includes(weekday(d));
-          return (
-            <button
-              key={d}
-              type="button"
-              className={st.day}
-              aria-pressed={d === day}
-              disabled={!isOpen}
-              aria-label={formatDateFull(`${d}T12:00`, lang)}
-              onClick={() => setDay(d)}
-            >
-              <span className={st.dayName}>{formatWeekdayShort(d, lang).replace('.', '')}</span>
-              <span className={st.dayNum}>{formatDay(d, lang).replace('.', '')}</span>
-            </button>
-          );
-        })}
-      </div>
-      <p className="muted">{formatDateFull(`${day}T12:00`, lang)}</p>
-      {!open ? (
-        <p className="muted">{t.book.closed}</p>
-      ) : state.status !== 'ready' ? (
-        <div className="skeleton" style={{ height: 150 }} />
-      ) : groups.length === 0 ? (
-        <p className="muted">{t.book.noSlots}</p>
-      ) : (
-        groups.map((g) => (
-          <div key={g.title} className={st.slotGroup}>
-            <h3 className={st.slotGroupTitle}>{g.title}</h3>
-            <div className={st.slots}>
-              {g.items.map((s) => (
-                <button
-                  key={s.start}
-                  type="button"
-                  className={st.slot}
-                  aria-pressed={selected?.start === s.start}
-                  onClick={() => onPick(s)}
-                >
-                  {formatTime(s.start, lang)}
-                </button>
-              ))}
-            </div>
-          </div>
-        ))
-      )}
     </div>
   );
 }

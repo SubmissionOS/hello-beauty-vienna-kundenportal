@@ -1,39 +1,115 @@
 'use client';
 
-import { useRef, useState } from 'react';
+/* eslint-disable @next/next/no-img-element -- Profilbild als signierte URL bzw. data:-URL */
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AppPage, PageSkeleton } from '@/components/app/app-page';
 import st from '@/components/app/app.module.css';
+import { prepareAvatar } from '@/components/app/avatar';
+import { LoadError } from '@/components/app/load-state';
 import { phoneOk } from '@/components/app/validate';
 import { useLoad } from '@/components/app/use-load';
-import { IconDownload, IconExternal, IconLogout, IconTrash } from '@/components/icons';
+import {
+  IconBell,
+  IconCamera,
+  IconChat,
+  IconChevronRight,
+  IconDownload,
+  IconExternal,
+  IconHourglass,
+  IconLogout,
+  IconQr,
+  IconTrash,
+} from '@/components/icons';
 import { LangSwitch } from '@/components/lang-switch';
+import { QrCode } from '@/components/qr-code';
 import { getAuth } from '@/lib/auth';
 import { useSession } from '@/lib/auth/use-session';
-import { getData, type CustomerProfile, type ProfilePatch } from '@/lib/data';
+import {
+  getData,
+  type Account,
+  type Channel,
+  type Consents,
+  type CustomerProfile,
+  type MarketingChannel,
+  type NotificationPrefs,
+  type NotifyKind,
+  type ProfilePatch,
+} from '@/lib/data';
+import { formatDateShort, formatTime, instantToWall } from '@/lib/format';
+import { fmt } from '@/lib/i18n';
 import { useI18n } from '@/lib/i18n/use-i18n';
+import { pushState, type PushState } from '@/lib/push';
 import { legalUrl } from '@/lib/salon';
 import { setTheme, useThemePref, type ThemePref } from '@/lib/theme';
 
+interface ProfileData {
+  profile: CustomerProfile;
+  account: Account;
+  consents: Consents;
+  prefs: NotificationPrefs;
+}
+
 export default function ProfilePage() {
+  const { t } = useI18n();
   const session = useSession();
   const id = session.status === 'in' ? session.session.customerId : null;
-  const { state } = useLoad(id ? () => getData().getProfile(id) : null, `profile-${id}`);
+  const { state, reload } = useLoad(
+    id
+      ? async (): Promise<ProfileData | null> => {
+          const data = getData();
+          const [profile, account, consents, prefs] = await Promise.all([
+            data.getProfile(id),
+            data.getAccount(),
+            data.getConsents(),
+            data.getNotificationPrefs(),
+          ]);
+          return profile ? { profile, account, consents, prefs } : null;
+        }
+      : null,
+    `profile-${id}`,
+  );
+  if (state.status === 'error') {
+    return (
+      <AppPage title={t.profile.title}>
+        <LoadError onRetry={reload} />
+      </AppPage>
+    );
+  }
   if (state.status !== 'ready' || !state.data || session.status !== 'in') return <PageSkeleton />;
   return <Profile initial={state.data} isDemo={session.session.isDemo} />;
 }
 
-function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolean }) {
+const KINDS: NotifyKind[] = ['reminder', 'chat', 'waitlist', 'payment', 'news', 'offer'];
+const CHANNELS: Channel[] = ['inapp', 'email', 'sms', 'push'];
+const MARKETING: MarketingChannel[] = ['email', 'sms', 'push'];
+
+function Profile({ initial, isDemo }: { initial: ProfileData; isDemo: boolean }) {
   const { t, lang } = useI18n();
   const router = useRouter();
   const theme = useThemePref();
-  const [profile, setProfile] = useState(initial);
+  const [profile, setProfile] = useState(initial.profile);
+  const [account, setAccount] = useState(initial.account);
+  const [consents, setConsents] = useState(initial.consents);
+  const [prefs, setPrefs] = useState(initial.prefs);
+  const [push, setPush] = useState<PushState | null>(null);
   const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState({ firstName: initial.firstName, lastName: initial.lastName, phone: initial.phone ?? '' });
+  const [draft, setDraft] = useState({ firstName: profile.firstName, lastName: profile.lastName, phone: profile.phone ?? '' });
   const [formError, setFormError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
+  const [photoBusy, setPhotoBusy] = useState(false);
   const [busy, setBusy] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
+  const qrDialog = useRef<HTMLDialogElement>(null);
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    pushState()
+      .then(setPush)
+      .catch(() => setPush('unsupported'));
+  }, []);
 
   const patch = async (p: ProfilePatch) => {
     setProfile((cur) => ({ ...cur, ...p }));
@@ -48,6 +124,42 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
     await patch({ firstName: draft.firstName.trim(), lastName: draft.lastName.trim(), phone: draft.phone.trim() || null });
     setEditing(false);
     setNotice(t.common.saved);
+  };
+
+  const pickPhoto = async (file: File | undefined) => {
+    if (!file) return;
+    setPhotoBusy(true);
+    setPhotoError(null);
+    try {
+      setAccount(await getData().uploadAvatar(await prepareAvatar(file)));
+    } catch {
+      setPhotoError(t.account.photoError);
+    } finally {
+      setPhotoBusy(false);
+      if (fileInput.current) fileInput.current.value = '';
+    }
+  };
+
+  const removePhoto = async () => {
+    setPhotoBusy(true);
+    try {
+      setAccount(await getData().removeAvatar());
+    } finally {
+      setPhotoBusy(false);
+    }
+  };
+
+  const setPref = async (kind: NotifyKind, channel: Channel, enabled: boolean) => {
+    setPrefs((cur) => ({ ...cur, [kind]: { ...cur[kind], [channel]: enabled } }));
+    setPrefs(await getData().setNotificationPref(kind, channel, enabled));
+    // Erinnerungen per E-Mail/SMS: Spalten aus Teil 2 synchron halten
+    if (kind === 'reminder' && channel === 'email') await patch({ notifyEmail: enabled });
+    if (kind === 'reminder' && channel === 'sms') await patch({ notifySms: enabled });
+  };
+
+  const setConsent = async (channel: MarketingChannel, granted: boolean) => {
+    setConsents((cur) => ({ ...cur, [channel]: { granted, changedAt: new Date().toISOString() } }));
+    setConsents(await getData().setConsent(channel, granted));
   };
 
   const exportData = async () => {
@@ -80,13 +192,23 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
     ['light', t.profile.themeLight],
     ['dark', t.profile.themeDark],
   ];
+  const when = (iso: string) => {
+    const w = instantToWall(Date.parse(iso));
+    return `${formatDateShort(w, lang)}, ${formatTime(w, lang)}`;
+  };
 
   return (
     <AppPage title={t.profile.title}>
       <div className={st.profileHead}>
-        <span className={st.profileAvatar} aria-hidden="true">
-          {profile.firstName.charAt(0)}
-          {profile.lastName.charAt(0)}
+        <span className={st.profileAvatar} aria-hidden={!account.avatarUrl}>
+          {account.avatarUrl ? (
+            <img src={account.avatarUrl} alt={t.account.photo} width={64} height={64} data-testid="avatar-img" />
+          ) : (
+            <>
+              {profile.firstName.charAt(0)}
+              {profile.lastName.charAt(0)}
+            </>
+          )}
         </span>
         <div>
           <p className={st.profileName}>
@@ -95,12 +217,59 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
           <p className="muted">{profile.email}</p>
         </div>
       </div>
+      <div className={st.actionsRow}>
+        <label className={`btn btn-secondary ${st.fileBtn}`} aria-disabled={photoBusy}>
+          {photoBusy ? <span className="spinner" aria-hidden="true" /> : <IconCamera size={20} />}
+          {account.avatarUrl ? t.account.photoChange : t.account.photoAdd}
+          <input
+            ref={fileInput}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/heic"
+            className="visually-hidden"
+            onChange={(e) => pickPhoto(e.target.files?.[0])}
+            disabled={photoBusy}
+          />
+        </label>
+        {account.avatarUrl && (
+          <button type="button" className="btn btn-ghost" onClick={removePhoto} disabled={photoBusy}>
+            {t.account.photoRemove}
+          </button>
+        )}
+      </div>
+      <p className="hint">{t.account.photoHint}</p>
+      {photoError && (
+        <p className="alert alert-error" role="alert">
+          {photoError}
+        </p>
+      )}
       {isDemo && <p className="alert alert-info">{t.profile.demoAccount}</p>}
       {notice && (
         <p className="alert alert-success" role="status">
           {notice}
         </p>
       )}
+
+      <section className={st.section} aria-labelledby="p-number">
+        <h2 id="p-number" className="section-title">
+          {t.account.number}
+        </h2>
+        <div className="group">
+          <div className="row">
+            <span className="row-main">
+              <span className={st.customerNumber} data-testid="customer-number">
+                {account.customerNumber}
+              </span>
+              <span className="row-sub" style={{ display: 'block' }}>
+                {account.crmLinked ? t.account.crmLinked : t.account.numberHint}
+              </span>
+            </span>
+            <button type="button" className="btn btn-secondary" onClick={() => qrDialog.current?.showModal()}>
+              <IconQr size={20} />
+              {t.account.showQr}
+            </button>
+          </div>
+        </div>
+      </section>
 
       <section className={st.section} aria-labelledby="p-personal">
         <h2 id="p-personal" className="section-title">
@@ -174,6 +343,31 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
         )}
       </section>
 
+      <div className="group">
+        <Link className="row" href="/app/nachrichten">
+          <span className="row-icon">
+            <IconChat />
+          </span>
+          <span className="row-main">{t.account.messages}</span>
+          <IconChevronRight className="row-chevron" />
+        </Link>
+        <Link className="row" href="/app/warteliste">
+          <span className="row-icon">
+            <IconHourglass />
+          </span>
+          <span className="row-main">{t.account.waitlist}</span>
+          <IconChevronRight className="row-chevron" />
+        </Link>
+        <Link className="row" href="/app/push">
+          <span className="row-icon">
+            <IconBell />
+          </span>
+          <span className="row-main">{t.account.push}</span>
+          <span className="row-value">{push === 'on' ? t.account.on : t.account.off}</span>
+          <IconChevronRight className="row-chevron" />
+        </Link>
+      </div>
+
       <section className={st.section} aria-labelledby="p-lang">
         <h2 id="p-lang" className="section-title">
           {t.profile.language}
@@ -196,40 +390,75 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
 
       <section className={st.section} aria-labelledby="p-notify">
         <h2 id="p-notify" className="section-title">
-          {t.profile.notifications}
+          {t.account.notifyTitle}
         </h2>
-        <div className="group">
-          <label className="row">
-            <span className="row-main">{t.profile.notifyEmail}</span>
-            <input type="checkbox" role="switch" className="switch" checked={profile.notifyEmail} onChange={(e) => patch({ notifyEmail: e.target.checked })} />
-          </label>
-          <label className="row">
-            <span className="row-main">
-              {t.profile.notifySms}
-              {!profile.phone && (
-                <span className="row-sub" style={{ display: 'block' }}>
-                  {t.profile.smsNeedsPhone}
-                </span>
-              )}
-            </span>
-            <input
-              type="checkbox"
-              role="switch"
-              className="switch"
-              checked={profile.notifySms}
-              disabled={!profile.phone}
-              onChange={(e) => patch({ notifySms: e.target.checked })}
-            />
-          </label>
-          <label className="row">
-            <span className="row-main">
-              {t.profile.marketing}
-              <span className="row-sub" style={{ display: 'block' }}>
-                {t.profile.marketingHint}
+        <p className="hint">{t.account.notifyHint}</p>
+        <div className="group" data-testid="notify-grid">
+          {KINDS.map((kind) => (
+            <div key={kind} className={`row ${st.prefRow}`}>
+              <span className="row-main">
+                {t.account.kinds[kind]}
+                {(kind === 'offer' || kind === 'news') && (
+                  <span className="row-sub" style={{ display: 'block' }}>
+                    {t.account.needsConsent}
+                  </span>
+                )}
               </span>
-            </span>
-            <input type="checkbox" role="switch" className="switch" checked={profile.marketingConsent} onChange={(e) => patch({ marketingConsent: e.target.checked })} />
-          </label>
+              <div className={st.prefChannels}>
+                {CHANNELS.map((ch) => {
+                  const noPhone = ch === 'sms' && !profile.phone;
+                  return (
+                    <label key={ch} className={st.prefChannel}>
+                      <input
+                        type="checkbox"
+                        role="switch"
+                        className="switch"
+                        aria-label={fmt(t.account.switchLabel, { kind: t.account.kinds[kind], channel: t.account.channels[ch] })}
+                        checked={prefs[kind][ch] && !noPhone}
+                        disabled={noPhone}
+                        onChange={(e) => setPref(kind, ch, e.target.checked)}
+                      />
+                      <span aria-hidden="true">{t.account.channels[ch]}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+        {!profile.phone && <p className="hint">{t.account.smsNeedsPhone}</p>}
+      </section>
+
+      <section className={st.section} aria-labelledby="p-consent">
+        <h2 id="p-consent" className="section-title">
+          {t.account.consentTitle}
+        </h2>
+        <p className="hint">{t.account.consentHint}</p>
+        <div className="group">
+          {MARKETING.map((ch) => {
+            const c = consents[ch];
+            const noPhone = ch === 'sms' && !profile.phone;
+            return (
+              <label key={ch} className="row">
+                <span className="row-main">
+                  {t.account.consentChannels[ch]}
+                  <span className="row-sub" style={{ display: 'block' }} data-testid={`consent-${ch}-at`}>
+                    {c.changedAt
+                      ? fmt(c.granted ? t.account.consentSince : t.account.consentRevoked, { date: when(c.changedAt) })
+                      : t.account.consentNever}
+                  </span>
+                </span>
+                <input
+                  type="checkbox"
+                  role="switch"
+                  className="switch"
+                  checked={c.granted}
+                  disabled={noPhone && !c.granted}
+                  onChange={(e) => setConsent(ch, e.target.checked)}
+                />
+              </label>
+            );
+          })}
         </div>
       </section>
 
@@ -281,7 +510,22 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
           </a>
         </div>
       </section>
-      <p className={st.version}>Hello Beauty · 0.1.0</p>
+      <p className={st.version}>Hello Beauty · 0.2.0</p>
+
+      <dialog ref={qrDialog} className="sheet" aria-labelledby="qr-title" onClick={(e) => e.target === qrDialog.current && qrDialog.current?.close()}>
+        <div className="sheet-grip" />
+        <div className={st.qrSheet}>
+          <h2 id="qr-title" className={st.stepTitle}>
+            {t.account.qrTitle}
+          </h2>
+          <QrCode value={account.customerNumber} size={220} label={`${t.account.number} ${account.customerNumber}`} />
+          <p className={st.customerNumber}>{account.customerNumber}</p>
+          <p className="muted">{t.account.qrText}</p>
+          <button type="button" className="btn btn-secondary btn-lg btn-block" onClick={() => qrDialog.current?.close()}>
+            {t.common.close}
+          </button>
+        </div>
+      </dialog>
 
       <dialog ref={dialog} className="sheet" aria-labelledby="del-title" onClick={(e) => e.target === dialog.current && dialog.current?.close()}>
         <div className="sheet-grip" />
@@ -289,7 +533,7 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
           <h2 id="del-title" className={st.stepTitle}>
             {t.profile.deleteTitle}
           </h2>
-          <p className="muted">{t.profile.deleteText}</p>
+          <p className="muted">{t.account.deleteText}</p>
           <button type="button" className="btn btn-danger btn-lg btn-block" onClick={deleteAccount} disabled={busy}>
             {busy && <span className="spinner" aria-hidden="true" />}
             {t.profile.deleteConfirm}

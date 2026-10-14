@@ -1,0 +1,22 @@
+-- Rückrollung von 20261014210100_teil4_neuigkeiten_push.sql (Bucket „news-images“: .down.mjs)
+drop policy if exists news_images_salon_insert on storage.objects;
+drop policy if exists news_images_salon_update on storage.objects;
+drop policy if exists news_images_salon_delete on storage.objects;
+drop function if exists public.svc_push_result(text, boolean, boolean);
+drop function if exists public.svc_queue_done(bigint, text, text);
+drop function if exists public.svc_queue_claim(int);
+drop function if exists public.delete_push_subscription(text);
+drop function if exists public.save_push_subscription(text, text, text, text);
+drop function if exists public.svc_crm_news_create(uuid, text, text, text, timestamptz, boolean, text);
+drop function if exists public.salon_news_publish(uuid);
+drop function if exists public.salon_news_save(uuid, text, text, text, text, timestamptz);
+drop function if exists public.salon_news_list();
+drop function if exists public.mark_news_read(uuid);
+drop function if exists public.news_unread_count();
+drop function if exists public.news_feed();
+drop function if exists app.news_save(uuid, uuid, text, text, text, text, timestamptz, text);
+drop function if exists app.news_publish(uuid, uuid);
+drop function if exists app.news_json(public.news_posts, boolean);
+drop table if exists public.push_subscriptions;
+drop table if exists public.news_reads;
+drop table if exists public.news_posts;

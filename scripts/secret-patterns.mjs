@@ -9,6 +9,8 @@
  *   https://supabase.com/docs/guides/platform/personal-access-tokens
  * - Resend API Key: re_<id>_<secret>
  *   https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/resend_apikey
+ * - Stripe: Secret/Restricted Keys sk_live_/sk_test_/rk_live_/rk_test_, Webhook-Secret whsec_
+ *   https://docs.stripe.com/keys
  * - Legacy service_role-Key: JWT, dessen Payload "role":"service_role" enthält (wird dekodiert geprüft)
  */
 
@@ -16,6 +18,8 @@ export const patterns = [
   { name: 'Supabase Secret Key (sb_secret_)', re: /sb_secret_[A-Za-z0-9_-]{8,}/g },
   { name: 'Supabase Access Token (sbp_)', re: /\bsbp_[A-Za-z0-9_]{20,}/g },
   { name: 'Resend API Key (re_)', re: /\bre_[A-Za-z0-9]{6,}_[A-Za-z0-9]{12,}/g },
+  { name: 'Stripe Secret Key (sk_/rk_)', re: /[sr]k_(?:live|test)_[A-Za-z0-9]{16,}/g },
+  { name: 'Stripe Webhook Secret (whsec_)', re: /whsec_[A-Za-z0-9]{16,}/g },
   { name: 'Postgres-URL mit Passwort', re: /postgres(?:ql)?:\/\/[^:\s/'"]+:[^@\s'"]{6,}@/g },
 ];
 
@@ -62,6 +66,13 @@ export const privateVars = [
   'SUPABASE_DB_PASSWORD',
   'DEMO_CUSTOMER_PASSWORD',
   'RESEND_API_KEY',
+  // Teil 4
+  'CRM_BRIDGE_SECRET',
+  'VAPID_PRIVATE_KEY',
+  'NOTIFY_WORKER_SECRET',
+  'STRIPE_SECRET_KEY',
+  'STRIPE_WEBHOOK_SECRET',
+  'SMS_API_KEY',
 ];
 
 /** Erlaubt sind nur .env.example (Vorlage ohne Werte). */

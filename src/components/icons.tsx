@@ -179,3 +179,47 @@ export const IconEyeOff = (p: P) => (
     <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3.5 3.5l17 17" />
   </Svg>
 );
+
+// ---- Teil 3/4 (gleicher Stil)
+export const IconBell = (p: P) => (
+  <Svg {...p}>
+    <path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15Z" />
+    <path d="M10 20.5a2 2 0 0 0 4 0" />
+  </Svg>
+);
+export const IconChat = (p: P) => (
+  <Svg {...p}>
+    <path d="M4.5 6.5A2.5 2.5 0 0 1 7 4h10a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 17 16h-6.5l-4.5 4v-4H7a2.5 2.5 0 0 1-2.5-2.5Z" />
+  </Svg>
+);
+export const IconSend = (p: P) => (
+  <Svg {...p}>
+    <path d="M4.5 12 20 4.5 15.5 20l-3.5-6.5Z" />
+    <path d="m12 13.5 8-9" />
+  </Svg>
+);
+export const IconQr = (p: P) => (
+  <Svg {...p}>
+    <rect x="4" y="4" width="6" height="6" rx="1" />
+    <rect x="14" y="4" width="6" height="6" rx="1" />
+    <rect x="4" y="14" width="6" height="6" rx="1" />
+    <path d="M14 14h2.5v2.5H14zM17.5 17.5H20V20h-2.5zM14 19.5h1.5M19.5 14v1.5" />
+  </Svg>
+);
+export const IconHourglass = (p: P) => (
+  <Svg {...p}>
+    <path d="M7 3.5h10M7 20.5h10M8 3.5c0 4 4 5.5 4 8.5s-4 4.5-4 8.5M16 3.5c0 4-4 5.5-4 8.5s4 4.5 4 8.5" />
+  </Svg>
+);
+export const IconCard = (p: P) => (
+  <Svg {...p}>
+    <rect x="3.5" y="6" width="17" height="12" rx="2" />
+    <path d="M3.5 10h17M7 14.5h3" />
+  </Svg>
+);
+export const IconCamera = (p: P) => (
+  <Svg {...p}>
+    <path d="M4 8.5A2 2 0 0 1 6 6.5h2l1.5-2h5l1.5 2h2a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z" />
+    <circle cx="12" cy="13" r="3.5" />
+  </Svg>
+);

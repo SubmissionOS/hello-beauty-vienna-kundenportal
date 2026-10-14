@@ -21,6 +21,8 @@ html {
   -webkit-tap-highlight-color: transparent;
   background: var(--bg);
   overscroll-behavior: none;
+  /* Fokus/Scroll-Ziele nie hinter der festen Tab-Leiste verstecken */
+  scroll-padding-bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--s-4));
 }
 
 body {

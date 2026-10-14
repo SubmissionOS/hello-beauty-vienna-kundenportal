@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto';
 import { defineConfig } from '@playwright/test';
 
 /**
@@ -8,6 +9,8 @@ import { defineConfig } from '@playwright/test';
  */
 const PORT = 3200;
 const backend = process.env.E2E_BACKEND === 'supabase' ? 'supabase' : 'mock';
+// Webhook-Geheimnis nur für diesen Testlauf (zufällig, nie gespeichert) – Tests signieren simulierte Stripe-Ereignisse damit
+process.env.E2E_WEBHOOK_SECRET ??= `whsec_${randomBytes(24).toString('hex')}`;
 
 export default defineConfig({
   testDir: 'tests',
@@ -29,6 +32,7 @@ export default defineConfig({
       NEXT_PUBLIC_DEMO_MODE: 'true',
       NEXT_PUBLIC_DATA_ADAPTER: backend,
       NEXT_PUBLIC_AUTH_ADAPTER: backend,
+      STRIPE_WEBHOOK_SECRET: process.env.E2E_WEBHOOK_SECRET,
     },
   },
 });

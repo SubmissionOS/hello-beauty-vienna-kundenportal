@@ -72,7 +72,8 @@ test('Registrierung mit Passwort → Buchung → Termine → Profil → Löschen
   await shot(page, 'app-08-buchen-termin');
   await slot.click();
   await expect(page.getByText('Schritt 5 von 5')).toBeVisible();
-  await page.getByLabel(/Jetzt online bezahlen/).check();
+  // Teil 4: Zahlungsregel statt Auswahl – Maniküre wird im Salon bezahlt
+  await expect(page.getByTestId('payment-rule')).toContainText('Bezahlung im Salon');
   await shot(page, 'app-09-buchen-bestaetigen');
   await page.getByRole('button', { name: 'Jetzt verbindlich buchen' }).click();
   await expect(page.getByRole('heading', { name: 'Termin gebucht' })).toBeVisible();
@@ -90,7 +91,7 @@ test('Registrierung mit Passwort → Buchung → Termine → Profil → Löschen
   // Profil
   await page.getByRole('link', { name: 'Profil', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Profil' })).toBeVisible();
-  await expect(page.getByRole('switch', { name: /Per SMS/ })).toBeDisabled();
+  await expect(page.getByRole('switch', { name: 'Terminerinnerungen: SMS' })).toBeDisabled();
   await expect(page.getByRole('link', { name: /Impressum/ })).toHaveAttribute('href', /impressum/);
   await shot(page, 'app-13-profil');
 
@@ -184,7 +185,7 @@ test('Demo-Kundin, Sprachen und Dunkelmodus', async ({ page }) => {
   await page.waitForURL(/\/app$/);
   await expect(page.getByRole('heading', { name: /Lena/ })).toBeVisible();
   await page.getByRole('link', { name: 'Termine', exact: true }).click();
-  await expect(page.getByRole('tab', { name: /Kommend \(2\)/ })).toBeVisible();
+  await expect(page.getByRole('tab', { name: /Kommend \(4\)/ })).toBeVisible();
   await page.getByRole('tab', { name: /Vergangen/ }).click();
   await expect(page.locator('article')).toHaveCount(3);
   await shot(page, 'app-17-demo-vergangen');
