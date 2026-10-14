@@ -52,6 +52,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // keine automatisch erzeugten AGENTS.md/CLAUDE.md im Projekt
   agentRules: false,
+  devIndicators: false,
   // Kein Bild-Optimierer: alle Bilder sind vorab skaliert (scripts/gen-assets.mjs).
   images: { unoptimized: true },
   async headers() {
