@@ -1,0 +1,114 @@
+.guide {
+  display: grid;
+  gap: 16px;
+}
+.head {
+  display: grid;
+  gap: 12px;
+}
+.title {
+  font-family: var(--font-serif);
+  font-size: 1.625rem;
+}
+.toggle {
+  max-width: 320px;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.figure {
+  margin: 0;
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.stepBtn {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: start;
+  width: 100%;
+  padding: 8px 8px 8px 6px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: transparent;
+  text-align: left;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  transition: background-color 250ms ease, color 250ms ease;
+}
+.stepNum {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: 1.5px solid var(--line-strong);
+  color: var(--muted);
+  background: var(--bg-elev);
+  transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease;
+}
+.stepText {
+  padding-top: 3px;
+}
+.step[data-state='current'] .stepBtn {
+  background: var(--gold-tint);
+  color: var(--ink);
+  font-weight: 600;
+}
+.step[data-state='current'] .stepNum {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+.step[data-state='done'] .stepNum {
+  border-color: var(--gold);
+  color: var(--gold-text);
+}
+.step[data-final='true'] .stepNum {
+  border-style: dashed;
+}
+.step[data-final='true'][data-state='current'] .stepNum {
+  border-style: solid;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.controls :global(.btn) {
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 0.9375rem;
+}
+
+/* Vorführmodus (Desktop): Handy oben, Schritte darunter */
+.show .stage {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+.show .steps {
+  width: 100%;
+  max-width: 340px;
+}
+.show .stepBtn {
+  cursor: default;
+}
+.show .title {
+  font-size: 1.375rem;
+  text-align: center;
+}
+

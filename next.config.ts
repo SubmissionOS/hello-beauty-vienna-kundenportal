@@ -50,6 +50,8 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // keine automatisch erzeugten AGENTS.md/CLAUDE.md im Projekt
+  agentRules: false,
   // Kein Bild-Optimierer: alle Bilder sind vorab skaliert (scripts/gen-assets.mjs).
   images: { unoptimized: true },
   async headers() {
