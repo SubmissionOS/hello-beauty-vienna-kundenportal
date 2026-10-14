@@ -190,6 +190,31 @@ try {
   const exp = (await a1.client.rpc('export_my_data_v2')).data;
   check('Export', 'enthält Chat, Warteliste, Zahlungen, Einwilligungen, Push-Geräte',
     !!exp && Array.isArray(exp.chat) && 'waitlist' in exp && 'payments' in exp && 'marketingConsents' in exp && Array.isArray(exp.pushDevices) && exp.pushDevices.length === 1);
+
+  // ------------------------------------------------------------ Korrekturen (Migration 20261014220000)
+  const demoArgs = { p_tenant: tenantA.id, p_customer: a1.customerId };
+  check('Demo', 'svc_demo_refresh für Kundinnen gesperrt', denied(await a1.client.rpc('svc_demo_refresh', demoArgs)));
+  check('Demo', 'svc_demo_refresh für anon gesperrt', denied(await pub(ORIGIN_A).rpc('svc_demo_refresh', demoArgs)));
+  check('CRM', 'svc_crm_search für Kundinnen gesperrt', denied(await a1.client.rpc('svc_crm_search', { p_tenant: tB.id, p_query: 'Test' })));
+  const textOnly = (await admin.rpc('svc_crm_search', { p_tenant: tB.id, p_query: 'zzqx' })).data;
+  check('CRM', 'Textsuche liefert keine Telefon-Fehltreffer', Array.isArray(textOnly) && textOnly.length === 0, `${textOnly?.length} Treffer`);
+  const byPhone = (await admin.rpc('svc_crm_search', { p_tenant: tB.id, p_query: '1111111' })).data;
+  check('CRM', 'Suche nach Telefonnummer findet nur Tenant B', Array.isArray(byPhone) && byPhone.length >= 1 && byPhone.every((c) => c.email.startsWith('sicherheitstest4-b')));
+  const sugg = (await admin.rpc('svc_crm_link_suggestions', { p_tenant: tB.id, p_email: null, p_phone: '12' })).data;
+  check('CRM', 'Vorschlag per Telefon erst ab 6 Ziffern', Array.isArray(sugg) && sugg.length === 0);
+
+  const salonB = await user('salonB', ORIGIN_B, { register: false });
+  must(await admin.from('salon_members').insert({ tenant_id: tB.id, user_id: salonB.userId, display_name: 'Test-Salon B' }), 'member B');
+  const late = must(await b2.client.rpc('book_with_payment', { p_service_id: svcB.id, p_staff_id: stfB.id, p_start: `${day}T18:00` }), 'book late');
+  await admin.rpc('svc_payment_succeeded', { p_provider: 'mock', p_event_id: `sec:${late.payment.id}`, p_payment_id: late.payment.id, p_ref: null, p_amount_cents: late.payment.amountCents });
+  // Termin kurzfristig machen (in 2 Stunden): eine Absage der KUNDIN würde jetzt nichts erstatten
+  await sql(`update public.appointments set starts_at = now() + interval '2 hours', ends_at = now() + interval '150 minutes' where id = '${late.appointment.id}'`);
+  check('Zahlung', 'Kundin kann kurzfristig nicht selbst absagen', errIs(await b2.client.rpc('cancel_with_refund', { p_appointment_id: late.appointment.id }), 'too_late'));
+  check('Zahlung', 'Kundin kann nicht als Salon absagen', errIs(await b2.client.rpc('salon_cancel_appointment', { p_appointment_id: late.appointment.id }), 'forbidden'));
+  check('Zahlung', 'Salon aus Tenant A kann Termin in B nicht absagen', denied(await salonA.client.rpc('salon_cancel_appointment', { p_appointment_id: late.appointment.id })));
+  check('Zahlung', 'Salon B sagt kurzfristig ab', !(await salonB.client.rpc('salon_cancel_appointment', { p_appointment_id: late.appointment.id })).error);
+  const lateP = (await admin.from('payments').select('status, refund_cents, amount_cents').eq('id', late.payment.id).single()).data;
+  check('Zahlung', 'Absage durch den Salon → immer volle Erstattung', lateP.status === 'refund_pending' && lateP.refund_cents === lateP.amount_cents, JSON.stringify(lateP));
 } catch (e) {
   check('Ablauf', 'Test ohne Abbruch durchgelaufen', false, e.message);
 } finally {

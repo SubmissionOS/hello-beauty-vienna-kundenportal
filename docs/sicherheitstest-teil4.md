@@ -1,12 +1,12 @@
 # Sicherheits- und Funktionstest Teil 3/4 (Chat, Neuigkeiten, Push, Warteliste, Zahlungen)
 
-Lauf: 2026-10-14 18:02 UTC gegen das echte Projekt. Angriffe mit dem **Publishable Key**; Secret Key/Management-API nur für Auf-/Abbau und um Zeitablauf zu simulieren. Skript: `scripts/security-test-teil4.mjs`.
+Lauf: 2026-10-14 19:43 UTC gegen das echte Projekt. Angriffe mit dem **Publishable Key**; Secret Key/Management-API nur für Auf-/Abbau und um Zeitablauf zu simulieren. Skript: `scripts/security-test-teil4.mjs`.
 
-**Ergebnis: 51 von 51 Prüfungen bestanden.** Die CRM-Schnittstelle (Signatur, Wiederholung, fremder Tenant) wird über HTTP in `tests/crm-api.spec.ts` geprüft.
+**Ergebnis: 62 von 62 Prüfungen bestanden.** Die CRM-Schnittstelle (Signatur, Wiederholung, fremder Tenant) wird über HTTP in `tests/crm-api.spec.ts` geprüft.
 
 | Bereich | Prüfung | Ergebnis |
 |---|---|---|
-| Kundennummer | Format HB-XXXXXX ohne 0/O/1/I | bestanden (HB-XHBFV4) |
+| Kundennummer | Format HB-XXXXXX ohne 0/O/1/I | bestanden (HB-DVLTDD) |
 | Kundennummer | eindeutig im Tenant | bestanden |
 | Chat | a2 sieht Chat von a1 nicht | bestanden |
 | Chat | Salon-Team A sieht Chat von a1 | bestanden |
@@ -56,4 +56,15 @@ Lauf: 2026-10-14 18:02 UTC gegen das echte Projekt. Angriffe mit dem **Publishab
 | Zahlung | Kundin aus A sieht Zahlungen aus B nicht | bestanden |
 | Zahlung | Cron-Job für Verfall aktiv | bestanden |
 | Export | enthält Chat, Warteliste, Zahlungen, Einwilligungen, Push-Geräte | bestanden |
+| Demo | svc_demo_refresh für Kundinnen gesperrt | bestanden |
+| Demo | svc_demo_refresh für anon gesperrt | bestanden |
+| CRM | svc_crm_search für Kundinnen gesperrt | bestanden |
+| CRM | Textsuche liefert keine Telefon-Fehltreffer | bestanden (0 Treffer) |
+| CRM | Suche nach Telefonnummer findet nur Tenant B | bestanden |
+| CRM | Vorschlag per Telefon erst ab 6 Ziffern | bestanden |
+| Zahlung | Kundin kann kurzfristig nicht selbst absagen | bestanden |
+| Zahlung | Kundin kann nicht als Salon absagen | bestanden |
+| Zahlung | Salon aus Tenant A kann Termin in B nicht absagen | bestanden |
+| Zahlung | Salon B sagt kurzfristig ab | bestanden |
+| Zahlung | Absage durch den Salon → immer volle Erstattung | bestanden ({"status":"refund_pending","refund_cents":800,"amount_cents":800}) |
 | Aufräumen | Test-Tenant, Testkundinnen und Test-Neuigkeit gelöscht | bestanden |
