@@ -23,19 +23,28 @@ export function TabBar() {
       {tabs.map(({ href, label, Icon, badge }) => {
         const active = href === '/app' ? path === '/app' : path.startsWith(href);
         return (
-          <Link key={href} href={href} className={st.tab} aria-current={active ? 'page' : undefined} prefetch>
+          <Link
+            key={href}
+            href={href}
+            className={st.tab}
+            aria-current={active ? 'page' : undefined}
+            aria-describedby={badge > 0 ? `tab-badge-${label}` : undefined}
+            prefetch
+          >
             <span className={st.tabIcon}>
               <Icon size={26} />
               {badge > 0 && (
-                <span className={st.badge} data-testid={`badge-${href.split('/').pop()}`}>
+                <span className={st.badge} aria-hidden="true" data-testid={`badge-${href.split('/').pop()}`}>
                   {badge > 9 ? '9+' : badge}
                 </span>
               )}
             </span>
-            <span>
-              {label}
-              {badge > 0 && <span className="visually-hidden"> ({badge})</span>}
-            </span>
+            <span>{label}</span>
+            {badge > 0 && (
+              <span id={`tab-badge-${label}`} hidden>
+                {badge}
+              </span>
+            )}
           </Link>
         );
       })}

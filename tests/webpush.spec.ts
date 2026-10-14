@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { createDecipheriv, createECDH, createPublicKey, hkdfSync, verify } from 'node:crypto';
-import { encryptPayload, vapidAuthorization } from '../src/lib/server/webpush-crypto';
+import { encryptPayload, vapidAuthorization } from '../src/lib/webpush-crypto';
 
 /**
  * Eigene Web-Push-Implementierung gegen RFC 8291, Anhang A (Testvektor) und RFC 8292 (VAPID-Signatur).

@@ -1,8 +1,8 @@
 import 'server-only';
 
-import { encryptPayload, vapidAuthorization, type PushTarget } from './webpush-crypto';
+import { encryptPayload, vapidAuthorization, type PushTarget } from '../webpush-crypto';
 
-export type { PushTarget } from './webpush-crypto';
+export type { PushTarget } from '../webpush-crypto';
 
 export interface PushMessage {
   title: string;
