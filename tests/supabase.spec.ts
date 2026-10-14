@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import nextEnv from '@next/env';
+import { loadEnvConfig } from '@next/env';
 import { createClient } from '@supabase/supabase-js';
 import { emulateStandalone, phone, UA } from './devices';
 
@@ -11,7 +11,7 @@ import { emulateStandalone, phone, UA } from './devices';
 test.skip(process.env.E2E_BACKEND !== 'supabase', 'nur mit E2E_BACKEND=supabase');
 test.use(phone(UA.iphone));
 
-nextEnv.loadEnvConfig(process.cwd(), false, { info: () => {}, error: console.error });
+loadEnvConfig(process.cwd(), false, { info: () => {}, error: console.error });
 const admin = () =>
   createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!, {
     auth: { persistSession: false, autoRefreshToken: false },
