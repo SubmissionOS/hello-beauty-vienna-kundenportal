@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { emulateStandalone, phone, shotDir, UA } from './devices';
 
-// Mock-spezifisch (Code wird angezeigt); mit Supabase deckt tests/supabase.spec.ts denselben Ablauf ab
+// Mock-spezifisch (Konten im localStorage, Link „Passwort vergessen“ wird angezeigt); mit Supabase deckt tests/supabase.spec.ts denselben Ablauf ab
 test.skip(process.env.E2E_BACKEND === 'supabase', 'nur Mock-Adapter');
 test.use(phone(UA.iphone));
 
@@ -14,7 +14,7 @@ test.beforeEach(async ({ page }) => {
   await emulateStandalone(page);
 });
 
-test('Registrierung → Code → Buchung → Termine → Profil → Löschen', async ({ page }) => {
+test('Registrierung mit Passwort → Buchung → Termine → Profil → Löschen', async ({ page }) => {
   await page.goto('/app?source=pwa');
   await page.waitForURL('**/app/willkommen');
   await shot(page, 'app-01-willkommen');
@@ -23,23 +23,33 @@ test('Registrierung → Code → Buchung → Termine → Profil → Löschen', a
   const marketing = page.getByRole('checkbox');
   await expect(marketing).not.toBeChecked();
   await expect(page.getByRole('link', { name: 'Datenschutzerklärung' })).toHaveAttribute('href', /datenschutz/);
-  await page.getByRole('button', { name: 'Code anfordern' }).click();
+  await page.getByRole('button', { name: 'Konto erstellen' }).click();
   await expect(page.getByText('Bitte ausfüllen.').first()).toBeVisible();
+  await expect(page.getByText('Bitte mindestens 10 Zeichen eingeben.')).toBeVisible();
   await shot(page, 'app-02-registrieren');
 
   await page.getByLabel('Vorname', { exact: true }).fill('Sophie');
   await page.getByLabel('Nachname', { exact: true }).fill('Beispiel');
   await page.getByLabel('E-Mail', { exact: true }).fill('sophie@example.com');
-  await page.getByRole('button', { name: 'Code anfordern' }).click();
-  const notice = page.getByTestId('mock-code');
-  await expect(notice).toBeVisible();
-  await expect(page.locator('#otp')).toHaveAttribute('autocomplete', 'one-time-code');
-  const code = (await notice.innerText()).match(/\d{6}/)![0];
-  await page.locator('#otp').fill(code === '000000' ? '111111' : '000000');
-  await expect(page.locator('#otp-error')).toContainText('Der Code stimmt nicht');
-  await shot(page, 'app-03-code');
-  await page.locator('#otp').fill(code);
+  // Passwortmanager (Schlüsselbund/Google) erkennen das Formular an autocomplete + name
+  const pw = page.locator('#password');
+  await expect(page.locator('#email')).toHaveAttribute('autocomplete', 'username');
+  await expect(pw).toHaveAttribute('autocomplete', 'new-password');
+  await expect(pw).toHaveAttribute('name', 'password');
+  await pw.fill('kurz');
+  await page.getByRole('button', { name: 'Konto erstellen' }).click();
+  await expect(page.locator('#password-error')).toHaveText('Bitte mindestens 10 Zeichen eingeben.');
+  await pw.fill('Rosen-Garten-2026');
+  await expect(pw).toHaveAttribute('type', 'password');
+  await page.getByRole('button', { name: 'Passwort anzeigen' }).click();
+  await expect(pw).toHaveAttribute('type', 'text');
+  await shot(page, 'app-03-passwort');
+  await page.getByRole('button', { name: 'Passwort verbergen' }).click();
+  await expect(pw).toHaveAttribute('type', 'password');
+  await page.getByRole('button', { name: 'Konto erstellen' }).click();
   await page.waitForURL(/\/app$/);
+  // Passwort liegt nie im Klartext im Speicher
+  expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain('Rosen-Garten-2026');
   await expect(page.getByRole('heading', { name: /Sophie/ })).toBeVisible();
   await shot(page, 'app-04-start-ohne-termin');
 
@@ -100,12 +110,72 @@ test('Registrierung → Code → Buchung → Termine → Profil → Löschen', a
   await page.getByRole('button', { name: 'Endgültig löschen' }).click();
   await page.waitForURL('**/app/willkommen');
 
-  // Konto ist weg: Anmeldung mit derselben Adresse schlägt fehl
+  // Konto ist weg: Anmeldung schlägt fehl – mit derselben neutralen Meldung wie bei falschem Passwort
   await page.getByRole('link', { name: 'Ich habe schon ein Konto' }).click();
   await page.getByLabel('E-Mail').fill('sophie@example.com');
-  await page.getByRole('button', { name: 'Code senden' }).click();
-  await expect(page.getByText('Zu dieser E-Mail-Adresse gibt es noch kein Konto.')).toBeVisible();
+  await page.locator('#password').fill('Rosen-Garten-2026');
+  await page.getByRole('button', { name: 'Anmelden', exact: true }).click();
+  await expect(page.locator('p.alert[role="alert"]')).toHaveText('E-Mail-Adresse oder Passwort stimmen nicht.');
   await shot(page, 'app-16-anmelden');
+});
+
+test('Anmelden, angemeldet bleiben, Passwort vergessen', async ({ page, browser }) => {
+  await page.goto('/app/registrieren');
+  await page.getByLabel('Vorname', { exact: true }).fill('Mira');
+  await page.getByLabel('Nachname', { exact: true }).fill('Test');
+  await page.getByLabel('E-Mail', { exact: true }).fill('mira@example.com');
+  await page.locator('#password').fill('Erstes-Passwort-1');
+  await page.getByRole('button', { name: 'Konto erstellen' }).click();
+  await page.waitForURL(/\/app$/);
+  await page.getByRole('link', { name: 'Profil', exact: true }).click();
+  await page.getByRole('button', { name: 'Abmelden' }).click();
+  await page.waitForURL('**/app/willkommen');
+
+  // falsches Passwort: neutrale Meldung
+  await page.goto('/app/anmelden');
+  await expect(page.locator('#password')).toHaveAttribute('autocomplete', 'current-password');
+  await page.getByLabel('E-Mail').fill('mira@example.com');
+  await page.locator('#password').fill('falsches-passwort');
+  await page.getByRole('button', { name: 'Anmelden', exact: true }).click();
+  await expect(page.locator('p.alert[role="alert"]')).toHaveText('E-Mail-Adresse oder Passwort stimmen nicht.');
+
+  // Passwort vergessen → Link (im Testbetrieb angezeigt) → neues Passwort → angemeldet
+  await page.getByRole('link', { name: 'Passwort vergessen?' }).click();
+  await expect(page.getByRole('heading', { name: 'Passwort vergessen' })).toBeVisible();
+  await page.getByLabel('E-Mail').fill('mira@example.com');
+  await page.getByRole('button', { name: 'Link senden' }).click();
+  await expect(page.getByRole('heading', { name: 'E-Mail ist unterwegs' })).toBeVisible();
+  await shot(page, 'app-21-passwort-vergessen');
+  await page.getByRole('link', { name: 'Neues Passwort festlegen' }).click();
+  await expect(page.locator('#new-password')).toHaveAttribute('autocomplete', 'new-password');
+  await expect(page.locator('input[autocomplete="username"]')).toHaveValue('mira@example.com');
+  await page.locator('#new-password').fill('Zweites-Passwort-2');
+  await shot(page, 'app-22-passwort-neu');
+  await page.getByRole('button', { name: 'Passwort speichern' }).click();
+  await page.waitForURL(/\/app$/);
+  await expect(page.getByRole('heading', { name: /Mira/ })).toBeVisible();
+
+  // „Neustart“: neuer Browser-Kontext mit dem gespeicherten App-Speicher → weiterhin angemeldet
+  const restarted = await browser.newContext({ ...phone(UA.iphone), storageState: await page.context().storageState() });
+  const again = await restarted.newPage();
+  await emulateStandalone(again);
+  await again.goto('/app');
+  await expect(again.getByRole('heading', { name: /Mira/ })).toBeVisible();
+  await restarted.close();
+
+  // abmelden; altes Passwort gilt nicht mehr, neues schon
+  await page.getByRole('link', { name: 'Profil', exact: true }).click();
+  await page.getByRole('button', { name: 'Abmelden' }).click();
+  await page.waitForURL('**/app/willkommen');
+  await page.goto('/app/anmelden');
+  await page.getByLabel('E-Mail').fill('mira@example.com');
+  await page.locator('#password').fill('Erstes-Passwort-1');
+  await page.getByRole('button', { name: 'Anmelden', exact: true }).click();
+  await expect(page.locator('p.alert[role="alert"]')).toBeVisible();
+  await page.locator('#password').fill('Zweites-Passwort-2');
+  await page.getByRole('button', { name: 'Anmelden', exact: true }).click();
+  await page.waitForURL(/\/app$/);
+  await expect(page.getByRole('heading', { name: /Mira/ })).toBeVisible();
 });
 
 test('Demo-Kundin, Sprachen und Dunkelmodus', async ({ page }) => {
