@@ -30,7 +30,9 @@ Zum Testen anderer Geräte am Laptop: `/installieren?p=ios`, `?p=ios-legacy`, `?
 ```sh
 npm run typecheck && npm run lint && npm run build   # lint enthält die Token-Prüfung, build den Secret-Scan
 npx --no-install playwright install chromium   # einmalig
-npm test                                       # baut, startet Port 3200, 18 Tests, Screenshots → docs/screenshots
+npm test                                       # Mock-Modus: baut, startet Port 3200, Screenshots → docs/screenshots
+npm run test:supabase                          # gegen das echte Supabase-Projekt (Werte aus .env.local)
+npm run test:security                          # RLS-/Tenant-Sicherheitstest → docs/sicherheitstest.md
 npm run check:manifest -- http://localhost:3200
 ```
 
@@ -40,7 +42,7 @@ npm run check:manifest -- http://localhost:3200
 - `src/lib/auth` – `AuthAdapter` (6-stelliger E-Mail-Code, keine Magic Links) + Mock. Zugriff nur über `getAuth()`.
 - `src/components/install` – Erkennung, Zeitleisten und gezeichnete iPhone-/Android-Mockups.
 - `public/sw.js` – Service Worker: nur statische Dateien + Offline-Seite, nie Seiten oder Daten.
-- `supabase/migrations` – leer, für Teil 2. Alle späteren Variablen: `.env.example`.
+- `supabase/migrations` – Schema, RLS und Funktionen (Teil 2). Alle Variablen: `.env.example`.
 
 Design: alle Werte in `src/styles/tokens.css` (von der Website übernommen), Abgleich in `docs/design-abgleich.md`.
 Screenshot-Paare Website ↔ Portal: Website-Vorschau starten, dann `WEBSITE_URL=http://localhost:4321 npm test`.
