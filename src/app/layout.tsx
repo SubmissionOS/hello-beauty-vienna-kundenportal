@@ -50,9 +50,10 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
+  // Browser-UI-Farben vor dem ersten CSS: Werte = --c-paper / --c-ink (geprüft von scripts/check-tokens.mjs)
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#fbf9f4' },
-    { media: '(prefers-color-scheme: dark)', color: '#15130e' },
+    { media: '(prefers-color-scheme: dark)', color: '#2b2618' },
   ],
 };
 

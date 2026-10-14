@@ -1,0 +1,68 @@
+/*
+ * Lokale Schriften (Lizenz: public/fonts/LICENSE.md + OFL-*.txt; Datei 1:1 von der Website, nur Pfade angepasst). Kein Request an Google.
+ * Je Familie eine Latin-Datei + eine winzige Ergänzung für Ő ő Ű ű (nur geladen, wenn die Zeichen vorkommen).
+ * Gloock: Display (nur 400, Überschriften). Hanken Grotesk: Text (variabel 300–700).
+ */
+@font-face {
+  font-family: 'Gloock';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/gloock-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Gloock';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/gloock-hu-extra.woff2') format('woff2');
+  unicode-range: U+0150-0151, U+0170-0171, U+030B;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/hanken-grotesk-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/hanken-grotesk-hu-extra.woff2') format('woff2');
+  unicode-range: U+0150-0151, U+0170-0171, U+030B;
+}
+
+/*
+ * Fallbacks mit angepassten Metriken (im Browser gegen die Webfont gemessen, Mustertext DE),
+ * damit der Wechsel auf die Webfont keinen Layout-Sprung erzeugt.
+ */
+@font-face {
+  font-family: 'Gloock Fallback';
+  src: local('Georgia');
+  ascent-override: 95.57%;
+  descent-override: 22.43%;
+  line-gap-override: 0%;
+  size-adjust: 102.54%;
+}
+@font-face {
+  font-family: 'Gloock Fallback Times';
+  src: local('Times New Roman'), local('TimesNewRomanPSMT'), local('Liberation Serif');
+  ascent-override: 87.59%;
+  descent-override: 20.56%;
+  line-gap-override: 0%;
+  size-adjust: 111.89%;
+}
+@font-face {
+  font-family: 'Hanken Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans');
+  ascent-override: 100.6%;
+  descent-override: 30.18%;
+  line-gap-override: 0%;
+  size-adjust: 99.4%;
+}

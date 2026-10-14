@@ -4,8 +4,6 @@ import { createClientStore } from './client-store';
 
 export type ThemePref = 'system' | 'light' | 'dark';
 
-const themeColors = { light: '#fbf9f4', dark: '#15130e' } as const;
-
 function readPref(): ThemePref {
   try {
     const v = localStorage.getItem('hb-theme');
@@ -25,8 +23,10 @@ function resolve(pref: ThemePref): 'light' | 'dark' {
 export function applyTheme(pref: ThemePref) {
   const mode = resolve(pref);
   document.documentElement.dataset.theme = mode;
+  // Statusleisten-Farbe = Token --bg des gewählten Modus (keine eigene Farbangabe)
+  const color = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
   document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
-    m.setAttribute('content', themeColors[mode]);
+    if (color) m.setAttribute('content', color);
   });
 }
 

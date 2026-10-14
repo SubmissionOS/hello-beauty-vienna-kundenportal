@@ -21,7 +21,7 @@ export default function OfflinePage() {
     >
       <Monogram size={72} />
       <IconWifiOff size={28} className="muted" />
-      <h1 style={{ fontSize: '1.75rem' }}>{t.offline.title}</h1>
+      <h1>{t.offline.title}</h1>
       <p className="muted" style={{ maxWidth: 340 }}>
         {t.offline.text}
       </p>

@@ -19,7 +19,7 @@ export function withIcons(text: string) {
             margin: '0 2px',
             verticalAlign: -5,
             borderRadius: 11,
-            background: 'var(--bg-elev)',
+            background: 'var(--surface)',
             border: '1px solid var(--line-strong)',
           }}
         >

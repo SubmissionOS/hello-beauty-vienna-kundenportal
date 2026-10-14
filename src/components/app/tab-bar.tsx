@@ -21,7 +21,7 @@ export function TabBar() {
         const active = href === '/app' ? path === '/app' : path.startsWith(href);
         return (
           <Link key={href} href={href} className={st.tab} aria-current={active ? 'page' : undefined} prefetch>
-            <Icon size={26} strokeWidth={active ? 2.1 : 1.75} />
+            <Icon size={26} />
             <span>{label}</span>
           </Link>
         );

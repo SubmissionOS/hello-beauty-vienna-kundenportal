@@ -12,6 +12,7 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: '/',
     display: 'standalone',
     orientation: 'portrait',
+    // Werte = --c-cream / --c-paper aus src/styles/tokens.css (geprüft von scripts/check-tokens.mjs)
     background_color: '#f5f2eb',
     theme_color: '#fbf9f4',
     categories: ['beauty', 'lifestyle'],

@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element -- Bilder sind vorab skaliert, kein Optimierer nötig */
 
-/** Querformat-Logo der Salon-CI (gold; im Dunkelmodus weiß). */
-export function LogoWide({ width = 180, priority = false }: { width?: number; priority?: boolean }) {
-  const height = Math.round((width * 222) / 1000);
+/** Querformat-Logo der Salon-CI (gold; im Dunkelmodus weiß). Höhe wie im Website-Header: Token --logo-h. */
+export function LogoWide({ priority = false }: { priority?: boolean }) {
+  const width = 180;
+  const height = 40;
   return (
-    <span className="logo-wide" style={{ display: 'inline-block', width, height }}>
+    <span className="logo-wide" style={{ display: 'inline-block', height: 'var(--logo-h)', aspectRatio: '1000 / 222' }}>
       <img
         className="logo-light"
         src="/brand/logo-quer-gold.png"

@@ -1,7 +1,7 @@
 'use client';
 
 import type { Appointment, Service } from '@/lib/data';
-import { formatDateLong, formatDay, formatTime, wallToDate } from '@/lib/format';
+import { formatDateLong, formatDay, formatPrice, formatTime, wallToDate } from '@/lib/format';
 import { intlLocale, type Lang } from '@/lib/i18n';
 import { useI18n } from '@/lib/i18n/use-i18n';
 import st from './app.module.css';
@@ -28,7 +28,7 @@ export function ApptCard({ appt, services }: { appt: Appointment; services: Serv
         </p>
         <p className={st.apptMeta}>
           {appt.staffName} · {t.common.minutes.replace('{n}', String(appt.durationMinutes))} ·{' '}
-          {new Intl.NumberFormat(intlLocale[lang], { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(appt.priceEur)}
+          {formatPrice(appt.priceEur, lang)}
         </p>
         <span className={st.status} data-status={appt.status}>
           {t.appointments.status[appt.status]}

@@ -68,10 +68,11 @@ export const formatWeekdayShort = (iso: string, lang: Lang) =>
 export const formatMonth = (iso: string, lang: Lang) =>
   df(lang, { month: 'long', year: 'numeric' }).format(wallToDate(`${iso}T12:00`));
 
+/** Wie Website (src/lib/format.ts euro()): DE/HU „85 €“, EN „€85“. */
 export function formatPrice(eur: number, lang: Lang): string {
-  return new Intl.NumberFormat(intlLocale[lang], {
-    style: 'currency',
-    currency: 'EUR',
-    maximumFractionDigits: Number.isInteger(eur) ? 0 : 2,
+  const n = new Intl.NumberFormat(intlLocale[lang], {
+    minimumFractionDigits: Number.isInteger(eur) ? 0 : 2,
+    maximumFractionDigits: 2,
   }).format(eur);
+  return lang === 'en' ? `€${n}` : `${n} €`;
 }

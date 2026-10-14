@@ -127,7 +127,7 @@ export default function RegisterPage() {
                 ))}
               </select>
             </div>
-            <p className="hint" style={{ fontSize: '0.9375rem' }}>
+            <p className="hint">
               {t.register.privacy}{' '}
               <a href={legalUrl('privacy', lang)} target="_blank" rel="noopener noreferrer">
                 {t.register.privacyLink}

@@ -56,7 +56,9 @@ export default function AppointmentsPage() {
       </div>
       {tab === 'upcoming' && upcoming.length > 0 && (
         <a className="row card" href={`tel:${salon.phoneE164}`}>
-          <IconPhone size={22} className="muted" />
+          <span className="row-icon">
+              <IconPhone />
+            </span>
           <span className="row-main">
             {t.appointments.change}
             <span className="row-sub" style={{ display: 'block' }}>

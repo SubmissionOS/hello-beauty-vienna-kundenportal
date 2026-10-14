@@ -45,7 +45,7 @@ export default function StartPage() {
   return (
     <main className={st.screen}>
       <header className={st.header}>
-        <LogoWide width={132} />
+        <LogoWide />
       </header>
       <div className={st.content}>
         <h1 className={st.greeting}>{fmt(greet, { name: profile?.firstName ?? '' })}</h1>
@@ -57,7 +57,7 @@ export default function StartPage() {
           {next ? (
             <div className={`card ${st.next}`}>
               <div className={st.nextWhen}>
-                <span className={st.nextBadge}>{relative}</span>
+                <p className="eyebrow">{relative}</p>
                 <p className={st.nextDate}>{formatDateLong(next.start, lang)}</p>
                 <p className={st.nextTime}>{formatTime(next.start, lang)}</p>
               </div>
@@ -95,7 +95,9 @@ export default function StartPage() {
           </h2>
           <div className="group">
             <a className="row" href={salon.mapsUrl} target="_blank" rel="noopener noreferrer">
-              <IconPin size={22} className="muted" />
+              <span className="row-icon">
+              <IconPin />
+            </span>
               <span className="row-main">
                 {salon.street}
                 <span className="row-sub" style={{ display: 'block' }}>
@@ -104,11 +106,15 @@ export default function StartPage() {
               </span>
             </a>
             <div className="row">
-              <IconClock size={22} className="muted" />
+              <span className="row-icon">
+              <IconClock />
+            </span>
               <span className="row-main">{t.home.hours}</span>
             </div>
             <a className="row" href={`tel:${salon.phoneE164}`}>
-              <IconPhone size={22} className="muted" />
+              <span className="row-icon">
+              <IconPhone />
+            </span>
               <span className="row-main">{salon.phone}</span>
             </a>
           </div>

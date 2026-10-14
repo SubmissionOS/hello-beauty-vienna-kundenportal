@@ -1,20 +1,30 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+import { AllLangs } from '@/components/all-langs';
 import { IconArrowDown, IconCheck, IconCopy, IconExternal } from '@/components/icons';
 import { LangSwitch } from '@/components/lang-switch';
 import { LogoWide, Monogram } from '@/components/logo';
-import { QrCode } from '@/components/qr-code';
 import { useHydrated } from '@/lib/client-store';
 import { appOrigin } from '@/lib/env';
 import { fmt } from '@/lib/i18n';
 import { useI18n } from '@/lib/i18n/use-i18n';
 import { legalUrl } from '@/lib/salon';
-import { Guide } from './guide';
 import { detectPlatform, type PlatformInfo } from './platform';
 import { withIcons } from './with-icons';
 import st from './install.module.css';
+
+/** Erst nach dem ersten Paint geladen: Animationen und QR-Bibliothek gehören nicht ins Start-Bundle. */
+const Guide = dynamic(() => import('./guide').then((m) => m.Guide), {
+  ssr: false,
+  loading: () => <div className="skeleton" style={{ height: 360 }} aria-hidden="true" />,
+});
+const QrCode = dynamic(() => import('@/components/qr-code').then((m) => m.QrCode), {
+  ssr: false,
+  loading: () => <div className="skeleton" style={{ width: 260, height: 260 }} aria-hidden="true" />,
+});
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -56,13 +66,18 @@ function Shell({ children, standalone }: { children?: React.ReactNode; standalon
   return (
     <div className={st.page}>
       <header className={st.top}>
-        <LogoWide width={150} priority />
+        <LogoWide priority />
         {hydrated && <LangSwitch />}
       </header>
       <main className={st.main}>
         <div className={st.hero}>
-          <h1 className={st.h1}>{t.install.title}</h1>
-          <p className={st.lead}>{standalone ? t.install.standalone : t.install.lead}</p>
+          <p className="eyebrow">
+            <AllLangs pick={(d) => d.install.desktop.kicker} />
+          </p>
+          <h1 className={st.h1}>
+            <AllLangs pick={(d) => d.install.title} />
+          </h1>
+          <p className={st.lead}>{standalone ? t.install.standalone : <AllLangs pick={(d) => d.install.lead} />}</p>
         </div>
         {children ?? (
           <div className={st.skeletonWrap} aria-hidden="true">
@@ -240,12 +255,12 @@ function DesktopShow({ host }: { host: string }) {
   return (
     <div className={st.show}>
       <header className={st.showTop}>
-        <LogoWide width={190} priority />
+        <LogoWide priority />
         <LangSwitch />
       </header>
       <main className={st.showMain}>
         <section className={st.showIntro}>
-          <p className={st.kicker}>{t.install.desktop.kicker}</p>
+          <p className="eyebrow">{t.install.desktop.kicker}</p>
           <h1 className={st.showH1}>{t.install.desktop.title}</h1>
           <p className={st.lead}>{t.install.desktop.text}</p>
           <figure className={st.qrCard}>

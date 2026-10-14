@@ -161,7 +161,7 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
             <button
               type="button"
               className="row"
-              style={{ color: 'var(--gold-text)', fontWeight: 600 }}
+              style={{ color: 'var(--link)', fontWeight: 600 }}
               onClick={() => {
                 setDraft({ firstName: profile.firstName, lastName: profile.lastName, phone: profile.phone ?? '' });
                 setNotice(null);
@@ -239,7 +239,9 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
         </h2>
         <div className="group">
           <button type="button" className="row" onClick={exportData}>
-            <IconDownload size={22} className="muted" />
+            <span className="row-icon">
+              <IconDownload />
+            </span>
             <span className="row-main">
               {t.profile.export}
               <span className="row-sub" style={{ display: 'block' }}>
@@ -248,11 +250,15 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
             </span>
           </button>
           <button type="button" className={`row ${st.danger}`} onClick={() => dialog.current?.showModal()}>
-            <IconTrash size={22} />
+            <span className="row-icon" style={{ color: 'var(--error)' }}>
+              <IconTrash />
+            </span>
             <span className="row-main">{t.profile.delete}</span>
           </button>
           <button type="button" className="row" onClick={logout}>
-            <IconLogout size={22} className="muted" />
+            <span className="row-icon">
+              <IconLogout />
+            </span>
             <span className="row-main">{t.profile.logout}</span>
           </button>
         </div>
@@ -265,12 +271,12 @@ function Profile({ initial, isDemo }: { initial: CustomerProfile; isDemo: boolea
         <div className="group">
           <a className="row" href={legalUrl('imprint', lang)} target="_blank" rel="noopener noreferrer">
             <span className="row-main">{t.common.imprint}</span>
-            <IconExternal size={18} className="muted" />
+            <IconExternal className="row-chevron" />
             <span className="visually-hidden">{t.common.newWindow}</span>
           </a>
           <a className="row" href={legalUrl('privacy', lang)} target="_blank" rel="noopener noreferrer">
             <span className="row-main">{t.common.privacy}</span>
-            <IconExternal size={18} className="muted" />
+            <IconExternal className="row-chevron" />
             <span className="visually-hidden">{t.common.newWindow}</span>
           </a>
         </div>

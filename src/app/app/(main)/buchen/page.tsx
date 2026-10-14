@@ -7,7 +7,7 @@ import { AppPage, PageSkeleton } from '@/components/app/app-page';
 import { serviceLabel } from '@/components/app/appt-card';
 import st from '@/components/app/app.module.css';
 import { useLoad } from '@/components/app/use-load';
-import { IconCheck, IconChevronLeft, IconChevronRight } from '@/components/icons';
+import { IconCheck, IconChevronLeft, IconChevronRight, IconClock } from '@/components/icons';
 import { useSession } from '@/lib/auth/use-session';
 import { DataError, getData, type Category, type PaymentMethod, type Service, type Slot, type StaffMember } from '@/lib/data';
 import {
@@ -112,7 +112,8 @@ export default function BookPage() {
     >
       <div className={st.progress}>
         <span className={st.progressText}>
-          {fmt(t.book.stepOf, { n: step + 1, total })} · {t.book.steps[step]}
+          {fmt(t.book.stepOf, { n: step + 1, total })}
+          <span className="visually-hidden"> · {t.book.steps[step]}</span>
         </span>
         <div className={st.progressBar} aria-hidden="true">
           <div className={st.progressFill} style={{ transform: `scaleX(${(step + 1) / total})` }} />
@@ -175,7 +176,7 @@ export default function BookPage() {
                     </span>
                   </span>
                   <span className={st.price}>{formatPrice(s.priceEur, lang)}</span>
-                  <IconChevronRight size={18} className="muted" />
+                  <IconChevronRight className="row-chevron" />
                 </button>
               ))}
           </div>
@@ -271,7 +272,7 @@ function StaffStep({ staff, onPick }: { staff: StaffMember[]; onPick: (id: strin
       <div className="group">
         <button type="button" className="row" onClick={() => onPick(null)}>
           <span className={st.avatar} aria-hidden="true">
-            ✦
+            <IconClock />
           </span>
           <span className="row-main">
             {t.book.anyStaff}
@@ -279,7 +280,7 @@ function StaffStep({ staff, onPick }: { staff: StaffMember[]; onPick: (id: strin
               {t.book.anyStaffHint}
             </span>
           </span>
-          <IconChevronRight size={18} className="muted" />
+          <IconChevronRight className="row-chevron" />
         </button>
         {staff.map((m) => (
           <button key={m.id} type="button" className="row" onClick={() => onPick(m.id)}>
@@ -287,7 +288,7 @@ function StaffStep({ staff, onPick }: { staff: StaffMember[]; onPick: (id: strin
               {m.displayName.charAt(0)}
             </span>
             <span className="row-main">{m.displayName}</span>
-            <IconChevronRight size={18} className="muted" />
+            <IconChevronRight className="row-chevron" />
           </button>
         ))}
       </div>

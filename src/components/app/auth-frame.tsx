@@ -32,7 +32,7 @@ export function AuthFrame({ back, children }: { back?: string; children: React.R
             {t.common.back}
           </Link>
         ) : (
-          <LogoWide width={140} priority />
+          <LogoWide priority />
         )}
         {hydrated && <LangSwitch />}
       </div>

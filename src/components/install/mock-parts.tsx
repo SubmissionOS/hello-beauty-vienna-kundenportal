@@ -154,7 +154,7 @@ const glyphs = [
   'M5 5.5A1.5 1.5 0 0 1 6.5 4H12v16H6.5A1.5 1.5 0 0 1 5 18.5zM12 4h5.5A1.5 1.5 0 0 1 19 5.5v13a1.5 1.5 0 0 1-1.5 1.5H12',
   'M6 4h12v16H6zM8.5 7h7v3h-7zM9 13h.01M12 13h.01M15 13h.01M9 16.5h.01M12 16.5h.01M15 16.5h.01',
 ];
-const tones = ['#8c7a4a', '#a0805a', '#5f5a4e', '#b08f3e', '#6e604a', '#7d6f52', '#c2a35a', '#5a4e3a', '#9a7b54', '#4f4a40'];
+const TONES = 10; // Farben: --m-tone-1 … --m-tone-10 in src/styles/tokens.css
 
 export function Glyph({ i, size = 30 }: { i: number; size?: number }) {
   return (
@@ -164,4 +164,4 @@ export function Glyph({ i, size = 30 }: { i: number; size?: number }) {
   );
 }
 
-export const toneOf = (i: number): CSSProperties => ({ background: tones[i % tones.length] });
+export const toneOf = (i: number): CSSProperties => ({ background: `var(--m-tone-${(i % TONES) + 1})` });

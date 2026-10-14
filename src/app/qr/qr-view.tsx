@@ -16,7 +16,7 @@ export function QrView() {
   return (
     <main className={st.page}>
       <div className={st.sheet}>
-        <LogoWide width={220} priority />
+        <LogoWide priority />
         <h1 className={st.title}>{t.qr.title}</h1>
         <p className={st.text}>{t.qr.text}</p>
         <div className={st.code}>{url ? <QrCode value={url} size={320} label={`QR-Code: ${url}`} /> : <div className="skeleton" style={{ width: 320, height: 320 }} />}</div>

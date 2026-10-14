@@ -1,0 +1,268 @@
+/*
+ * Design-Tokens Hello Beauty – EINZIGE Stelle für Farben, Schriften, Schriftgrößen, Abstände, Radien, Schatten
+ * und Bewegung im Portal (Prüfung: npm run check:tokens).
+ *
+ * Abschnitt 1 ist wortgleich aus der Website übernommen (hellobeautyvienna-website, src/styles/tokens.css,
+ * Stand main 1b37682). Werte dort ändern → hier mitziehen. Abgleich: docs/design-abgleich.md.
+ * Abschnitt 2 ordnet die Werte Rollen zu (hell = wie Website). Abschnitt 3 ist der Dunkelmodus des Portals –
+ * die Website hat keinen; er ist ausschließlich aus Website-Farben abgeleitet (Ink-Flächen wie Footer/CTA-Band).
+ * Abschnitt 4 sind die Farben der gezeichneten iPhone-/Android-Oberfläche (Installations-Animation).
+ */
+
+/* ======================================================================= 1. Website-Tokens (1:1) */
+:root {
+  color-scheme: light;
+
+  /* Marke */
+  --c-gold: #9e8832; /* Original-Primary. Nur Flächen, Linien, Ornamente, Schrift ≥ 24 px (3,49:1 auf Weiß) */
+  --c-gold-text: #7a6823; /* Abgedunkeltes Markengold für Text und Buttons: 5,48:1 Weiß · 4,90:1 Creme */
+  --c-gold-deep: #5c4f1c; /* Hover/Active: 8,11:1 Weiß */
+  --c-gold-soft: #ddc87c; /* Original-Verlaufsfarbe: Hairlines, Gold auf Ink (9,06:1) */
+  --c-accent: #debf4a; /* Original-Accent: Fokus auf Ink (8,37:1), Ornamente */
+  --c-cream: #f5f2eb; /* Original-Secondary: Abschnittsflächen */
+  --c-paper: #fbf9f4; /* Seitenhintergrund */
+  --c-white: #ffffff;
+
+  /* Text */
+  --c-ink: #2b2618; /* 15,07:1 Weiß · 13,48:1 Creme */
+  --c-ink-muted: #635b4a; /* 6,72:1 Weiß · 6,01:1 Creme */
+  --c-on-dark: #f5f2eb; /* auf Ink 13,48:1 */
+  --c-on-dark-muted: #b9ae97; /* auf Ink 6,87:1 */
+
+  /* UI */
+  --c-line: #e6dfcf; /* dekorativ */
+  --c-line-strong: #d9cfb9; /* dekorativ, Zellentrenner */
+  --c-field: #8c8270; /* Feldrahmen: 3,79:1 Weiß, 3,39:1 Creme (WCAG 1.4.11) */
+  --c-error: #a3261e; /* 6,9:1 Weiß */
+  --c-error-bg: #fbeceb;
+  --c-success: #2f6b3a; /* 6,4:1 Weiß */
+  --c-success-bg: #eaf3ec;
+  --c-overlay: rgb(30 26 16 / 0.42);
+
+  /* Schrift */
+  --font-serif: 'Gloock', 'Gloock Fallback', 'Gloock Fallback Times', Georgia, serif;
+  --font-sans: 'Hanken Grotesk', 'Hanken Fallback', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+
+  /* Fluide Skala: Minimum bei 360 px, Maximum bei 1440 px Viewport */
+  --fs-display: clamp(2.75rem, 1.5rem + 5.6vw, 6.75rem); /* 44 → 108 */
+  --fs-h1: clamp(2.125rem, 1.5rem + 2.8vw, 4.25rem); /* 34 → 68 */
+  --fs-h2: clamp(1.75rem, 1.3rem + 2vw, 3.125rem); /* 28 → 50 */
+  --fs-h3: clamp(1.25rem, 1.17rem + 0.37vw, 1.5rem); /* 20 → 24 */
+  --fs-lead: clamp(1.1875rem, 1.125rem + 0.28vw, 1.375rem); /* 19 → 22 */
+  --fs-body: 1.0625rem; /* 17 */
+  --fs-small: 0.9375rem; /* 15 */
+  --fs-xs: 0.8125rem; /* 13 */
+  --lh-tight: 1.15;
+  --lh-snug: 1.3;
+  --lh-body: 1.6;
+
+  /* Abstände */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --section-y: clamp(4rem, 2.9rem + 4.9vw, 7.5rem);
+  --gutter: clamp(1rem, 0.5rem + 2.2vw, 2.5rem);
+  --container: 75rem; /* 1200 px */
+  --measure: 66ch;
+
+  /* Radien (dezent, iOS-artig) */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  /* Schatten (warm, Ink-basiert) */
+  --sh-1: 0 1px 2px rgb(43 38 24 / 0.06), 0 1px 1px rgb(43 38 24 / 0.04);
+  --sh-2: 0 10px 30px -12px rgb(43 38 24 / 0.22), 0 2px 6px rgb(43 38 24 / 0.06);
+  --sh-3: 0 -10px 40px rgb(43 38 24 / 0.2);
+
+  /* Bewegung */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-1: 150ms;
+  --dur-2: 220ms;
+  --dur-3: 320ms;
+
+  /* iOS-Maße */
+  --tap: 44px;
+  --btn-h: 50px;
+  --header-h: 60px;
+  --bar-h: 74px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 76px;
+    --logo-h: 38px; /* Portal-Ergänzung, Wert aus Website-Header */
+  }
+}
+
+/* ======================================================================= 1b. Portal-Ergänzungen (gleiche Logik) */
+:root {
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  /* Feder mit ~2 % Überschwinger (ζ 0,78) für Sheets; Fallback in Regeln: --ease-sheet */
+  --spring: linear(0, 0.0338, 0.1167, 0.226, 0.3454, 0.4639, 0.5743, 0.6725, 0.7566, 0.8263, 0.8823, 0.9259, 0.9587, 0.9826, 0.9991, 1.0098, 1.0161, 1.0192, 1.0199, 1.0192, 1.0175, 1.0153, 1.0129, 1.0105, 1.0083, 1.0064, 1.0047, 1.0034, 1.0023, 1.0014, 1);
+  --fs-input: max(16px, 1rem); /* Website .input – ≥ 16 px verhindert Zoom auf iOS */
+  --fs-button: 1rem; /* Website .btn */
+  --fs-h4: 1.125rem; /* Website h4 */
+  --tabbar-h: 58px;
+  --logo-h: 30px; /* Website-Header .brand__logo, ab 1024 px 38 px */
+  --fs-tab: 0.75rem; /* 12 – Beschriftung der Tab-Leiste (Website-Aktionsleiste hat keine Beschriftungen) */
+  --fs-code: 1.625rem; /* 26 – Ziffern der Code-Eingabe */
+  --fs-step: clamp(1.5rem, 1.3rem + 0.9vw, 2rem); /* Website-Buchung .step h2 */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-light: 300;
+  --ls-eyebrow: 0.16em; /* Website .eyebrow */
+  --ls-label: 0.14em; /* Website .summary__title */
+  --focus-ring: 0 0 0 3px rgb(122 104 35 / 0.25); /* Website .input:focus-visible (Gold-Text 25 %) */
+  --error-line: #e7b9b5; /* Website .notice--error */
+  --success-line: #b9d6bf; /* Website .notice--success */
+  --qr-fg: var(--c-ink); /* QR immer dunkel auf Weiß – auch im Dunkelmodus scannbar */
+  --qr-bg: var(--c-white);
+}
+
+/* ======================================================================= 2. Rollen (hell = Website) */
+:root {
+  --bg: var(--c-paper);
+  --surface: var(--c-white); /* Zellen-Gruppen, Felder (Website .cells, .input) */
+  --surface-soft: var(--c-cream); /* Flächen, Notices, Segmented (Website .notice, .segmented) */
+  --text: var(--c-ink);
+  --text-muted: var(--c-ink-muted);
+  --link: var(--c-gold-text);
+  --link-hover: var(--c-gold-deep);
+  --brand-line: var(--c-gold);
+  --line: var(--c-line);
+  --line-strong: var(--c-line-strong);
+  --field: var(--c-field);
+  --primary: var(--c-gold-text);
+  --primary-hover: var(--c-gold-deep);
+  --on-primary: var(--c-white);
+  --disabled-bg: var(--c-line);
+  --disabled-fg: var(--c-ink-muted);
+  --error: var(--c-error);
+  --error-bg: var(--c-error-bg);
+  --success: var(--c-success);
+  --success-bg: var(--c-success-bg);
+  --overlay: var(--c-overlay);
+  --shadow-cells: var(--sh-1);
+  --shadow-raised: var(--sh-2);
+  --shadow-sheet: var(--sh-3);
+  --skeleton: var(--c-cream);
+  --skeleton-shine: var(--c-paper);
+  --theme-light: var(--c-paper);
+}
+
+/* ======================================================================= 3. Dunkelmodus (nur Portal) */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: var(--c-ink); /* wie Website-Footer und CTA-Band */
+  --surface: color-mix(in srgb, var(--c-ink) 90%, var(--c-on-dark));
+  --surface-soft: color-mix(in srgb, var(--c-ink) 94%, var(--c-on-dark));
+  --text: var(--c-on-dark); /* 13,48:1 */
+  --text-muted: var(--c-on-dark-muted); /* 6,87:1 */
+  --link: var(--c-gold-soft); /* 9,06:1 – Website: Gold auf Ink */
+  --link-hover: var(--c-accent);
+  --brand-line: var(--c-gold-soft);
+  --line: color-mix(in srgb, var(--c-ink) 84%, var(--c-on-dark));
+  --line-strong: color-mix(in srgb, var(--c-ink) 74%, var(--c-on-dark));
+  --field: var(--c-on-dark-muted);
+  --primary: var(--c-gold-soft);
+  --primary-hover: var(--c-accent);
+  --on-primary: var(--c-ink);
+  --disabled-bg: color-mix(in srgb, var(--c-ink) 80%, var(--c-on-dark));
+  --disabled-fg: var(--c-on-dark-muted);
+  --error: color-mix(in srgb, var(--c-error) 40%, var(--c-on-dark));
+  --error-bg: color-mix(in srgb, var(--c-error) 28%, var(--c-ink));
+  --success: color-mix(in srgb, var(--c-success) 40%, var(--c-on-dark));
+  --success-bg: color-mix(in srgb, var(--c-success) 30%, var(--c-ink));
+  --error-line: color-mix(in srgb, var(--c-error) 50%, var(--c-ink));
+  --success-line: color-mix(in srgb, var(--c-success) 50%, var(--c-ink));
+  --overlay: rgb(0 0 0 / 0.55);
+  --shadow-cells: none;
+  --shadow-raised: 0 10px 30px -12px rgb(0 0 0 / 0.6);
+  --shadow-sheet: 0 -10px 40px rgb(0 0 0 / 0.5);
+  --skeleton: color-mix(in srgb, var(--c-ink) 88%, var(--c-on-dark));
+  --skeleton-shine: color-mix(in srgb, var(--c-ink) 82%, var(--c-on-dark));
+  --focus-ring: 0 0 0 3px rgb(221 200 124 / 0.35); /* Gold-Soft 35 % */
+}
+
+/* ======================================================================= 4. Gezeichnete Handy-Oberfläche */
+/* Nachbildung von iOS/Android (Systemfarben, Systemschrift) – bewusst NICHT Salon-CI. */
+:root {
+  --m-font: system-ui, -apple-system, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  --m-black: #000000;
+  --m-white: #ffffff;
+  --m-frame: #2a2824;
+  --m-frame-edge: #4d4a43;
+  --m-frame-inner: #1a1916;
+  --m-frame-button: #3a3832;
+  --m-pixel: #22211e;
+  --m-pixel-edge: #45433d;
+  --m-ios-label: #1c1c1e;
+  --m-ios-label-2: #3c3c43;
+  --m-ios-secondary: #8a8a8e;
+  --m-ios-tertiary: #6c6c70;
+  --m-ios-disabled: #c4c4c6;
+  --m-ios-separator: rgb(60 60 67 / 0.2);
+  --m-ios-fill: rgb(120 120 128 / 0.16);
+  --m-ios-grouped: #f2f2f7;
+  --m-ios-blue: #007aff;
+  --m-ios-green: #34c759;
+  --m-ios-keyboard: #d1d3d9;
+  --m-ios-key-dark: #abb0ba;
+  --m-ios-toolbar: #f6f6f6;
+  --m-ios-menu: #fafafa;
+  --m-droid-label: #1f1f1f;
+  --m-droid-muted: #5f5f5f;
+  --m-droid-icon: #444444;
+  --m-droid-omnibox: #eef0ef;
+  --m-droid-dialog: #f6f2ea;
+  --m-droid-accent: #6a5a1f;
+  /* Hintergrundbild Home-Bildschirm (warme Markentöne) */
+  --m-wall-1: #b39a4c;
+  --m-wall-2: #5b4a26;
+  --m-wall-3: #8a7438;
+  --m-wall-4: #4a3d22;
+  --m-wall-droid-1: #c2a95a;
+  --m-wall-droid-2: #6b5830;
+  --m-wall-droid-3: #96803f;
+  --m-wall-droid-4: #4e4124;
+  /* neutrale App-Symbole */
+  --m-tone-1: #8c7a4a;
+  --m-tone-2: #a0805a;
+  --m-tone-3: #5f5a4e;
+  --m-tone-4: #b08f3e;
+  --m-tone-5: #6e604a;
+  --m-tone-6: #7d6f52;
+  --m-tone-7: #c2a35a;
+  --m-tone-8: #5a4e3a;
+  --m-tone-9: #9a7b54;
+  --m-tone-10: #4f4a40;
+  /* Schriftgrößen in Gerätepunkten (iOS-/Material-Typo-Rampe) */
+  --m-fs-caption2: 11px;
+  --m-fs-icon: 11.5px;
+  --m-fs-caption1: 12px;
+  --m-fs-icon-droid: 12.5px;
+  --m-fs-footnote: 13px;
+  --m-fs-sub: 14px;
+  --m-fs-subheadline: 15px;
+  --m-fs-callout: 16px;
+  --m-fs-body: 17px;
+  --m-fs-lead: 18px;
+  --m-fs-glance: 22px;
+  --m-fs-title-droid: 24px;
+  --m-fs-title: 30px;
+  --m-fs-key: 22px;
+}

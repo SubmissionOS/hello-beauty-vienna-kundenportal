@@ -28,7 +28,7 @@ Zum Testen anderer Geräte am Laptop: `/installieren?p=ios`, `?p=ios-legacy`, `?
 ## Prüfen
 
 ```sh
-npm run typecheck && npm run lint && npm run build
+npm run typecheck && npm run lint && npm run build   # lint enthält die Token-Prüfung, build den Secret-Scan
 npx --no-install playwright install chromium   # einmalig
 npm test                                       # baut, startet Port 3200, 18 Tests, Screenshots → docs/screenshots
 npm run check:manifest -- http://localhost:3200
@@ -42,4 +42,7 @@ npm run check:manifest -- http://localhost:3200
 - `public/sw.js` – Service Worker: nur statische Dateien + Offline-Seite, nie Seiten oder Daten.
 - `supabase/migrations` – leer, für Teil 2. Alle späteren Variablen: `.env.example`.
 
-Bericht Teil 1: `docs/teil1-bericht.md`.
+Design: alle Werte in `src/styles/tokens.css` (von der Website übernommen), Abgleich in `docs/design-abgleich.md`.
+Screenshot-Paare Website ↔ Portal: Website-Vorschau starten, dann `WEBSITE_URL=http://localhost:4321 npm test`.
+
+Berichte: `docs/teil1-bericht.md`, `docs/teil2-bericht.md`.

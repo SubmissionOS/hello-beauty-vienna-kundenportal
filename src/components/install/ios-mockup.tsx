@@ -176,11 +176,11 @@ export function IosMockup({ variant, phase, ringKey, host, t, width, still }: Pr
 
               <div className={s.add} data-on={on('add')}>
                 <div className={s.addNav}>
-                  <span style={{ color: '#007aff' }}>
+                  <span style={{ color: 'var(--m-ios-blue)' }}>
                     {t.cancel}
                   </span>
                   <span style={{ fontWeight: 600 }}>{t.addToHome}</span>
-                  <span style={{ justifySelf: 'end', color: '#007aff', fontWeight: 600 }}>{t.add}</span>
+                  <span style={{ justifySelf: 'end', color: 'var(--m-ios-blue)', fontWeight: 600 }}>{t.add}</span>
                 </div>
                 <div className={s.addCard}>
                   <span className={s.addIcon}>
@@ -238,7 +238,7 @@ export function IosMockup({ variant, phase, ringKey, host, t, width, still }: Pr
 
 function ToolIcon({ d, disabled }: { d: string; disabled?: boolean }) {
   return (
-    <svg className={disabled ? 'disabled' : undefined} style={disabled ? { color: '#c4c4c6' } : undefined} width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={disabled ? 'disabled' : undefined} style={disabled ? { color: 'var(--m-ios-disabled)' } : undefined} width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d={d} />
     </svg>
   );

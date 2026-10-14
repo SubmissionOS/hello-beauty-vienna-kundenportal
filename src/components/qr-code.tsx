@@ -22,9 +22,9 @@ export function QrCode({ value, size = 240, label }: { value: string; size?: num
       role="img"
       aria-label={label}
       shapeRendering="crispEdges"
-      style={{ background: '#fff', borderRadius: 8 }}
+      style={{ background: 'var(--qr-bg)', borderRadius: 'var(--r-sm)' }}
     >
-      <path d={d} fill="#1d1a10" />
+      <path d={d} style={{ fill: 'var(--qr-fg)' }} />
     </svg>
   );
 }

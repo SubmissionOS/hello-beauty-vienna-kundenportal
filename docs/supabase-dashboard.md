@@ -6,7 +6,7 @@ Projekt: `cayqrguxnjlnofmkkokt` (https://supabase.com/dashboard/project/cayqrgux
 
 1. **Authentication → Emails → Templates**.
 2. Vorlage **Magic Link** öffnen:
-   - Betreff: `Ihr Code für Hello Beauty · Your code · Az Ön kódja`
+   - Betreff: `Ihr Code für Hello Beauty · Your code · A kódod`
    - Inhalt: kompletten Text aus `supabase/templates/magic-link.html` einfügen → **Save**.
 3. Vorlage **Confirm signup**: gleich vorgehen mit `supabase/templates/confirm-signup.html` (gleicher Betreff).
 4. Prüfen: In beiden Vorlagen steht `{{ .Token }}`, nirgends `{{ .ConfirmationURL }}`.

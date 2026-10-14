@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build && node scripts/scan-secrets.mjs --build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "eslint . && node scripts/check-tokens.mjs",
     "typecheck": "tsc --noEmit",
     "check:manifest": "node scripts/check-manifest.mjs",
     "test": "playwright test",
@@ -21,7 +21,8 @@
     "db:push": "node scripts/supabase-cli.mjs db push",
     "db:seed": "node --experimental-strip-types --no-warnings scripts/seed.mjs",
     "test:security": "node scripts/security-test.mjs",
-    "test:supabase": "node -e \"process.env.E2E_BACKEND='supabase';require('child_process').execSync('npx --no-install playwright test',{stdio:'inherit',env:process.env})\""
+    "test:supabase": "node -e \"process.env.E2E_BACKEND='supabase';require('child_process').execSync('npx --no-install playwright test',{stdio:'inherit',env:process.env})\"",
+    "check:tokens": "node scripts/check-tokens.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",

@@ -29,8 +29,8 @@
   height: calc(var(--frame-h) * 1px);
   transform: scale(calc(var(--pw, 220) / var(--frame-w)));
   transform-origin: 0 0;
-  font-family: system-ui, -apple-system, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
-  color: #000;
+  font-family: var(--m-font);
+  color: var(--m-black);
   letter-spacing: -0.01em;
 }
 
@@ -39,18 +39,18 @@
   position: absolute;
   inset: 0;
   border-radius: 68px;
-  background: #2a2824;
+  background: var(--m-frame);
   box-shadow:
-    inset 0 0 0 2px #4d4a43,
-    inset 0 0 0 5px #1a1916,
-    0 30px 60px -20px rgb(43 38 24 / 0.45),
-    0 8px 20px -8px rgb(43 38 24 / 0.3);
+    inset 0 0 0 2px var(--m-frame-edge),
+    inset 0 0 0 5px var(--m-frame-inner),
+    0 30px 60px -20px color-mix(in srgb, var(--c-ink) 45%, transparent),
+    0 8px 20px -8px color-mix(in srgb, var(--c-ink) 30%, transparent);
 }
 .sideBtn {
   position: absolute;
   width: 4px;
   border-radius: 2px;
-  background: #3a3832;
+  background: var(--m-frame-button);
 }
 .screen {
   position: absolute;
@@ -60,7 +60,7 @@
   height: 852px;
   border-radius: 55px;
   overflow: hidden;
-  background: #000;
+  background: var(--m-black);
   isolation: isolate;
   transform: translateZ(0);
 }
@@ -69,11 +69,11 @@
   position: absolute;
   inset: 0;
   border-radius: 46px;
-  background: #22211e;
+  background: var(--m-pixel);
   box-shadow:
-    inset 0 0 0 2px #45433d,
-    0 30px 60px -20px rgb(43 38 24 / 0.45),
-    0 8px 20px -8px rgb(43 38 24 / 0.3);
+    inset 0 0 0 2px var(--m-pixel-edge),
+    0 30px 60px -20px color-mix(in srgb, var(--c-ink) 45%, transparent),
+    0 8px 20px -8px color-mix(in srgb, var(--c-ink) 30%, transparent);
 }
 .screenAndroid {
   position: absolute;
@@ -83,7 +83,7 @@
   height: 915px;
   border-radius: 36px;
   overflow: hidden;
-  background: #000;
+  background: var(--m-black);
   isolation: isolate;
   transform: translateZ(0);
 }
@@ -119,10 +119,10 @@
 .page {
   position: absolute;
   inset: 0;
-  background: #fbf9f4;
+  background: var(--c-paper);
   padding: 92px 28px 0;
   text-align: center;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
 }
 .pageAndroid {
   padding-top: 132px;
@@ -133,26 +133,26 @@
   margin: 0 auto 18px;
 }
 .pageTitle {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 30px;
+  font-family: var(--font-serif);
+  font-size: var(--m-fs-title);
   line-height: 1.15;
-  color: #2b2618;
+  color: var(--c-ink);
   margin: 0 0 12px;
 }
 .pageLead {
-  font-size: 16px;
+  font-size: var(--m-fs-callout);
   line-height: 1.4;
-  color: #635b4a;
+  color: var(--c-ink-muted);
   margin: 0 auto 22px;
   max-width: 300px;
 }
 .pageBtn {
   height: 54px;
-  border-radius: 14px;
-  background: #7a6823;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 600;
+  border-radius: var(--r-pill);
+  background: var(--c-gold-text);
+  color: var(--m-white);
+  font-size: var(--m-fs-lead);
+  font-weight: 500;
   display: grid;
   place-items: center;
 }
@@ -173,7 +173,7 @@
 .pageLine {
   height: 12px;
   border-radius: 6px;
-  background: #ece6d8;
+  background: var(--c-line);
 }
 
 /* ---------- Safari iOS 26: schwebende Glasleiste ---------- */
@@ -188,14 +188,14 @@
   align-items: center;
 }
 .glass {
-  background: rgb(255 255 255 / 0.55);
+  background: color-mix(in srgb, var(--m-white) 55%, transparent);
   -webkit-backdrop-filter: blur(14px) saturate(180%);
   backdrop-filter: blur(14px) saturate(180%);
   box-shadow:
-    inset 0 0.5px 0 rgb(255 255 255 / 0.9),
-    inset 0 0 0 0.5px rgb(255 255 255 / 0.5),
-    0 6px 18px rgb(0 0 0 / 0.14),
-    0 1px 3px rgb(0 0 0 / 0.08);
+    inset 0 0.5px 0 color-mix(in srgb, var(--m-white) 90%, transparent),
+    inset 0 0 0 0.5px color-mix(in srgb, var(--m-white) 50%, transparent),
+    0 6px 18px color-mix(in srgb, var(--m-black) 14%, transparent),
+    0 1px 3px color-mix(in srgb, var(--m-black) 8%, transparent);
 }
 .glassBtn {
   width: 48px;
@@ -204,7 +204,7 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: #1c1c1e;
+  color: var(--m-ios-label);
 }
 .glassPill {
   flex: 1;
@@ -214,9 +214,9 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 16px;
+  font-size: var(--m-fs-callout);
   font-weight: 500;
-  color: #1c1c1e;
+  color: var(--m-ios-label);
 }
 .lockIcon {
   opacity: 0.6;
@@ -229,10 +229,10 @@
   right: 0;
   bottom: 0;
   height: 140px;
-  background: rgb(246 246 246 / 0.82);
+  background: color-mix(in srgb, var(--m-ios-toolbar) 82%, transparent);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   backdrop-filter: blur(20px) saturate(180%);
-  border-top: 0.5px solid rgb(0 0 0 / 0.15);
+  border-top: 0.5px solid color-mix(in srgb, var(--m-black) 15%, transparent);
 }
 .legacyAddress {
   position: absolute;
@@ -241,19 +241,19 @@
   top: 13px;
   height: 46px;
   border-radius: 13px;
-  background: #fff;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 0.12);
+  background: var(--m-white);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--m-black) 12%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 16px;
-  color: #1c1c1e;
+  font-size: var(--m-fs-callout);
+  color: var(--m-ios-label);
 }
 .aa {
   position: absolute;
   left: 14px;
-  font-size: 15px;
+  font-size: var(--m-fs-subheadline);
   font-weight: 600;
 }
 .legacyTools {
@@ -265,7 +265,7 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   place-items: center;
-  color: #007aff;
+  color: var(--m-ios-blue);
 }
 
 /* ---------- Menü (iOS 26 •••) ---------- */
@@ -276,10 +276,10 @@
   width: 262px;
   border-radius: 26px;
   padding: 6px 0;
-  background: rgb(250 250 250 / 0.82);
+  background: color-mix(in srgb, var(--m-ios-menu) 82%, transparent);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
   backdrop-filter: blur(30px) saturate(180%);
-  box-shadow: 0 18px 50px rgb(0 0 0 / 0.22), inset 0 0 0 0.5px rgb(255 255 255 / 0.6);
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--m-black) 22%, transparent), inset 0 0 0 0.5px color-mix(in srgb, var(--m-white) 60%, transparent);
   transform-origin: 92% 100%;
   transition:
     transform 520ms cubic-bezier(0.32, 0.72, 0, 1),
@@ -298,18 +298,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 17px;
-  color: #000;
+  font-size: var(--m-fs-body);
+  color: var(--m-black);
 }
 .menuItem + .menuItem {
-  box-shadow: inset 0 0.5px 0 rgb(60 60 67 / 0.18);
+  box-shadow: inset 0 0.5px 0 color-mix(in srgb, var(--m-ios-label-2) 18%, transparent);
 }
 
 /* ---------- Abdunklung hinter Sheets ---------- */
 .dim {
   position: absolute;
   inset: 0;
-  background: rgb(0 0 0 / 0.28);
+  background: color-mix(in srgb, var(--m-black) 28%, transparent);
   opacity: 0;
   transition: opacity 400ms ease;
 }
@@ -325,7 +325,7 @@
   top: 300px;
   bottom: 0;
   border-radius: 38px 38px 0 0;
-  background: rgb(242 242 247 / 0.94);
+  background: color-mix(in srgb, var(--m-ios-grouped) 94%, transparent);
   -webkit-backdrop-filter: blur(30px);
   backdrop-filter: blur(30px);
   overflow: hidden;
@@ -359,39 +359,39 @@
   border-radius: 12px;
   overflow: hidden;
   flex: none;
-  box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.1);
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--m-black) 10%, transparent);
 }
 .shareTitle {
-  font-size: 16px;
+  font-size: var(--m-fs-callout);
   font-weight: 600;
 }
 .shareSub {
-  font-size: 14px;
-  color: #8a8a8e;
+  font-size: var(--m-fs-sub);
+  color: var(--m-ios-secondary);
 }
 .shareClose {
   margin-left: auto;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgb(120 120 128 / 0.16);
+  background: var(--m-ios-fill);
   display: grid;
   place-items: center;
-  color: #6c6c70;
+  color: var(--m-ios-tertiary);
 }
 .shareApps {
   height: 110px;
   display: flex;
   gap: 18px;
   padding: 6px 20px 0;
-  border-top: 0.5px solid rgb(60 60 67 / 0.18);
+  border-top: 0.5px solid color-mix(in srgb, var(--m-ios-label-2) 18%, transparent);
 }
 .shareApp {
   display: grid;
   justify-items: center;
   gap: 6px;
-  font-size: 11px;
-  color: #3c3c43;
+  font-size: var(--m-fs-caption2);
+  color: var(--m-ios-label-2);
 }
 .shareAppIcon {
   width: 60px;
@@ -399,12 +399,12 @@
   border-radius: 14px;
   display: grid;
   place-items: center;
-  color: #fff;
+  color: var(--m-white);
 }
 .shareList {
   margin: 12px 16px 0;
   border-radius: 12px;
-  background: #fff;
+  background: var(--m-white);
   overflow: hidden;
 }
 .shareRow {
@@ -413,13 +413,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 17px;
+  font-size: var(--m-fs-body);
 }
 .shareRow + .shareRow {
-  box-shadow: inset 0 0.5px 0 rgb(60 60 67 / 0.2);
+  box-shadow: inset 0 0.5px 0 color-mix(in srgb, var(--m-ios-label-2) 20%, transparent);
 }
 .shareRow svg {
-  color: #1c1c1e;
+  color: var(--m-ios-label);
 }
 
 /* ---------- „Zum Home-Bildschirm“-Sheet ---------- */
@@ -430,7 +430,7 @@
   top: 60px;
   bottom: 0;
   border-radius: 38px 38px 0 0;
-  background: #f2f2f7;
+  background: var(--m-ios-grouped);
   transform: translateY(105%);
   transition: transform 560ms cubic-bezier(0.32, 0.72, 0, 1);
   transition-timing-function: var(--spring);
@@ -445,7 +445,7 @@
   gap: 8px;
   align-items: center;
   padding: 0 18px;
-  font-size: 16px;
+  font-size: var(--m-fs-callout);
 }
 .addNav > span:nth-child(2) {
   text-align: center;
@@ -457,7 +457,7 @@
   margin: 14px 16px 0;
   padding: 14px 16px;
   border-radius: 12px;
-  background: #fff;
+  background: var(--m-white);
   display: flex;
   gap: 14px;
   align-items: center;
@@ -468,16 +468,16 @@
   border-radius: 14px;
   overflow: hidden;
   flex: none;
-  box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.1);
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--m-black) 10%, transparent);
 }
 .addFields {
   flex: 1;
   min-width: 0;
 }
 .addName {
-  font-size: 17px;
+  font-size: var(--m-fs-body);
   padding-bottom: 8px;
-  border-bottom: 0.5px solid rgb(60 60 67 / 0.25);
+  border-bottom: 0.5px solid color-mix(in srgb, var(--m-ios-label-2) 25%, transparent);
   display: flex;
   align-items: center;
 }
@@ -486,7 +486,7 @@
   width: 2px;
   height: 21px;
   margin-left: 1px;
-  background: #007aff;
+  background: var(--m-ios-blue);
   animation: caret 1s steps(1) infinite;
 }
 @keyframes caret {
@@ -495,8 +495,8 @@
   }
 }
 .addUrl {
-  font-size: 14px;
-  color: #8a8a8e;
+  font-size: var(--m-fs-sub);
+  color: var(--m-ios-secondary);
   padding-top: 8px;
   white-space: nowrap;
   overflow: hidden;
@@ -504,26 +504,26 @@
 }
 .addNote {
   margin: 8px 32px 0;
-  font-size: 13px;
+  font-size: var(--m-fs-footnote);
   line-height: 1.35;
-  color: #6c6c70;
+  color: var(--m-ios-tertiary);
 }
 .addToggleRow {
   margin: 18px 16px 0;
   padding: 0 16px;
   height: 50px;
   border-radius: 12px;
-  background: #fff;
+  background: var(--m-white);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 17px;
+  font-size: var(--m-fs-body);
 }
 .iosSwitch {
   width: 51px;
   height: 31px;
   border-radius: 16px;
-  background: #34c759;
+  background: var(--m-ios-green);
   position: relative;
 }
 .iosSwitch::after {
@@ -534,8 +534,8 @@
   width: 27px;
   height: 27px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 2px 4px rgb(0 0 0 / 0.2);
+  background: var(--m-white);
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--m-black) 20%, transparent);
 }
 
 /* Tastatur */
@@ -546,7 +546,7 @@
   bottom: 0;
   height: 300px;
   padding: 8px 3px 0;
-  background: rgb(209 211 217 / 0.96);
+  background: color-mix(in srgb, var(--m-ios-keyboard) 96%, transparent);
   transform: translateY(100%);
   transition: transform 460ms cubic-bezier(0.32, 0.72, 0, 1) 80ms;
 }
@@ -563,21 +563,21 @@
   width: 33px;
   height: 43px;
   border-radius: 6px;
-  background: #fff;
-  box-shadow: 0 1px 0 rgb(0 0 0 / 0.3);
+  background: var(--m-white);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--m-black) 30%, transparent);
   display: grid;
   place-items: center;
-  font-size: 22px;
-  color: #000;
+  font-size: var(--m-fs-glance);
+  color: var(--m-black);
 }
 .keyWide {
   width: 190px;
-  font-size: 16px;
+  font-size: var(--m-fs-callout);
 }
 .keyDark {
   width: 88px;
-  background: #abb0ba;
-  font-size: 16px;
+  background: var(--m-ios-key-dark);
+  font-size: var(--m-fs-callout);
 }
 
 /* ---------- Home-Bildschirm ---------- */
@@ -598,15 +598,15 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(120% 70% at 20% 10%, #b39a4c 0%, transparent 60%),
-    radial-gradient(90% 60% at 90% 80%, #5b4a26 0%, transparent 65%),
-    linear-gradient(170deg, #8a7438 0%, #4a3d22 55%, #2b2618 100%);
+    radial-gradient(120% 70% at 20% 10%, var(--m-wall-1) 0%, transparent 60%),
+    radial-gradient(90% 60% at 90% 80%, var(--m-wall-2) 0%, transparent 65%),
+    linear-gradient(170deg, var(--m-wall-3) 0%, var(--m-wall-4) 55%, var(--c-ink) 100%);
 }
 .wallpaperAndroid {
   background:
-    radial-gradient(100% 60% at 80% 15%, #c2a95a 0%, transparent 60%),
-    radial-gradient(90% 60% at 10% 85%, #6b5830 0%, transparent 65%),
-    linear-gradient(200deg, #96803f 0%, #4e4124 60%, #2b2618 100%);
+    radial-gradient(100% 60% at 80% 15%, var(--m-wall-droid-1) 0%, transparent 60%),
+    radial-gradient(90% 60% at 10% 85%, var(--m-wall-droid-2) 0%, transparent 65%),
+    linear-gradient(200deg, var(--m-wall-droid-3) 0%, var(--m-wall-droid-4) 60%, var(--c-ink) 100%);
 }
 .appIcon {
   position: absolute;
@@ -614,9 +614,9 @@
   display: grid;
   justify-items: center;
   gap: 5px;
-  font-size: 11.5px;
-  color: #fff;
-  text-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
+  font-size: var(--m-fs-icon);
+  color: var(--m-white);
+  text-shadow: 0 1px 2px color-mix(in srgb, var(--m-black) 35%, transparent);
   white-space: nowrap;
 }
 .appIconImg {
@@ -625,7 +625,7 @@
   border-radius: 14px;
   display: grid;
   place-items: center;
-  color: rgb(255 255 255 / 0.92);
+  color: color-mix(in srgb, var(--m-white) 92%, transparent);
   overflow: hidden;
 }
 .newIcon {
@@ -650,9 +650,9 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
-  color: #fff;
-  background: rgb(255 255 255 / 0.22);
+  font-size: var(--m-fs-sub);
+  color: var(--m-white);
+  background: color-mix(in srgb, var(--m-white) 22%, transparent);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
@@ -663,7 +663,7 @@
   bottom: 14px;
   height: 92px;
   border-radius: 36px;
-  background: rgb(255 255 255 / 0.24);
+  background: color-mix(in srgb, var(--m-white) 24%, transparent);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
   backdrop-filter: blur(16px) saturate(160%);
   display: grid;
@@ -676,7 +676,7 @@
   position: absolute;
   inset: 0;
   border-radius: 55px;
-  background: #f5f2eb;
+  background: var(--c-cream);
   display: grid;
   place-items: center;
   opacity: 0;
@@ -692,57 +692,57 @@
 .appMini {
   position: absolute;
   inset: 0;
-  background: #fbf9f4;
+  background: var(--c-paper);
   opacity: 0;
   transition: opacity 320ms ease 700ms;
   padding: 72px 20px 0;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
 }
 .appMini[data-on='true'] {
   opacity: 1;
 }
 .appMiniHello {
-  font-family: Georgia, serif;
-  font-size: 30px;
-  color: #2b2618;
+  font-family: var(--font-serif);
+  font-size: var(--m-fs-title);
+  color: var(--c-ink);
   margin: 18px 0 18px;
 }
 .appMiniLabel {
-  font-size: 13px;
+  font-size: var(--m-fs-footnote);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #635b4a;
+  color: var(--c-ink-muted);
   margin-bottom: 8px;
 }
 .appMiniCard {
   border-radius: 18px;
-  background: #fff;
-  border: 1px solid #e6dfcf;
+  background: var(--m-white);
+  border: 1px solid var(--c-line);
   padding: 18px;
 }
 .appMiniDate {
-  font-family: Georgia, serif;
-  font-size: 24px;
-  color: #7a6823;
+  font-family: var(--font-serif);
+  font-size: var(--m-fs-title-droid);
+  color: var(--c-gold-text);
 }
 .appMiniService {
-  font-size: 18px;
+  font-size: var(--m-fs-lead);
   font-weight: 600;
   margin-top: 6px;
-  color: #2b2618;
+  color: var(--c-ink);
 }
 .appMiniWhen {
-  font-size: 15px;
-  color: #635b4a;
+  font-size: var(--m-fs-subheadline);
+  color: var(--c-ink-muted);
   margin-top: 2px;
 }
 .appMiniBtn {
   margin-top: 16px;
   height: 50px;
   border-radius: 12px;
-  background: #7a6823;
-  color: #fff;
+  background: var(--c-gold-text);
+  color: var(--m-white);
   display: grid;
   place-items: center;
   font-weight: 600;
@@ -753,19 +753,19 @@
   right: 0;
   bottom: 0;
   height: 92px;
-  border-top: 1px solid #e6dfcf;
-  background: rgb(251 249 244 / 0.95);
+  border-top: 1px solid var(--c-line);
+  background: color-mix(in srgb, var(--c-paper) 95%, transparent);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   padding-top: 10px;
-  color: #8c8270;
+  color: var(--c-field);
 }
 .appMiniTabs span {
   display: grid;
   justify-items: center;
 }
 .appMiniTabs span:first-child {
-  color: #7a6823;
+  color: var(--c-gold-text);
 }
 
 /* ---------- Statusleiste, Dynamic Island, Home-Indikator ---------- */
@@ -779,13 +779,13 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 34px 0 52px;
-  font-size: 17px;
+  font-size: var(--m-fs-body);
   font-weight: 600;
   transition: opacity 300ms ease;
   z-index: 5;
 }
 .statusLight {
-  color: #fff;
+  color: var(--m-white);
 }
 .statusIcons {
   display: flex;
@@ -800,7 +800,7 @@
   height: 37px;
   margin-left: -62.5px;
   border-radius: 20px;
-  background: #000;
+  background: var(--m-black);
   z-index: 6;
 }
 .homeIndicator {
@@ -811,19 +811,19 @@
   height: 5px;
   margin-left: -70px;
   border-radius: 3px;
-  background: #000;
+  background: var(--m-black);
   z-index: 6;
   transition: opacity 300ms ease;
 }
 .homeIndicatorLight {
-  background: #fff;
+  background: var(--m-white);
 }
 
 /* Android */
 .statusAndroid {
   height: 38px;
   padding: 2px 22px 0 26px;
-  font-size: 15px;
+  font-size: var(--m-fs-subheadline);
   font-weight: 500;
 }
 .punchHole {
@@ -834,7 +834,7 @@
   height: 22px;
   margin-left: -11px;
   border-radius: 50%;
-  background: #000;
+  background: var(--m-black);
   z-index: 6;
 }
 .gestureBar {
@@ -845,12 +845,12 @@
   height: 4px;
   margin-left: -55px;
   border-radius: 2px;
-  background: #1f1f1f;
+  background: var(--m-droid-label);
   z-index: 6;
   transition: opacity 300ms ease;
 }
 .gestureBarLight {
-  background: #fff;
+  background: var(--m-white);
 }
 
 /* Chrome-Leiste oben */
@@ -860,48 +860,48 @@
   right: 0;
   top: 38px;
   height: 64px;
-  background: #fff;
+  background: var(--m-white);
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 0 8px 0 12px;
-  box-shadow: 0 1px 0 rgb(0 0 0 / 0.08);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--m-black) 8%, transparent);
 }
 .omnibox {
   flex: 1;
   height: 46px;
   border-radius: 23px;
-  background: #eef0ef;
+  background: var(--m-droid-omnibox);
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 0 16px;
-  font-size: 16px;
-  color: #1f1f1f;
+  font-size: var(--m-fs-callout);
+  color: var(--m-droid-label);
 }
 .tabCount {
   width: 22px;
   height: 22px;
-  border: 2px solid #444;
+  border: 2px solid var(--m-droid-icon);
   border-radius: 5px;
   display: grid;
   place-items: center;
-  font-size: 12px;
+  font-size: var(--m-fs-caption1);
   font-weight: 700;
-  color: #444;
+  color: var(--m-droid-icon);
 }
 .chromeMenu {
   width: 36px;
   display: grid;
   place-items: center;
-  color: #444;
+  color: var(--m-droid-icon);
 }
 
 /* Android-Installationsdialog (Material) */
 .scrim {
   position: absolute;
   inset: 0;
-  background: rgb(0 0 0 / 0.32);
+  background: color-mix(in srgb, var(--m-black) 32%, transparent);
   opacity: 0;
   transition: opacity 250ms ease;
 }
@@ -914,7 +914,7 @@
   width: 320px;
   top: 330px;
   border-radius: 28px;
-  background: #f6f2ea;
+  background: var(--m-droid-dialog);
   padding: 24px 24px 12px;
   opacity: 0;
   transform: scale(0.85);
@@ -922,15 +922,15 @@
     transform 420ms cubic-bezier(0.32, 0.72, 0, 1),
     opacity 200ms ease;
   transition-timing-function: var(--spring), ease;
-  box-shadow: 0 12px 40px rgb(0 0 0 / 0.25);
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--m-black) 25%, transparent);
 }
 .dialog[data-on='true'] {
   opacity: 1;
   transform: none;
 }
 .dialogTitle {
-  font-size: 24px;
-  color: #1f1f1f;
+  font-size: var(--m-fs-title-droid);
+  color: var(--m-droid-label);
   margin-bottom: 18px;
 }
 .dialogApp {
@@ -947,13 +947,13 @@
   flex: none;
 }
 .dialogName {
-  font-size: 16px;
+  font-size: var(--m-fs-callout);
   font-weight: 500;
-  color: #1f1f1f;
+  color: var(--m-droid-label);
 }
 .dialogUrl {
-  font-size: 14px;
-  color: #5f5f5f;
+  font-size: var(--m-fs-sub);
+  color: var(--m-droid-muted);
 }
 .dialogBtns {
   display: flex;
@@ -966,9 +966,9 @@
   display: grid;
   place-items: center;
   border-radius: 20px;
-  font-size: 15px;
+  font-size: var(--m-fs-subheadline);
   font-weight: 600;
-  color: #6a5a1f;
+  color: var(--m-droid-accent);
 }
 
 /* Android-Home */
@@ -976,9 +976,9 @@
   position: absolute;
   left: 28px;
   top: 78px;
-  color: #fff;
-  font-size: 22px;
-  text-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+  color: var(--m-white);
+  font-size: var(--m-fs-glance);
+  text-shadow: 0 1px 3px color-mix(in srgb, var(--m-black) 30%, transparent);
 }
 .droidIcon {
   position: absolute;
@@ -986,9 +986,9 @@
   display: grid;
   justify-items: center;
   gap: 6px;
-  font-size: 12.5px;
-  color: #fff;
-  text-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  font-size: var(--m-fs-icon-droid);
+  color: var(--m-white);
+  text-shadow: 0 1px 2px color-mix(in srgb, var(--m-black) 40%, transparent);
   white-space: nowrap;
 }
 .droidIconImg {
@@ -997,7 +997,7 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: rgb(255 255 255 / 0.92);
+  color: color-mix(in srgb, var(--m-white) 92%, transparent);
   overflow: hidden;
 }
 .droidSearch {
@@ -1007,13 +1007,13 @@
   bottom: 40px;
   height: 52px;
   border-radius: 26px;
-  background: rgb(255 255 255 / 0.85);
+  background: color-mix(in srgb, var(--m-white) 85%, transparent);
   display: flex;
   align-items: center;
   padding: 0 20px;
   gap: 10px;
-  color: #5f5f5f;
-  font-size: 16px;
+  color: var(--m-droid-muted);
+  font-size: var(--m-fs-callout);
 }
 
 /* ---------- Finger ---------- */
@@ -1041,10 +1041,10 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: rgb(43 38 24 / 0.3);
+  background: color-mix(in srgb, var(--c-ink) 30%, transparent);
   box-shadow:
-    0 0 0 2.5px rgb(255 255 255 / 0.9),
-    0 3px 10px rgb(0 0 0 / 0.25);
+    0 0 0 2.5px color-mix(in srgb, var(--m-white) 90%, transparent),
+    0 3px 10px color-mix(in srgb, var(--m-black) 25%, transparent);
   transition: transform 120ms ease;
 }
 .finger[data-mode='tap'] .fingerDot,
@@ -1055,7 +1055,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 3px solid rgb(158 136 50 / 0.85);
+  border: 3px solid color-mix(in srgb, var(--c-gold) 85%, transparent);
   animation: ring 520ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 @keyframes ring {

@@ -2,8 +2,8 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: calc(12px + var(--safe-top)) calc(16px + var(--safe-right)) calc(16px + var(--safe-bottom))
-    calc(16px + var(--safe-left));
+  padding: calc(var(--s-3) + var(--safe-top)) calc(var(--gutter) + var(--safe-right)) calc(var(--s-4) + var(--safe-bottom))
+    calc(var(--gutter) + var(--safe-left));
   max-width: 560px;
   margin: 0 auto;
 }
@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 52px;
+  min-height: var(--header-h);
 }
 .main {
   flex: 1;
@@ -26,20 +26,20 @@
   gap: 10px;
 }
 .h1 {
-  font-size: 2.125rem;
-  line-height: 1.1;
+  font-size: var(--fs-h1);
 }
 .h2 {
-  font-family: var(--font-serif);
-  font-size: 1.625rem;
-  line-height: 1.15;
+  font-size: var(--fs-step);
+  line-height: var(--lh-tight);
 }
 .lead {
-  font-size: 1.0625rem;
-  color: var(--muted);
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-light);
+  line-height: 1.55;
+  color: var(--text);
 }
 .intro {
-  font-size: 1rem;
+  font-size: var(--fs-body);
 }
 .skeletonWrap {
   display: grid;
@@ -59,7 +59,7 @@
   align-items: center;
 }
 .benefits svg {
-  color: var(--gold-text);
+  color: var(--link);
   flex: none;
 }
 .cta {
@@ -91,8 +91,8 @@
   position: relative;
   width: 96px;
   height: 96px;
-  border-radius: 22px;
-  background: var(--surface);
+  border-radius: var(--r-lg);
+  background: var(--surface-soft);
   border: 1px solid var(--line);
   display: grid;
   place-items: center;
@@ -116,8 +116,8 @@
   gap: 14px;
 }
 .url {
-  font-size: 0.875rem;
-  color: var(--muted);
+  font-size: var(--fs-small);
+  color: var(--text-muted);
   word-break: break-all;
 }
 
@@ -127,9 +127,9 @@
   justify-items: center;
   gap: 2px;
   padding-top: 8px;
-  color: var(--gold-text);
-  font-size: 0.8125rem;
-  font-weight: 600;
+  color: var(--link);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
 }
 .arrow svg {
   animation: nudge 1.6s ease-in-out infinite;
@@ -149,10 +149,10 @@
   justify-content: center;
   gap: 20px;
   padding-top: 28px;
-  font-size: 0.875rem;
+  font-size: var(--fs-small);
 }
 .footer a {
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 /* ---------- Vorführmodus (Desktop) ---------- */
@@ -182,16 +182,8 @@
   gap: 16px;
   align-content: center;
 }
-.kicker {
-  font-size: 0.8125rem;
-  font-weight: 650;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold-text);
-}
 .showH1 {
-  font-size: clamp(2.25rem, 1.4rem + 1.6vw, 3.25rem);
-  line-height: 1.08;
+  font-size: var(--fs-h1);
 }
 .qrCard {
   margin: 12px 0 0;
@@ -200,10 +192,10 @@
   gap: 14px;
   align-items: flex-start;
   padding: 18px;
-  border-radius: var(--r-xl);
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  box-shadow: var(--sh-2);
+  border-radius: var(--r-md);
+  background: var(--qr-bg);
+  color: var(--c-ink);
+  box-shadow: var(--shadow-cells);
   width: fit-content;
 }
 .qrCard figcaption {
@@ -225,11 +217,11 @@
   gap: 8px;
 }
 .showLabel {
-  font-size: 0.8125rem;
-  font-weight: 650;
-  letter-spacing: 0.12em;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 @media (max-width: 1100px) {
