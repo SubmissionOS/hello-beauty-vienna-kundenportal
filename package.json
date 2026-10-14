@@ -7,13 +7,16 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/scan-secrets.mjs --build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "check:manifest": "node scripts/check-manifest.mjs",
     "test": "playwright test",
-    "shots": "playwright test tests/screens.spec.ts"
+    "scan:secrets": "node scripts/scan-secrets.mjs --build",
+    "hooks:install": "git config core.hooksPath .githooks",
+    "env:init": "node scripts/env-local.mjs init",
+    "env:check": "node scripts/env-local.mjs check"
   },
   "dependencies": {
     "next": "16.3.7",

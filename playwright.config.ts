@@ -18,7 +18,7 @@ export default defineConfig({
     timezoneId: 'Europe/Vienna',
   },
   webServer: {
-    command: `npx --no-install next build && npx --no-install next start -p ${PORT}`,
+    command: `npm run build && npx --no-install next start -p ${PORT}`,
     url: `http://localhost:${PORT}/installieren`,
     reuseExistingServer: true,
     timeout: 300_000,

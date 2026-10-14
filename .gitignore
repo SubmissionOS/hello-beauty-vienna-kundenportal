@@ -1,8 +1,8 @@
 node_modules/
 .next/
 out/
-.env
-.env.*
+# Umgebungsdateien: alle ignorieren, nur die Vorlage erlauben
+.env*
 !.env.example
 *.tsbuildinfo
 next-env.d.ts
@@ -10,3 +10,8 @@ test-results/
 playwright-report/
 .vercel/
 .claude/settings.local.json
+
+# Supabase-CLI (lokal geladen, nicht im Repo)
+tools/
+supabase/.temp/
+supabase/.branches/
