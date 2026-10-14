@@ -22,7 +22,7 @@ export function ApptCard({ appt, services }: { appt: Appointment; services: Serv
         <span className={st.apptMonth}>{month.replace('.', '')}</span>
       </div>
       <div className={st.apptMain}>
-        <h3 className={st.apptService}>{serviceLabel(appt.serviceId, appt.serviceName, services, lang)}</h3>
+        <h2 className={st.apptService}>{serviceLabel(appt.serviceId, appt.serviceName, services, lang)}</h2>
         <p className={st.apptMeta}>
           {formatDateLong(appt.start, lang)} · {formatTime(appt.start, lang)}
         </p>

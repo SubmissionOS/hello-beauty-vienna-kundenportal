@@ -36,7 +36,7 @@ export function AuthFrame({ back, children }: { back?: string; children: React.R
         )}
         {hydrated && <LangSwitch />}
       </div>
-      {children}
+      <main className={st.authMain}>{children}</main>
       <nav className={st.legalLinks} aria-label={t.profile.legal}>
         <a href={legalUrl('imprint', lang)} target="_blank" rel="noopener noreferrer">
           {t.common.imprint}

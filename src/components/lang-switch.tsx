@@ -14,7 +14,7 @@ export function LangSwitch({ onChange }: { onChange?: (lang: (typeof langs)[numb
           type="button"
           lang={l}
           aria-pressed={lang === l}
-          aria-label={t.common.langNames[l]}
+          aria-label={`${l.toUpperCase()} – ${t.common.langNames[l]}`}
           onClick={() => {
             setLang(l);
             onChange?.(l);

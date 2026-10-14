@@ -2,7 +2,7 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: calc(12px + var(--safe-top)) calc(16px + var(--safe-right)) calc(88px + var(--safe-bottom))
+  padding: calc(12px + var(--safe-top)) calc(16px + var(--safe-right)) calc(16px + var(--safe-bottom))
     calc(16px + var(--safe-left));
   max-width: 560px;
   margin: 0 auto;
@@ -123,21 +123,13 @@
 
 /* Dezenter Hinweis-Pfeil Richtung echter Safari-Leiste */
 .arrow {
-  position: fixed;
-  left: 50%;
-  bottom: calc(6px + var(--safe-bottom));
-  transform: translateX(-50%);
   display: grid;
   justify-items: center;
   gap: 2px;
-  padding: 6px 14px 4px;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  padding-top: 8px;
   color: var(--gold-text);
   font-size: 0.8125rem;
   font-weight: 600;
-  pointer-events: none;
-  z-index: 20;
 }
 .arrow svg {
   animation: nudge 1.6s ease-in-out infinite;

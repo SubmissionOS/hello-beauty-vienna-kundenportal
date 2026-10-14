@@ -43,7 +43,7 @@ export default function StartPage() {
   }
 
   return (
-    <div className={st.screen}>
+    <main className={st.screen}>
       <header className={st.header}>
         <LogoWide width={132} />
       </header>
@@ -114,6 +114,6 @@ export default function StartPage() {
           </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 }

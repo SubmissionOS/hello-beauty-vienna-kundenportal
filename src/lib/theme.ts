@@ -44,3 +44,13 @@ export function setTheme(pref: ThemePref) {
 }
 
 export const useThemePref = themeStore.use;
+
+/** Folgt bei „Automatisch“ einem Wechsel der Systemdarstellung, während die App offen ist. */
+export function watchSystemTheme(): () => void {
+  const m = window.matchMedia('(prefers-color-scheme: dark)');
+  const onChange = () => {
+    if (readPref() === 'system') applyTheme('system');
+  };
+  m.addEventListener('change', onChange);
+  return () => m.removeEventListener('change', onChange);
+}

@@ -11,19 +11,19 @@ export function AppPage({
   children: React.ReactNode;
 }) {
   return (
-    <div className={st.screen}>
+    <main className={st.screen}>
       <header className={st.header}>
         <h1 className={st.title}>{title}</h1>
         {action}
       </header>
       <div className={st.content}>{children}</div>
-    </div>
+    </main>
   );
 }
 
 export function PageSkeleton() {
   return (
-    <div className={st.screen} aria-hidden="true">
+    <main className={st.screen} aria-hidden="true">
       <header className={st.header}>
         <div className="skeleton" style={{ width: 180, height: 34 }} />
       </header>
@@ -32,6 +32,6 @@ export function PageSkeleton() {
         <div className="skeleton" style={{ height: 64, borderRadius: 16 }} />
         <div className="skeleton" style={{ height: 64, borderRadius: 16 }} />
       </div>
-    </div>
+    </main>
   );
 }
