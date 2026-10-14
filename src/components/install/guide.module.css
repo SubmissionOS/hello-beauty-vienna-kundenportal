@@ -97,12 +97,10 @@
 
 /* Vorführmodus (Desktop): Handy oben, Schritte darunter */
 .show .stage {
-  grid-template-columns: 1fr;
-  justify-items: center;
+  align-items: center;
 }
-.show .steps {
-  width: 100%;
-  max-width: 340px;
+.show .stepBtn {
+  font-size: 0.875rem;
 }
 .show .stepBtn {
   cursor: default;

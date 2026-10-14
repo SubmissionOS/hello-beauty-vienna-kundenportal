@@ -259,11 +259,11 @@ function DesktopShow({ host }: { host: string }) {
         <section className={st.showPhones} aria-label={t.install.guide.mockupLabel}>
           <div className={st.showCol}>
             <p className={st.showLabel}>{t.install.desktop.iphone}</p>
-            <Guide kind="ios" host={host} ios26 width={250} show />
+            <Guide kind="ios" host={host} ios26 width={215} show />
           </div>
           <div className={st.showCol}>
             <p className={st.showLabel}>{t.install.desktop.android}</p>
-            <Guide kind="android" host={host} width={250} show />
+            <Guide kind="android" host={host} width={215} show />
           </div>
         </section>
       </main>
