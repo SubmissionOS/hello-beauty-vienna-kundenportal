@@ -1,0 +1,3058 @@
+{
+  "createdAt": "2026-10-14T17:49:52.193Z",
+  "label": "vor-teil3",
+  "migrations": [
+    {
+      "version": "20261014150000",
+      "name": "schema"
+    },
+    {
+      "version": "20261014150100",
+      "name": "functions"
+    }
+  ],
+  "extensions": [
+    {
+      "extname": "btree_gist",
+      "extversion": "1.7"
+    },
+    {
+      "extname": "pg_stat_statements",
+      "extversion": "1.11"
+    },
+    {
+      "extname": "pgcrypto",
+      "extversion": "1.3"
+    },
+    {
+      "extname": "plpgsql",
+      "extversion": "1.0"
+    },
+    {
+      "extname": "supabase_vault",
+      "extversion": "0.3.1"
+    },
+    {
+      "extname": "uuid-ossp",
+      "extversion": "1.1"
+    }
+  ],
+  "enums": [
+    {
+      "schema": "public",
+      "name": "appointment_status",
+      "labels": "{pending,confirmed,completed,cancelled,no_show}"
+    },
+    {
+      "schema": "public",
+      "name": "payment_method",
+      "labels": "{in_salon,online_demo}"
+    }
+  ],
+  "columns": [
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "customer_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "service_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "staff_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "service_name",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "category_key",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "staff_name",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "starts_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "ends_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "duration_minutes",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "price_eur",
+      "data_type": "numeric",
+      "udt_name": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "status",
+      "data_type": "USER-DEFINED",
+      "udt_name": "appointment_status",
+      "is_nullable": "NO",
+      "column_default": "'confirmed'::appointment_status",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "payment",
+      "data_type": "USER-DEFINED",
+      "udt_name": "payment_method",
+      "is_nullable": "NO",
+      "column_default": "'in_salon'::payment_method",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": "now()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": "now()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "booking_attempts",
+      "column_name": "id",
+      "data_type": "bigint",
+      "udt_name": "int8",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "booking_attempts",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "booking_attempts",
+      "column_name": "customer_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "booking_attempts",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": "now()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "first_name",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "last_name",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "email",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "phone",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "language",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": "'de'::text",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "notify_email",
+      "data_type": "boolean",
+      "udt_name": "bool",
+      "is_nullable": "NO",
+      "column_default": "true",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "notify_sms",
+      "data_type": "boolean",
+      "udt_name": "bool",
+      "is_nullable": "NO",
+      "column_default": "false",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "marketing_consent",
+      "data_type": "boolean",
+      "udt_name": "bool",
+      "is_nullable": "NO",
+      "column_default": "false",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "marketing_consent_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "privacy_notice_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": "now()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "deletion_requested_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": "now()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "customer_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "service_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "service_name",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "category_key",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "staff_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "staff_name",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "start",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "duration_minutes",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "price_eur",
+      "data_type": "numeric",
+      "udt_name": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "status",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "payment",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "weekday",
+      "data_type": "smallint",
+      "udt_name": "int2",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "opens",
+      "data_type": "time without time zone",
+      "udt_name": "time",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "closes",
+      "data_type": "time without time zone",
+      "udt_name": "time",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "key",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "sort_order",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "image_url",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "category_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "code",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "name",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "name_i18n",
+      "data_type": "jsonb",
+      "udt_name": "jsonb",
+      "is_nullable": "NO",
+      "column_default": "'{}'::jsonb",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "duration_minutes",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "price_eur",
+      "data_type": "numeric",
+      "udt_name": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "active",
+      "data_type": "boolean",
+      "udt_name": "bool",
+      "is_nullable": "NO",
+      "column_default": "true",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "sort_order",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "code",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "display_name",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "active",
+      "data_type": "boolean",
+      "udt_name": "bool",
+      "is_nullable": "NO",
+      "column_default": "true",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "sort_order",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "staff_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "weekday",
+      "data_type": "smallint",
+      "udt_name": "int2",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "starts",
+      "data_type": "time without time zone",
+      "udt_name": "time",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "ends",
+      "data_type": "time without time zone",
+      "udt_name": "time",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "column_name": "staff_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "column_name": "service_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenant_domains",
+      "column_name": "id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenant_domains",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenant_domains",
+      "column_name": "host",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenant_domains",
+      "column_name": "is_pattern",
+      "data_type": "boolean",
+      "udt_name": "bool",
+      "is_nullable": "NO",
+      "column_default": "false",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenant_domains",
+      "column_name": "note",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "tenant_id",
+      "data_type": "uuid",
+      "udt_name": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "is_generated": "ALWAYS",
+      "generation_expression": "id"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "slug",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "name",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "time_zone",
+      "data_type": "text",
+      "udt_name": "text",
+      "is_nullable": "NO",
+      "column_default": "'Europe/Vienna'::text",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "booking_lead_minutes",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "60",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "booking_horizon_days",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "60",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "slot_step_minutes",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "30",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "change_notice_hours",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "24",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "max_bookings_per_hour",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "5",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "max_bookings_per_day",
+      "data_type": "integer",
+      "udt_name": "int4",
+      "is_nullable": "NO",
+      "column_default": "10",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "udt_name": "timestamptz",
+      "is_nullable": "NO",
+      "column_default": "now()",
+      "is_generated": "NEVER",
+      "generation_expression": null
+    }
+  ],
+  "constraints": [
+    {
+      "schema": "public",
+      "table": "appointments",
+      "name": "appointments_check",
+      "def": "CHECK ((ends_at > starts_at))"
+    },
+    {
+      "schema": "public",
+      "table": "appointments",
+      "name": "appointments_customer_id_tenant_id_fkey",
+      "def": "FOREIGN KEY (customer_id, tenant_id) REFERENCES customers(id, tenant_id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "appointments",
+      "name": "appointments_duration_minutes_check",
+      "def": "CHECK (((duration_minutes >= 5) AND (duration_minutes <= 480)))"
+    },
+    {
+      "schema": "public",
+      "table": "appointments",
+      "name": "appointments_no_overlap",
+      "def": "EXCLUDE USING gist (staff_id WITH =, tstzrange(starts_at, ends_at, '[)'::text) WITH &&) WHERE ((status = ANY (ARRAY['pending'::appointment_status, 'confirmed'::appointment_status])))"
+    },
+    {
+      "schema": "public",
+      "table": "appointments",
+      "name": "appointments_pkey",
+      "def": "PRIMARY KEY (id)"
+    },
+    {
+      "schema": "public",
+      "table": "appointments",
+      "name": "appointments_price_eur_check",
+      "def": "CHECK ((price_eur >= (0)::numeric))"
+    },
+    {
+      "schema": "public",
+      "table": "appointments",
+      "name": "appointments_service_id_tenant_id_fkey",
+      "def": "FOREIGN KEY (service_id, tenant_id) REFERENCES services(id, tenant_id) ON DELETE RESTRICT"
+    },
+    {
+      "schema": "public",
+      "table": "appointments",
+      "name": "appointments_staff_id_tenant_id_fkey",
+      "def": "FOREIGN KEY (staff_id, tenant_id) REFERENCES staff(id, tenant_id) ON DELETE RESTRICT"
+    },
+    {
+      "schema": "public",
+      "table": "appointments",
+      "name": "appointments_tenant_id_fkey",
+      "def": "FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "booking_attempts",
+      "name": "booking_attempts_customer_id_tenant_id_fkey",
+      "def": "FOREIGN KEY (customer_id, tenant_id) REFERENCES customers(id, tenant_id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "booking_attempts",
+      "name": "booking_attempts_pkey",
+      "def": "PRIMARY KEY (id)"
+    },
+    {
+      "schema": "public",
+      "table": "booking_attempts",
+      "name": "booking_attempts_tenant_id_fkey",
+      "def": "FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_check",
+      "def": "CHECK (((NOT notify_sms) OR (phone IS NOT NULL)))"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_email_check",
+      "def": "CHECK (((length(email) >= 3) AND (length(email) <= 254)))"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_first_name_check",
+      "def": "CHECK (((length(first_name) >= 1) AND (length(first_name) <= 80)))"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_id_tenant_id_key",
+      "def": "UNIQUE (id, tenant_id)"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_language_check",
+      "def": "CHECK ((language = ANY (ARRAY['de'::text, 'en'::text, 'hu'::text])))"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_last_name_check",
+      "def": "CHECK (((length(last_name) >= 1) AND (length(last_name) <= 80)))"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_phone_check",
+      "def": "CHECK (((phone IS NULL) OR (phone ~ '^\\+?[0-9][0-9 ()/-]{5,19}$'::text)))"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_pkey",
+      "def": "PRIMARY KEY (id)"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_tenant_id_fkey",
+      "def": "FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_tenant_id_user_id_key",
+      "def": "UNIQUE (tenant_id, user_id)"
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "name": "customers_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "opening_hours",
+      "name": "opening_hours_check",
+      "def": "CHECK ((opens < closes))"
+    },
+    {
+      "schema": "public",
+      "table": "opening_hours",
+      "name": "opening_hours_pkey",
+      "def": "PRIMARY KEY (id)"
+    },
+    {
+      "schema": "public",
+      "table": "opening_hours",
+      "name": "opening_hours_tenant_id_fkey",
+      "def": "FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "opening_hours",
+      "name": "opening_hours_tenant_id_weekday_key",
+      "def": "UNIQUE (tenant_id, weekday)"
+    },
+    {
+      "schema": "public",
+      "table": "opening_hours",
+      "name": "opening_hours_weekday_check",
+      "def": "CHECK (((weekday >= 0) AND (weekday <= 6)))"
+    },
+    {
+      "schema": "public",
+      "table": "service_categories",
+      "name": "service_categories_id_tenant_id_key",
+      "def": "UNIQUE (id, tenant_id)"
+    },
+    {
+      "schema": "public",
+      "table": "service_categories",
+      "name": "service_categories_key_check",
+      "def": "CHECK ((key ~ '^[a-z0-9_-]{2,30}$'::text))"
+    },
+    {
+      "schema": "public",
+      "table": "service_categories",
+      "name": "service_categories_pkey",
+      "def": "PRIMARY KEY (id)"
+    },
+    {
+      "schema": "public",
+      "table": "service_categories",
+      "name": "service_categories_tenant_id_fkey",
+      "def": "FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "service_categories",
+      "name": "service_categories_tenant_id_key_key",
+      "def": "UNIQUE (tenant_id, key)"
+    },
+    {
+      "schema": "public",
+      "table": "services",
+      "name": "services_category_id_tenant_id_fkey",
+      "def": "FOREIGN KEY (category_id, tenant_id) REFERENCES service_categories(id, tenant_id) ON DELETE RESTRICT"
+    },
+    {
+      "schema": "public",
+      "table": "services",
+      "name": "services_duration_minutes_check",
+      "def": "CHECK (((duration_minutes >= 5) AND (duration_minutes <= 480)))"
+    },
+    {
+      "schema": "public",
+      "table": "services",
+      "name": "services_id_tenant_id_key",
+      "def": "UNIQUE (id, tenant_id)"
+    },
+    {
+      "schema": "public",
+      "table": "services",
+      "name": "services_name_check",
+      "def": "CHECK (((length(name) >= 1) AND (length(name) <= 120)))"
+    },
+    {
+      "schema": "public",
+      "table": "services",
+      "name": "services_pkey",
+      "def": "PRIMARY KEY (id)"
+    },
+    {
+      "schema": "public",
+      "table": "services",
+      "name": "services_price_eur_check",
+      "def": "CHECK ((price_eur >= (0)::numeric))"
+    },
+    {
+      "schema": "public",
+      "table": "services",
+      "name": "services_tenant_id_code_key",
+      "def": "UNIQUE (tenant_id, code)"
+    },
+    {
+      "schema": "public",
+      "table": "services",
+      "name": "services_tenant_id_fkey",
+      "def": "FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "staff",
+      "name": "staff_display_name_check",
+      "def": "CHECK (((length(display_name) >= 1) AND (length(display_name) <= 40)))"
+    },
+    {
+      "schema": "public",
+      "table": "staff",
+      "name": "staff_id_tenant_id_key",
+      "def": "UNIQUE (id, tenant_id)"
+    },
+    {
+      "schema": "public",
+      "table": "staff",
+      "name": "staff_pkey",
+      "def": "PRIMARY KEY (id)"
+    },
+    {
+      "schema": "public",
+      "table": "staff",
+      "name": "staff_tenant_id_code_key",
+      "def": "UNIQUE (tenant_id, code)"
+    },
+    {
+      "schema": "public",
+      "table": "staff",
+      "name": "staff_tenant_id_fkey",
+      "def": "FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "staff_hours",
+      "name": "staff_hours_check",
+      "def": "CHECK ((starts < ends))"
+    },
+    {
+      "schema": "public",
+      "table": "staff_hours",
+      "name": "staff_hours_pkey",
+      "def": "PRIMARY KEY (id)"
+    },
+    {
+      "schema": "public",
+      "table": "staff_hours",
+      "name": "staff_hours_staff_id_tenant_id_fkey",
+      "def": "FOREIGN KEY (staff_id, tenant_id) REFERENCES staff(id, tenant_id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "staff_hours",
+      "name": "staff_hours_staff_id_weekday_key",
+      "def": "UNIQUE (staff_id, weekday)"
+    },
+    {
+      "schema": "public",
+      "table": "staff_hours",
+      "name": "staff_hours_tenant_id_fkey",
+      "def": "FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "staff_hours",
+      "name": "staff_hours_weekday_check",
+      "def": "CHECK (((weekday >= 0) AND (weekday <= 6)))"
+    },
+    {
+      "schema": "public",
+      "table": "staff_services",
+      "name": "staff_services_pkey",
+      "def": "PRIMARY KEY (staff_id, service_id)"
+    },
+    {
+      "schema": "public",
+      "table": "staff_services",
+      "name": "staff_services_service_id_tenant_id_fkey",
+      "def": "FOREIGN KEY (service_id, tenant_id) REFERENCES services(id, tenant_id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "staff_services",
+      "name": "staff_services_staff_id_tenant_id_fkey",
+      "def": "FOREIGN KEY (staff_id, tenant_id) REFERENCES staff(id, tenant_id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "staff_services",
+      "name": "staff_services_tenant_id_fkey",
+      "def": "FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "tenant_domains",
+      "name": "tenant_domains_host_check",
+      "def": "CHECK (((host = lower(host)) AND (host !~ '[:/]'::text)))"
+    },
+    {
+      "schema": "public",
+      "table": "tenant_domains",
+      "name": "tenant_domains_host_key",
+      "def": "UNIQUE (host)"
+    },
+    {
+      "schema": "public",
+      "table": "tenant_domains",
+      "name": "tenant_domains_pkey",
+      "def": "PRIMARY KEY (id)"
+    },
+    {
+      "schema": "public",
+      "table": "tenant_domains",
+      "name": "tenant_domains_tenant_id_fkey",
+      "def": "FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE"
+    },
+    {
+      "schema": "public",
+      "table": "tenants",
+      "name": "tenants_booking_horizon_days_check",
+      "def": "CHECK (((booking_horizon_days >= 1) AND (booking_horizon_days <= 365)))"
+    },
+    {
+      "schema": "public",
+      "table": "tenants",
+      "name": "tenants_booking_lead_minutes_check",
+      "def": "CHECK ((booking_lead_minutes >= 0))"
+    },
+    {
+      "schema": "public",
+      "table": "tenants",
+      "name": "tenants_change_notice_hours_check",
+      "def": "CHECK ((change_notice_hours >= 0))"
+    },
+    {
+      "schema": "public",
+      "table": "tenants",
+      "name": "tenants_max_bookings_per_day_check",
+      "def": "CHECK ((max_bookings_per_day > 0))"
+    },
+    {
+      "schema": "public",
+      "table": "tenants",
+      "name": "tenants_max_bookings_per_hour_check",
+      "def": "CHECK ((max_bookings_per_hour > 0))"
+    },
+    {
+      "schema": "public",
+      "table": "tenants",
+      "name": "tenants_pkey",
+      "def": "PRIMARY KEY (id)"
+    },
+    {
+      "schema": "public",
+      "table": "tenants",
+      "name": "tenants_slot_step_minutes_check",
+      "def": "CHECK ((slot_step_minutes = ANY (ARRAY[10, 15, 20, 30, 60])))"
+    },
+    {
+      "schema": "public",
+      "table": "tenants",
+      "name": "tenants_slug_check",
+      "def": "CHECK ((slug ~ '^[a-z0-9-]{2,40}$'::text))"
+    },
+    {
+      "schema": "public",
+      "table": "tenants",
+      "name": "tenants_slug_key",
+      "def": "UNIQUE (slug)"
+    }
+  ],
+  "indexes": [
+    {
+      "schemaname": "public",
+      "tablename": "appointments",
+      "indexname": "appointments_customer",
+      "indexdef": "CREATE INDEX appointments_customer ON public.appointments USING btree (customer_id, starts_at)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "appointments",
+      "indexname": "appointments_no_overlap",
+      "indexdef": "CREATE INDEX appointments_no_overlap ON public.appointments USING gist (staff_id, tstzrange(starts_at, ends_at, '[)'::text)) WHERE (status = ANY (ARRAY['pending'::appointment_status, 'confirmed'::appointment_status]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "appointments",
+      "indexname": "appointments_pkey",
+      "indexdef": "CREATE UNIQUE INDEX appointments_pkey ON public.appointments USING btree (id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "appointments",
+      "indexname": "appointments_tenant_start",
+      "indexdef": "CREATE INDEX appointments_tenant_start ON public.appointments USING btree (tenant_id, starts_at)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "booking_attempts",
+      "indexname": "booking_attempts_customer_time",
+      "indexdef": "CREATE INDEX booking_attempts_customer_time ON public.booking_attempts USING btree (customer_id, created_at)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "booking_attempts",
+      "indexname": "booking_attempts_pkey",
+      "indexdef": "CREATE UNIQUE INDEX booking_attempts_pkey ON public.booking_attempts USING btree (id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "customers",
+      "indexname": "customers_id_tenant_id_key",
+      "indexdef": "CREATE UNIQUE INDEX customers_id_tenant_id_key ON public.customers USING btree (id, tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "customers",
+      "indexname": "customers_pkey",
+      "indexdef": "CREATE UNIQUE INDEX customers_pkey ON public.customers USING btree (id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "customers",
+      "indexname": "customers_tenant_email",
+      "indexdef": "CREATE UNIQUE INDEX customers_tenant_email ON public.customers USING btree (tenant_id, lower(email))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "customers",
+      "indexname": "customers_tenant_id_user_id_key",
+      "indexdef": "CREATE UNIQUE INDEX customers_tenant_id_user_id_key ON public.customers USING btree (tenant_id, user_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "customers",
+      "indexname": "customers_user",
+      "indexdef": "CREATE INDEX customers_user ON public.customers USING btree (user_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "opening_hours",
+      "indexname": "opening_hours_pkey",
+      "indexdef": "CREATE UNIQUE INDEX opening_hours_pkey ON public.opening_hours USING btree (id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "opening_hours",
+      "indexname": "opening_hours_tenant_id_weekday_key",
+      "indexdef": "CREATE UNIQUE INDEX opening_hours_tenant_id_weekday_key ON public.opening_hours USING btree (tenant_id, weekday)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "service_categories",
+      "indexname": "service_categories_id_tenant_id_key",
+      "indexdef": "CREATE UNIQUE INDEX service_categories_id_tenant_id_key ON public.service_categories USING btree (id, tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "service_categories",
+      "indexname": "service_categories_pkey",
+      "indexdef": "CREATE UNIQUE INDEX service_categories_pkey ON public.service_categories USING btree (id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "service_categories",
+      "indexname": "service_categories_tenant_id_key_key",
+      "indexdef": "CREATE UNIQUE INDEX service_categories_tenant_id_key_key ON public.service_categories USING btree (tenant_id, key)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "services",
+      "indexname": "services_id_tenant_id_key",
+      "indexdef": "CREATE UNIQUE INDEX services_id_tenant_id_key ON public.services USING btree (id, tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "services",
+      "indexname": "services_pkey",
+      "indexdef": "CREATE UNIQUE INDEX services_pkey ON public.services USING btree (id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "services",
+      "indexname": "services_tenant_id_code_key",
+      "indexdef": "CREATE UNIQUE INDEX services_tenant_id_code_key ON public.services USING btree (tenant_id, code)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "staff",
+      "indexname": "staff_id_tenant_id_key",
+      "indexdef": "CREATE UNIQUE INDEX staff_id_tenant_id_key ON public.staff USING btree (id, tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "staff",
+      "indexname": "staff_pkey",
+      "indexdef": "CREATE UNIQUE INDEX staff_pkey ON public.staff USING btree (id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "staff",
+      "indexname": "staff_tenant_id_code_key",
+      "indexdef": "CREATE UNIQUE INDEX staff_tenant_id_code_key ON public.staff USING btree (tenant_id, code)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "staff_hours",
+      "indexname": "staff_hours_pkey",
+      "indexdef": "CREATE UNIQUE INDEX staff_hours_pkey ON public.staff_hours USING btree (id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "staff_hours",
+      "indexname": "staff_hours_staff_id_weekday_key",
+      "indexdef": "CREATE UNIQUE INDEX staff_hours_staff_id_weekday_key ON public.staff_hours USING btree (staff_id, weekday)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "staff_services",
+      "indexname": "staff_services_pkey",
+      "indexdef": "CREATE UNIQUE INDEX staff_services_pkey ON public.staff_services USING btree (staff_id, service_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "tenant_domains",
+      "indexname": "tenant_domains_host_key",
+      "indexdef": "CREATE UNIQUE INDEX tenant_domains_host_key ON public.tenant_domains USING btree (host)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "tenant_domains",
+      "indexname": "tenant_domains_pkey",
+      "indexdef": "CREATE UNIQUE INDEX tenant_domains_pkey ON public.tenant_domains USING btree (id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "tenants",
+      "indexname": "tenants_pkey",
+      "indexdef": "CREATE UNIQUE INDEX tenants_pkey ON public.tenants USING btree (id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "tenants",
+      "indexname": "tenants_slug_key",
+      "indexdef": "CREATE UNIQUE INDEX tenants_slug_key ON public.tenants USING btree (slug)"
+    }
+  ],
+  "policies": [
+    {
+      "schemaname": "public",
+      "tablename": "appointments",
+      "policyname": "own_appointments",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "qual": "((customer_id = ( SELECT app.my_customer_id() AS my_customer_id)) AND (tenant_id = ( SELECT app.current_tenant() AS current_tenant)))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "customers",
+      "policyname": "own_customer",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "qual": "((user_id = ( SELECT auth.uid() AS uid)) AND (tenant_id = ( SELECT app.current_tenant() AS current_tenant)) AND (deletion_requested_at IS NULL))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "opening_hours",
+      "policyname": "catalog_read",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "(tenant_id = ( SELECT app.current_tenant() AS current_tenant))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "service_categories",
+      "policyname": "catalog_read",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "(tenant_id = ( SELECT app.current_tenant() AS current_tenant))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "services",
+      "policyname": "catalog_read",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "((tenant_id = ( SELECT app.current_tenant() AS current_tenant)) AND active)",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "staff",
+      "policyname": "catalog_read",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "((tenant_id = ( SELECT app.current_tenant() AS current_tenant)) AND active)",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "staff_hours",
+      "policyname": "catalog_read",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "(tenant_id = ( SELECT app.current_tenant() AS current_tenant))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "staff_services",
+      "policyname": "catalog_read",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "(tenant_id = ( SELECT app.current_tenant() AS current_tenant))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "tenants",
+      "policyname": "tenant_read",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "(id = ( SELECT app.current_tenant() AS current_tenant))",
+      "with_check": null
+    }
+  ],
+  "rls": [
+    {
+      "schema": "public",
+      "table": "appointments",
+      "rls": true,
+      "force": false
+    },
+    {
+      "schema": "public",
+      "table": "booking_attempts",
+      "rls": true,
+      "force": false
+    },
+    {
+      "schema": "public",
+      "table": "customers",
+      "rls": true,
+      "force": false
+    },
+    {
+      "schema": "public",
+      "table": "opening_hours",
+      "rls": true,
+      "force": false
+    },
+    {
+      "schema": "public",
+      "table": "service_categories",
+      "rls": true,
+      "force": false
+    },
+    {
+      "schema": "public",
+      "table": "services",
+      "rls": true,
+      "force": false
+    },
+    {
+      "schema": "public",
+      "table": "staff",
+      "rls": true,
+      "force": false
+    },
+    {
+      "schema": "public",
+      "table": "staff_hours",
+      "rls": true,
+      "force": false
+    },
+    {
+      "schema": "public",
+      "table": "staff_services",
+      "rls": true,
+      "force": false
+    },
+    {
+      "schema": "public",
+      "table": "tenant_domains",
+      "rls": true,
+      "force": false
+    },
+    {
+      "schema": "public",
+      "table": "tenants",
+      "rls": true,
+      "force": false
+    }
+  ],
+  "functions": [
+    {
+      "schema": "app",
+      "name": "appointment_json",
+      "args": "p_id uuid",
+      "def": "CREATE OR REPLACE FUNCTION app.appointment_json(p_id uuid)\n RETURNS jsonb\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$\n  select jsonb_build_object(\n    'id', a.id, 'customerId', a.customer_id, 'serviceId', a.service_id, 'serviceName', a.service_name,\n    'categoryId', a.category_key, 'staffId', a.staff_id, 'staffName', a.staff_name,\n    'start', app.to_wall(a.starts_at, t.time_zone), 'durationMinutes', a.duration_minutes,\n    'priceEur', a.price_eur,\n    'status', case when a.status = 'confirmed' and a.ends_at < now() then 'completed' else a.status::text end,\n    'payment', a.payment::text, 'createdAt', a.created_at)\n  from public.appointments a join public.tenants t on t.id = a.tenant_id\n  where a.id = p_id\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres"
+      ]
+    },
+    {
+      "schema": "app",
+      "name": "current_tenant",
+      "args": "",
+      "def": "CREATE OR REPLACE FUNCTION app.current_tenant()\n RETURNS uuid\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$\n  select d.tenant_id\n  from public.tenant_domains d\n  where d.host = app.request_host()\n     or (d.is_pattern and app.request_host() like replace(replace(d.host, '_', '\\_'), '*', '%'))\n  order by d.is_pattern, length(d.host) desc\n  limit 1\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres",
+        "service_role",
+        "anon",
+        "authenticated"
+      ]
+    },
+    {
+      "schema": "app",
+      "name": "from_wall",
+      "args": "wall text, tz text",
+      "def": "CREATE OR REPLACE FUNCTION app.from_wall(wall text, tz text)\n RETURNS timestamp with time zone\n LANGUAGE plpgsql\n IMMUTABLE\n SET search_path TO ''\nAS $function$\nbegin\n  if wall !~ '^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$' then\n    raise exception 'invalid_time' using errcode = 'P0001';\n  end if;\n  return (replace(wall, 'T', ' ')::timestamp) at time zone tz;\nend\n$function$\n",
+      "security_definer": false,
+      "execute_roles": [
+        "postgres",
+        "service_role"
+      ]
+    },
+    {
+      "schema": "app",
+      "name": "my_customer_id",
+      "args": "",
+      "def": "CREATE OR REPLACE FUNCTION app.my_customer_id()\n RETURNS uuid\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$\n  select c.id from public.customers c\n  where c.user_id = auth.uid() and c.tenant_id = app.current_tenant() and c.deletion_requested_at is null\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres",
+        "service_role",
+        "anon",
+        "authenticated"
+      ]
+    },
+    {
+      "schema": "app",
+      "name": "profile_json",
+      "args": "c customers",
+      "def": "CREATE OR REPLACE FUNCTION app.profile_json(c customers)\n RETURNS jsonb\n LANGUAGE sql\n STABLE\n SET search_path TO ''\nAS $function$\n  select jsonb_build_object(\n    'id', c.id, 'firstName', c.first_name, 'lastName', c.last_name, 'email', c.email, 'phone', c.phone,\n    'language', c.language, 'notifyEmail', c.notify_email, 'notifySms', c.notify_sms,\n    'marketingConsent', c.marketing_consent, 'marketingConsentAt', c.marketing_consent_at,\n    'privacyNoticeAt', c.privacy_notice_at, 'createdAt', c.created_at)\n$function$\n",
+      "security_definer": false,
+      "execute_roles": [
+        "postgres"
+      ]
+    },
+    {
+      "schema": "app",
+      "name": "request_host",
+      "args": "",
+      "def": "CREATE OR REPLACE FUNCTION app.request_host()\n RETURNS text\n LANGUAGE sql\n STABLE\n SET search_path TO ''\nAS $function$\n  select nullif(\n    lower(split_part(split_part(regexp_replace(\n      coalesce(nullif(current_setting('request.headers', true), '')::json ->> 'origin', ''),\n      '^[a-z]+://', ''), '/', 1), ':', 1)),\n    '')\n$function$\n",
+      "security_definer": false,
+      "execute_roles": [
+        "postgres",
+        "service_role",
+        "anon",
+        "authenticated"
+      ]
+    },
+    {
+      "schema": "app",
+      "name": "slot_ok",
+      "args": "p_tenant uuid, p_staff uuid, p_start timestamp with time zone, p_end timestamp with time zone, p_ignore uuid",
+      "def": "CREATE OR REPLACE FUNCTION app.slot_ok(p_tenant uuid, p_staff uuid, p_start timestamp with time zone, p_end timestamp with time zone, p_ignore uuid)\n RETURNS boolean\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare\n  v_tz text;\n  v_ls timestamp;\n  v_le timestamp;\n  v_dow int;\n  v_oh public.opening_hours;\n  v_sh public.staff_hours;\nbegin\n  select time_zone into v_tz from public.tenants where id = p_tenant;\n  v_ls := p_start at time zone v_tz;\n  v_le := p_end at time zone v_tz;\n  if v_ls::date <> v_le::date then\n    return false;\n  end if;\n  v_dow := extract(dow from v_ls);\n\n  select * into v_oh from public.opening_hours where tenant_id = p_tenant and weekday = v_dow;\n  if not found or v_ls::time < v_oh.opens or v_le::time > v_oh.closes then\n    return false;\n  end if;\n\n  if exists (select 1 from public.staff_hours h where h.staff_id = p_staff) then\n    select * into v_sh from public.staff_hours h where h.staff_id = p_staff and h.weekday = v_dow;\n    if not found or v_ls::time < v_sh.starts or v_le::time > v_sh.ends then\n      return false;\n    end if;\n  end if;\n\n  return not exists (\n    select 1 from public.appointments a\n    where a.staff_id = p_staff\n      and a.status in ('pending', 'confirmed')\n      and tstzrange(a.starts_at, a.ends_at, '[)') && tstzrange(p_start, p_end, '[)')\n      and (p_ignore is null or a.id <> p_ignore));\nend\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres"
+      ]
+    },
+    {
+      "schema": "app",
+      "name": "to_wall",
+      "args": "ts timestamp with time zone, tz text",
+      "def": "CREATE OR REPLACE FUNCTION app.to_wall(ts timestamp with time zone, tz text)\n RETURNS text\n LANGUAGE sql\n IMMUTABLE\n SET search_path TO ''\nAS $function$\n  select to_char(ts at time zone tz, 'YYYY-MM-DD\"T\"HH24:MI')\n$function$\n",
+      "security_definer": false,
+      "execute_roles": [
+        "postgres",
+        "service_role",
+        "anon",
+        "authenticated"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "available_slots",
+      "args": "p_service_id uuid, p_staff_id uuid, p_date date",
+      "def": "CREATE OR REPLACE FUNCTION public.available_slots(p_service_id uuid, p_staff_id uuid, p_date date)\n RETURNS TABLE(start text, staff_id uuid)\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$\n#variable_conflict use_column\ndeclare\n  v_tenant uuid := app.current_tenant();\n  v_t public.tenants;\n  v_s public.services;\n  v_oh public.opening_hours;\n  v_today date;\n  v_cur timestamp;\n  v_st timestamptz;\n  v_en timestamptz;\n  v_m record;\nbegin\n  if v_tenant is null then\n    return;\n  end if;\n  select * into v_t from public.tenants where id = v_tenant;\n  select * into v_s from public.services where id = p_service_id and tenant_id = v_tenant and active;\n  if not found then\n    return;\n  end if;\n  v_today := (now() at time zone v_t.time_zone)::date;\n  if p_date < v_today or p_date > v_today + v_t.booking_horizon_days then\n    return;\n  end if;\n  select * into v_oh from public.opening_hours where tenant_id = v_tenant and weekday = extract(dow from p_date);\n  if not found then\n    return;\n  end if;\n\n  v_cur := p_date + v_oh.opens;\n  while v_cur + make_interval(mins => v_s.duration_minutes) <= p_date + v_oh.closes loop\n    v_st := v_cur at time zone v_t.time_zone;\n    v_en := v_st + make_interval(mins => v_s.duration_minutes);\n    if v_st >= now() + make_interval(mins => v_t.booking_lead_minutes) then\n      for v_m in\n        select f.id from public.staff f\n        join public.staff_services ss on ss.staff_id = f.id and ss.service_id = v_s.id\n        where f.tenant_id = v_tenant and f.active and (p_staff_id is null or f.id = p_staff_id)\n        order by f.sort_order, f.id\n      loop\n        if app.slot_ok(v_tenant, v_m.id, v_st, v_en, null) then\n          start := app.to_wall(v_st, v_t.time_zone);\n          staff_id := v_m.id;\n          return next;\n          exit;\n        end if;\n      end loop;\n    end if;\n    v_cur := v_cur + make_interval(mins => v_t.slot_step_minutes);\n  end loop;\nend\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres",
+        "anon",
+        "authenticated",
+        "service_role"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "book_appointment",
+      "args": "p_service_id uuid, p_staff_id uuid, p_start text, p_payment text",
+      "def": "CREATE OR REPLACE FUNCTION public.book_appointment(p_service_id uuid, p_staff_id uuid, p_start text, p_payment text)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare\n  v_tenant uuid := app.current_tenant();\n  v_cust uuid := app.my_customer_id();\n  v_t public.tenants;\n  v_s public.services;\n  v_staff uuid;\n  v_st timestamptz;\n  v_en timestamptz;\n  v_hour int;\n  v_day int;\n  v_id uuid;\nbegin\n  if auth.uid() is null then raise exception 'not_authenticated' using errcode = 'P0001'; end if;\n  if v_tenant is null then raise exception 'tenant_unknown' using errcode = 'P0001'; end if;\n  if v_cust is null then raise exception 'not_registered' using errcode = 'P0001'; end if;\n  if p_payment not in ('in_salon', 'online_demo') then raise exception 'invalid_payment' using errcode = 'P0001'; end if;\n\n  select * into v_t from public.tenants where id = v_tenant;\n  select * into v_s from public.services where id = p_service_id and tenant_id = v_tenant and active;\n  if not found then raise exception 'not_found' using errcode = 'P0001'; end if;\n\n  -- Rate-Limit je Kundin\n  select count(*) filter (where created_at > now() - interval '1 hour'), count(*)\n    into v_hour, v_day\n    from public.booking_attempts where customer_id = v_cust and created_at > now() - interval '1 day';\n  if v_hour >= v_t.max_bookings_per_hour or v_day >= v_t.max_bookings_per_day then\n    raise exception 'rate_limited' using errcode = 'P0001';\n  end if;\n\n  v_st := app.from_wall(p_start, v_t.time_zone);\n  v_en := v_st + make_interval(mins => v_s.duration_minutes);\n  if v_st < now() + make_interval(mins => v_t.booking_lead_minutes)\n     or v_st > now() + make_interval(days => v_t.booking_horizon_days) then\n    raise exception 'slot_taken' using errcode = 'P0001';\n  end if;\n\n  if p_staff_id is null then\n    select f.id into v_staff\n    from public.staff f join public.staff_services ss on ss.staff_id = f.id and ss.service_id = v_s.id\n    where f.tenant_id = v_tenant and f.active and app.slot_ok(v_tenant, f.id, v_st, v_en, null)\n    order by f.sort_order, f.id limit 1;\n    if v_staff is null then raise exception 'slot_taken' using errcode = 'P0001'; end if;\n  else\n    if not exists (select 1 from public.staff f join public.staff_services ss on ss.staff_id = f.id and ss.service_id = v_s.id\n                   where f.id = p_staff_id and f.tenant_id = v_tenant and f.active) then\n      raise exception 'not_found' using errcode = 'P0001';\n    end if;\n    if not app.slot_ok(v_tenant, p_staff_id, v_st, v_en, null) then\n      raise exception 'slot_taken' using errcode = 'P0001';\n    end if;\n    v_staff := p_staff_id;\n  end if;\n\n  insert into public.booking_attempts (tenant_id, customer_id) values (v_tenant, v_cust);\n\n  begin\n    insert into public.appointments (tenant_id, customer_id, service_id, staff_id, service_name, category_key, staff_name,\n                                     starts_at, ends_at, duration_minutes, price_eur, status, payment)\n    select v_tenant, v_cust, v_s.id, v_staff, v_s.name, c.key, f.display_name,\n           v_st, v_en, v_s.duration_minutes, v_s.price_eur, 'confirmed', p_payment::public.payment_method\n    from public.service_categories c, public.staff f\n    where c.id = v_s.category_id and f.id = v_staff\n    returning id into v_id;\n  exception when exclusion_violation then\n    -- gleichzeitige Buchung desselben Slots: Postgres hat die zweite abgewiesen\n    raise exception 'slot_taken' using errcode = 'P0001';\n  end;\n  return app.appointment_json(v_id);\nend\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres",
+        "authenticated",
+        "service_role"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "cancel_appointment",
+      "args": "p_id uuid",
+      "def": "CREATE OR REPLACE FUNCTION public.cancel_appointment(p_id uuid)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare\n  v_cust uuid := app.my_customer_id();\n  v_a public.appointments;\n  v_notice int;\nbegin\n  if v_cust is null then raise exception 'not_found' using errcode = 'P0001'; end if;\n  select * into v_a from public.appointments where id = p_id and customer_id = v_cust for update;\n  if not found or v_a.status not in ('pending', 'confirmed') then raise exception 'not_found' using errcode = 'P0001'; end if;\n  select change_notice_hours into v_notice from public.tenants where id = v_a.tenant_id;\n  if v_a.starts_at < now() + make_interval(hours => v_notice) then raise exception 'too_late' using errcode = 'P0001'; end if;\n  update public.appointments set status = 'cancelled', updated_at = now() where id = p_id;\n  return app.appointment_json(p_id);\nend\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres",
+        "authenticated",
+        "service_role"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "export_my_data",
+      "args": "",
+      "def": "CREATE OR REPLACE FUNCTION public.export_my_data()\n RETURNS jsonb\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare\n  v_id uuid := app.my_customer_id();\n  v_c public.customers;\nbegin\n  if v_id is null then raise exception 'not_found' using errcode = 'P0001'; end if;\n  select * into v_c from public.customers where id = v_id;\n  return jsonb_build_object(\n    'exportedAt', now(),\n    'profile', app.profile_json(v_c),\n    'appointments', coalesce((\n      select jsonb_agg(app.appointment_json(a.id) order by a.starts_at)\n      from public.appointments a where a.customer_id = v_id), '[]'::jsonb));\nend\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres",
+        "authenticated",
+        "service_role"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "register_customer",
+      "args": "p_first_name text, p_last_name text, p_phone text, p_language text, p_marketing boolean",
+      "def": "CREATE OR REPLACE FUNCTION public.register_customer(p_first_name text, p_last_name text, p_phone text, p_language text, p_marketing boolean)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare\n  v_uid uuid := auth.uid();\n  v_tenant uuid := app.current_tenant();\n  v_email text := lower(auth.jwt() ->> 'email');\n  v_c public.customers;\nbegin\n  if v_uid is null then raise exception 'not_authenticated' using errcode = 'P0001'; end if;\n  if v_tenant is null then raise exception 'tenant_unknown' using errcode = 'P0001'; end if;\n  if v_email is null then raise exception 'email_missing' using errcode = 'P0001'; end if;\n\n  select * into v_c from public.customers where tenant_id = v_tenant and user_id = v_uid;\n  if found then\n    if v_c.deletion_requested_at is not null then raise exception 'not_found' using errcode = 'P0001'; end if;\n    return app.profile_json(v_c);\n  end if;\n  if exists (select 1 from public.customers where tenant_id = v_tenant and lower(email) = v_email) then\n    raise exception 'email_taken' using errcode = 'P0001';\n  end if;\n\n  insert into public.customers (tenant_id, user_id, first_name, last_name, email, phone, language,\n                                marketing_consent, marketing_consent_at)\n  values (v_tenant, v_uid, trim(p_first_name), trim(p_last_name), v_email, nullif(trim(coalesce(p_phone, '')), ''),\n          coalesce(nullif(p_language, ''), 'de'), coalesce(p_marketing, false),\n          case when coalesce(p_marketing, false) then now() end)\n  returning * into v_c;\n  return app.profile_json(v_c);\nend\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres",
+        "authenticated",
+        "service_role"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "request_account_deletion",
+      "args": "",
+      "def": "CREATE OR REPLACE FUNCTION public.request_account_deletion()\n RETURNS void\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare\n  v_id uuid := app.my_customer_id();\nbegin\n  if v_id is null then raise exception 'not_found' using errcode = 'P0001'; end if;\n  update public.appointments set status = 'cancelled', updated_at = now()\n    where customer_id = v_id and status in ('pending', 'confirmed') and starts_at > now();\n  update public.customers set deletion_requested_at = now() where id = v_id;\nend\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres",
+        "authenticated",
+        "service_role"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "reschedule_appointment",
+      "args": "p_id uuid, p_new_start text",
+      "def": "CREATE OR REPLACE FUNCTION public.reschedule_appointment(p_id uuid, p_new_start text)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare\n  v_cust uuid := app.my_customer_id();\n  v_a public.appointments;\n  v_t public.tenants;\n  v_st timestamptz;\n  v_en timestamptz;\nbegin\n  if v_cust is null then raise exception 'not_found' using errcode = 'P0001'; end if;\n  select * into v_a from public.appointments where id = p_id and customer_id = v_cust for update;\n  if not found or v_a.status not in ('pending', 'confirmed') then raise exception 'not_found' using errcode = 'P0001'; end if;\n  select * into v_t from public.tenants where id = v_a.tenant_id;\n  if v_a.starts_at < now() + make_interval(hours => v_t.change_notice_hours) then raise exception 'too_late' using errcode = 'P0001'; end if;\n\n  v_st := app.from_wall(p_new_start, v_t.time_zone);\n  v_en := v_st + make_interval(mins => v_a.duration_minutes);\n  if v_st < now() + make_interval(mins => v_t.booking_lead_minutes)\n     or v_st > now() + make_interval(days => v_t.booking_horizon_days)\n     or not app.slot_ok(v_t.id, v_a.staff_id, v_st, v_en, v_a.id) then\n    raise exception 'slot_taken' using errcode = 'P0001';\n  end if;\n  begin\n    update public.appointments set starts_at = v_st, ends_at = v_en, updated_at = now() where id = p_id;\n  exception when exclusion_violation then\n    raise exception 'slot_taken' using errcode = 'P0001';\n  end;\n  return app.appointment_json(p_id);\nend\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres",
+        "authenticated",
+        "service_role"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "rls_auto_enable",
+      "args": "",
+      "def": "CREATE OR REPLACE FUNCTION public.rls_auto_enable()\n RETURNS event_trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE\n  cmd record;\n  tbl name;\nBEGIN\n  FOR cmd IN\n    SELECT *\n    FROM pg_event_trigger_ddl_commands()\n    WHERE command_tag IN ('CREATE TABLE', 'CREATE TABLE AS', 'SELECT INTO')\n      AND object_type IN ('table','partitioned table')\n  LOOP\n     IF cmd.schema_name IS NOT NULL AND cmd.schema_name IN ('public') AND cmd.schema_name NOT IN ('pg_catalog','information_schema') AND cmd.schema_name NOT LIKE 'pg_toast%' AND cmd.schema_name NOT LIKE 'pg_temp%' THEN\n      BEGIN\n        SELECT c.relname INTO tbl FROM pg_catalog.pg_class c WHERE c.oid = cmd.objid;\n        EXECUTE format('alter table if exists %I.%I enable row level security', cmd.schema_name, tbl);\n        RAISE LOG 'rls_auto_enable: enabled RLS on %', cmd.object_identity;\n      EXCEPTION\n        WHEN OTHERS THEN\n          RAISE LOG 'rls_auto_enable: failed to enable RLS on %', cmd.object_identity;\n      END;\n     ELSE\n        RAISE LOG 'rls_auto_enable: skip % (either system schema or not in enforced list: %.)', cmd.object_identity, cmd.schema_name;\n     END IF;\n  END LOOP;\nEND;\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "-",
+        "postgres",
+        "anon",
+        "authenticated",
+        "service_role"
+      ]
+    },
+    {
+      "schema": "public",
+      "name": "update_profile",
+      "args": "p_patch jsonb",
+      "def": "CREATE OR REPLACE FUNCTION public.update_profile(p_patch jsonb)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare\n  v_id uuid := app.my_customer_id();\n  v_c public.customers;\n  v_phone text;\n  v_marketing boolean;\nbegin\n  if v_id is null then raise exception 'not_found' using errcode = 'P0001'; end if;\n  select * into v_c from public.customers where id = v_id;\n\n  v_phone := case when p_patch ? 'phone' then nullif(trim(coalesce(p_patch ->> 'phone', '')), '') else v_c.phone end;\n  v_marketing := coalesce((p_patch ->> 'marketingConsent')::boolean, v_c.marketing_consent);\n\n  update public.customers set\n    first_name = coalesce(nullif(trim(p_patch ->> 'firstName'), ''), first_name),\n    last_name = coalesce(nullif(trim(p_patch ->> 'lastName'), ''), last_name),\n    phone = v_phone,\n    language = coalesce(p_patch ->> 'language', language),\n    notify_email = coalesce((p_patch ->> 'notifyEmail')::boolean, notify_email),\n    notify_sms = case when v_phone is null then false else coalesce((p_patch ->> 'notifySms')::boolean, notify_sms) end,\n    marketing_consent = v_marketing,\n    marketing_consent_at = case\n      when v_marketing = marketing_consent then marketing_consent_at\n      when v_marketing then now()\n      else null end\n  where id = v_id\n  returning * into v_c;\n  return app.profile_json(v_c);\nend\n$function$\n",
+      "security_definer": true,
+      "execute_roles": [
+        "postgres",
+        "authenticated",
+        "service_role"
+      ]
+    }
+  ],
+  "views": [
+    {
+      "schemaname": "public",
+      "viewname": "my_appointments",
+      "definition": " SELECT a.id,\n    a.customer_id,\n    a.service_id,\n    a.service_name,\n    a.category_key,\n    a.staff_id,\n    a.staff_name,\n    app.to_wall(a.starts_at, t.time_zone) AS start,\n    a.duration_minutes,\n    a.price_eur,\n        CASE\n            WHEN ((a.status = 'confirmed'::appointment_status) AND (a.ends_at < now())) THEN 'completed'::text\n            ELSE (a.status)::text\n        END AS status,\n    (a.payment)::text AS payment,\n    a.created_at\n   FROM (appointments a\n     JOIN tenants t ON ((t.id = a.tenant_id)));"
+    }
+  ],
+  "triggers": [],
+  "grants": [
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    }
+  ],
+  "columnGrants": [
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "category_key",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "created_at",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "customer_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "duration_minutes",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "ends_at",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "payment",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "price_eur",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "service_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "service_name",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "staff_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "staff_name",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "starts_at",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "status",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "tenant_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "appointments",
+      "column_name": "updated_at",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "created_at",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "deletion_requested_at",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "email",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "first_name",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "language",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "last_name",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "marketing_consent",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "marketing_consent_at",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "notify_email",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "notify_sms",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "phone",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "privacy_notice_at",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "tenant_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "customers",
+      "column_name": "user_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "category_key",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "created_at",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "customer_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "duration_minutes",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "payment",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "price_eur",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "service_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "service_name",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "staff_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "staff_name",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "start",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "my_appointments",
+      "column_name": "status",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "closes",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "closes",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "opens",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "opens",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "tenant_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "tenant_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "weekday",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "opening_hours",
+      "column_name": "weekday",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "image_url",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "image_url",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "key",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "key",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "sort_order",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "sort_order",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "tenant_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "service_categories",
+      "column_name": "tenant_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "active",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "active",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "category_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "category_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "code",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "code",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "duration_minutes",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "duration_minutes",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "name",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "name",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "name_i18n",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "name_i18n",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "price_eur",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "price_eur",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "sort_order",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "sort_order",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "tenant_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "services",
+      "column_name": "tenant_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "active",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "active",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "display_name",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "display_name",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "sort_order",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "sort_order",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "tenant_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff",
+      "column_name": "tenant_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "ends",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "ends",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "staff_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "staff_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "starts",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "starts",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "tenant_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "tenant_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "weekday",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_hours",
+      "column_name": "weekday",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "column_name": "service_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "column_name": "service_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "column_name": "staff_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "column_name": "staff_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "column_name": "tenant_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "staff_services",
+      "column_name": "tenant_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "name",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "name",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "slug",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "slug",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "tenant_id",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "tenant_id",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "time_zone",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_schema": "public",
+      "table_name": "tenants",
+      "column_name": "time_zone",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    }
+  ],
+  "buckets": [],
+  "cronJobs": "pg_cron nicht installiert"
+}

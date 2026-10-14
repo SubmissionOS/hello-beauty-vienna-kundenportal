@@ -33,7 +33,7 @@ export async function sql(query) {
   return text ? JSON.parse(text) : [];
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = process.argv.slice(2);
   const query = args[0] === '--file' ? readFileSync(args[1], 'utf8') : args.join(' ');
   sql(query)
