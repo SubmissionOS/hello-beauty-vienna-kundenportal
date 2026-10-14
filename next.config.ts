@@ -20,7 +20,8 @@ const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
+  // Profilbilder (signierte URLs) und Bilder der Neuigkeiten kommen aus Supabase Storage
+  `img-src 'self' data: blob:${supabaseOrigin ? ` ${supabaseOrigin}` : ''}`,
   "font-src 'self'",
   `connect-src 'self'${supabaseOrigin ? ` ${supabaseOrigin} ${supabaseOrigin.replace('https://', 'wss://')}` : ''}${isDev ? ' ws:' : ''}`,
   "worker-src 'self'",
