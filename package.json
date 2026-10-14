@@ -28,6 +28,7 @@
     "env:example": "node scripts/env-local.mjs example",
     "db:seed:teil4": "node --experimental-strip-types --no-warnings scripts/seed-teil4.mjs",
     "crm:env": "node scripts/crm-env.mjs",
+    "crm:types": "node scripts/crm-types.mjs",
     "db:seed:crm": "node --experimental-strip-types --no-warnings scripts/seed-crm.mjs"
   },
   "dependencies": {
