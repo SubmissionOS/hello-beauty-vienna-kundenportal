@@ -15,3 +15,6 @@ playwright-report/
 tools/
 supabase/.temp/
 supabase/.branches/
+
+# Worktree für die main-Gegenprobe
+.worktrees/
