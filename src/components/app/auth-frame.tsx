@@ -12,16 +12,19 @@ import { useI18n } from '@/lib/i18n/use-i18n';
 import { legalUrl } from '@/lib/salon';
 import st from './app.module.css';
 
-/** Rahmen für Begrüßung, Anmeldung und Registrierung. Mit Sitzung geht es direkt in die App. */
-export function AuthFrame({ back, children }: { back?: string; children: React.ReactNode }) {
+/**
+ * Rahmen für Begrüßung, Anmeldung und Registrierung. Mit Sitzung geht es direkt in die App –
+ * außer mit `stay` (Seite „Neues Passwort“: dort entsteht die Sitzung schon beim Öffnen des Links).
+ */
+export function AuthFrame({ back, stay, children }: { back?: string; stay?: boolean; children: React.ReactNode }) {
   const { t, lang } = useI18n();
   const hydrated = useHydrated();
   const session = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (session.status === 'in') router.replace('/app');
-  }, [session.status, router]);
+    if (!stay && session.status === 'in') router.replace('/app');
+  }, [stay, session.status, router]);
 
   return (
     <div className={st.auth}>

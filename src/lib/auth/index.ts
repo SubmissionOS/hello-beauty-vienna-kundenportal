@@ -8,6 +8,12 @@ import type { AuthAdapter, Session } from './types';
 
 let instance: AuthAdapter | null = null;
 
+/** Bittet den Browser, den App-Speicher (und damit die Sitzung) nicht bei Platzmangel zu räumen */
+function keepStorage<T>(value: T): T {
+  void navigator.storage?.persist?.().catch(() => {});
+  return value;
+}
+
 function load(): Promise<AuthAdapter> {
   switch (env.authAdapter) {
     case 'supabase':
@@ -35,10 +41,12 @@ export function getAuth(): AuthAdapter {
         unsubscribe?.();
       };
     },
-    register: async (input) => (await impl()).register(input),
-    requestCode: async (email) => (await impl()).requestCode(email),
-    verifyCode: async (email, code) => (await impl()).verifyCode(email, code),
-    signInDemo: async () => (await impl()).signInDemo(),
+    register: async (input) => keepStorage(await (await impl()).register(input)),
+    signIn: async (email, password) => keepStorage(await (await impl()).signIn(email, password)),
+    requestPasswordReset: async (email) => (await impl()).requestPasswordReset(email),
+    beginPasswordReset: async () => (await impl()).beginPasswordReset(),
+    updatePassword: async (password) => keepStorage(await (await impl()).updatePassword(password)),
+    signInDemo: async () => keepStorage(await (await impl()).signInDemo()),
     signOut: async () => (await impl()).signOut(),
   };
   return instance;

@@ -39,7 +39,7 @@ npm run check:manifest -- http://localhost:3200
 ## Aufbau
 
 - `src/lib/data` – `DataAdapter` (Schnittstelle) + `mock/` (localStorage, Demodaten aus dem CRM). Zugriff nur über `getData()`.
-- `src/lib/auth` – `AuthAdapter` (6-stelliger E-Mail-Code, keine Magic Links) + Mock. Zugriff nur über `getAuth()`.
+- `src/lib/auth` – `AuthAdapter` (E-Mail + Passwort, „Passwort vergessen“ per Link, Sitzung bis zum Abmelden) + Mock. Zugriff nur über `getAuth()`.
 - `src/components/install` – Erkennung, Zeitleisten und gezeichnete iPhone-/Android-Mockups.
 - `public/sw.js` – Service Worker: nur statische Dateien + Offline-Seite, nie Seiten oder Daten.
 - `supabase/migrations` – Schema, RLS und Funktionen (Teil 2). Alle Variablen: `.env.example`.

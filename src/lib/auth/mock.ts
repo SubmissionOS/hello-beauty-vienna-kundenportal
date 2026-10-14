@@ -1,27 +1,22 @@
 /**
- * Mock-Anmeldung für Teil 1: Code wird lokal erzeugt und in der Oberfläche angezeigt (kein E-Mail-Versand).
- * Regeln wie später in Produktion: 6 Ziffern, 10 Minuten gültig, 5 Versuche, 30 s bis zum erneuten Senden.
+ * Mock-Anmeldung (Demo/Test ohne Server): Konten mit Passwort im localStorage des Geräts.
+ * Passwörter nur als PBKDF2-Hash mit Salz – auch im Testbetrieb nie im Klartext.
+ * „Passwort vergessen“ versendet keine E-Mail, sondern zeigt den Link direkt an.
  */
 import { getData } from '../data';
 import { env } from '../env';
-import type { NewCustomer } from '../data/types';
 import { DEMO_CUSTOMER_ID, DEMO_EMAIL, ensureDemoCustomer, loadDb, saveDb } from '../data/mock/db';
-import { AuthError, type AuthAdapter, type CodeRequest, type Session } from './types';
+import { AuthError, PASSWORD_MIN, type AuthAdapter, type Registration, type Session } from './types';
 
 const SESSION_KEY = 'hb-mock-session';
-const PENDING_KEY = 'hb-mock-pending';
-const CODE_TTL_MS = 10 * 60_000;
-const RESEND_S = 30;
-const MAX_ATTEMPTS = 5;
-const SESSION_DAYS = 90;
+const PASSWORDS_KEY = 'hb-mock-passwords';
+const RECOVERY_KEY = 'hb-mock-recovery';
+const RECOVERY_TTL_MS = 60 * 60_000;
+const TOKEN_HOURS = 1;
 
-interface Pending {
-  email: string;
-  code: string;
-  expiresAt: number;
-  sentAt: number;
-  attempts: number;
-  registration?: NewCustomer;
+interface PasswordHash {
+  salt: string;
+  hash: string;
 }
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -43,10 +38,33 @@ function write(key: string, value: unknown) {
   }
 }
 
-function sixDigits(): string {
-  const n = crypto.getRandomValues(new Uint32Array(1))[0]! % 1_000_000;
-  return String(n).padStart(6, '0');
+const hex = (b: ArrayBuffer | Uint8Array) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
+
+async function derive(password: string, salt: string): Promise<string> {
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', hash: 'SHA-256', salt: new TextEncoder().encode(salt), iterations: 100_000 },
+    key,
+    256,
+  );
+  return hex(bits);
 }
+
+async function setPassword(email: string, password: string) {
+  const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
+  const all = read<Record<string, PasswordHash>>(PASSWORDS_KEY) ?? {};
+  all[email] = { salt, hash: await derive(password, salt) };
+  write(PASSWORDS_KEY, all);
+}
+
+async function passwordMatches(email: string, password: string): Promise<boolean> {
+  const stored = read<Record<string, PasswordHash>>(PASSWORDS_KEY)?.[email];
+  // auch ohne Konto rechnen, damit die Antwortzeit nichts verrät
+  const hash = await derive(password, stored?.salt ?? 'kein-konto');
+  return !!stored && hash === stored.hash;
+}
+
+const norm = (email: string) => email.trim().toLowerCase();
 
 export class MockAuthAdapter implements AuthAdapter {
   private listeners = new Set<(s: Session | null) => void>();
@@ -60,34 +78,18 @@ export class MockAuthAdapter implements AuthAdapter {
       customerId,
       email,
       isDemo,
-      expiresAt: new Date(Date.now() + SESSION_DAYS * 86_400_000).toISOString(),
+      expiresAt: new Date(Date.now() + TOKEN_HOURS * 3_600_000).toISOString(),
     };
     write(SESSION_KEY, session);
     this.emit(session);
     return session;
   }
 
-  private send(email: string, registration?: NewCustomer): CodeRequest {
-    const prev = read<Pending>(PENDING_KEY);
-    if (prev && prev.email === email && Date.now() - prev.sentAt < RESEND_S * 1000) {
-      throw new AuthError('rate_limited');
-    }
-    const pending: Pending = {
-      email,
-      code: sixDigits(),
-      expiresAt: Date.now() + CODE_TTL_MS,
-      sentAt: Date.now(),
-      attempts: 0,
-      registration: registration ?? (prev?.email === email ? prev.registration : undefined),
-    };
-    write(PENDING_KEY, pending);
-    return { email, resendAfterSeconds: RESEND_S, mockCode: pending.code };
-  }
-
+  /** Sitzung gilt bis zum Abmelden (wie bei Supabase mit Refresh-Token) */
   async getSession() {
     const s = read<Session>(SESSION_KEY);
     if (!s) return null;
-    if (Date.parse(s.expiresAt) < Date.now() || !loadDb().customers[s.customerId]) {
+    if (!loadDb().customers[s.customerId]) {
       write(SESSION_KEY, null);
       return null;
     }
@@ -101,39 +103,48 @@ export class MockAuthAdapter implements AuthAdapter {
     };
   }
 
-  async register(input: NewCustomer) {
+  async register(input: Registration) {
     await wait(350);
-    const email = input.email.trim().toLowerCase();
+    if (input.password.length < PASSWORD_MIN) throw new AuthError('weak_password');
+    const email = norm(input.email);
     if (await getData().findCustomerIdByEmail(email)) throw new AuthError('email_taken');
-    return this.send(email, { ...input, email });
+    const { password, ...data } = input;
+    const profile = await getData().createCustomer({ ...data, email });
+    await setPassword(email, password);
+    return { status: 'signed_in' as const, session: this.startSession(profile.id, email, false) };
   }
 
-  async requestCode(rawEmail: string) {
+  async signIn(rawEmail: string, password: string) {
     await wait(350);
-    const email = rawEmail.trim().toLowerCase();
-    const pending = read<Pending>(PENDING_KEY);
-    const known = await getData().findCustomerIdByEmail(email);
-    if (!known && !(pending?.email === email && pending.registration)) throw new AuthError('unknown_email');
-    return this.send(email);
+    const email = norm(rawEmail);
+    const customerId = await getData().findCustomerIdByEmail(email);
+    if (!(await passwordMatches(email, password)) || !customerId) throw new AuthError('invalid_credentials');
+    return this.startSession(customerId, email, customerId === DEMO_CUSTOMER_ID);
   }
 
-  async verifyCode(rawEmail: string, code: string) {
-    await wait(400);
-    const email = rawEmail.trim().toLowerCase();
-    const pending = read<Pending>(PENDING_KEY);
-    if (!pending || pending.email !== email) throw new AuthError('expired');
-    if (Date.now() > pending.expiresAt) throw new AuthError('expired');
-    if (pending.attempts >= MAX_ATTEMPTS) throw new AuthError('too_many_attempts');
-    if (pending.code !== code) {
-      write(PENDING_KEY, { ...pending, attempts: pending.attempts + 1 });
-      throw new AuthError(pending.attempts + 1 >= MAX_ATTEMPTS ? 'too_many_attempts' : 'invalid_code');
-    }
-    write(PENDING_KEY, null);
-    let customerId = await getData().findCustomerIdByEmail(email);
-    if (!customerId) {
-      if (!pending.registration) throw new AuthError('unknown_email');
-      customerId = (await getData().createCustomer(pending.registration)).id;
-    }
+  async requestPasswordReset(rawEmail: string) {
+    await wait(350);
+    const email = norm(rawEmail);
+    if (await getData().findCustomerIdByEmail(email)) write(RECOVERY_KEY, { email, expiresAt: Date.now() + RECOVERY_TTL_MS });
+    // gleiche Antwort mit oder ohne Konto
+    return { mockLink: '/app/passwort-neu' };
+  }
+
+  async beginPasswordReset() {
+    const r = read<{ email: string; expiresAt: number }>(RECOVERY_KEY);
+    if (r && r.expiresAt > Date.now()) return r.email;
+    return (await this.getSession())?.email ?? null;
+  }
+
+  async updatePassword(password: string) {
+    await wait(300);
+    if (password.length < PASSWORD_MIN) throw new AuthError('weak_password');
+    const r = read<{ email: string; expiresAt: number }>(RECOVERY_KEY);
+    const email = r && r.expiresAt > Date.now() ? r.email : (await this.getSession())?.email;
+    const customerId = email ? await getData().findCustomerIdByEmail(email) : null;
+    if (!email || !customerId) throw new AuthError('reset_invalid');
+    await setPassword(email, password);
+    write(RECOVERY_KEY, null);
     return this.startSession(customerId, email, customerId === DEMO_CUSTOMER_ID);
   }
 

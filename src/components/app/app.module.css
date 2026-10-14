@@ -138,41 +138,33 @@
   text-align: center;
 }
 
-/* Code-Eingabe: 6 Kästchen im Stil von .input über einem echten Eingabefeld */
-.code {
+/* Passwortfeld: Anzeigen/Verbergen-Schalter im Feld (volle Tippfläche) */
+.pw {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: var(--s-2);
 }
-.codeInput {
+.pwInput {
+  padding-right: calc(var(--tap) + 4px);
+}
+.pwToggle {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  font-size: var(--fs-input);
-  letter-spacing: 2em;
-  caret-color: transparent;
-}
-.codeBox {
+  top: 0;
+  right: 0;
   display: grid;
   place-items: center;
-  height: 58px;
-  border: 1px solid var(--field);
+  width: var(--tap);
+  height: 100%;
+  color: var(--text-muted);
+  background: none;
+  border: 0;
   border-radius: var(--r-md);
-  background: var(--surface);
-  font-size: var(--fs-code);
-  font-weight: var(--fw-medium);
-  font-variant-numeric: tabular-nums lining-nums;
+  cursor: pointer;
 }
-.code:focus-within .codeBox[data-active='true'] {
-  border-color: var(--link);
+.pwToggle:hover {
+  color: var(--text);
+}
+.pwToggle:focus-visible {
+  outline: none;
   box-shadow: var(--focus-ring);
-}
-.code[data-error='true'] .codeBox {
-  border-color: var(--error);
-  background: var(--error-bg);
 }
 
 /* ---------- Start ---------- */

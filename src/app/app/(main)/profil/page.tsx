@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AppPage, PageSkeleton } from '@/components/app/app-page';
 import st from '@/components/app/app.module.css';
-import { phoneOk } from '@/components/app/code-step';
+import { phoneOk } from '@/components/app/validate';
 import { useLoad } from '@/components/app/use-load';
 import { IconDownload, IconExternal, IconLogout, IconTrash } from '@/components/icons';
 import { LangSwitch } from '@/components/lang-switch';
