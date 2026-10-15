@@ -213,6 +213,10 @@ p {
     color: var(--btn-fg);
   }
 }
+/* Knopf-Links behalten ihre Schriftfarbe – sonst greift auf Touch-Geräten die allgemeine Link-Hover-Farbe (Gold auf Gold) */
+.btn:hover {
+  color: var(--btn-fg);
+}
 .btn:active:not(:disabled) {
   transform: scale(0.97);
 }
