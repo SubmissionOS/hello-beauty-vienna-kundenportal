@@ -3,6 +3,7 @@
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AppPage, PageSkeleton } from '@/components/app/app-page';
+import { BackLink } from '@/components/app/back-link';
 import { serviceLabel } from '@/components/app/appt-card';
 import st from '@/components/app/app.module.css';
 import { LoadError } from '@/components/app/load-state';
@@ -35,7 +36,7 @@ function Waitlist() {
 
   if (state.status === 'error') {
     return (
-      <AppPage title={t.waitlist.title}>
+      <AppPage title={t.waitlist.title} action={<BackLink />}>
         <LoadError onRetry={reload} />
       </AppPage>
     );
@@ -50,7 +51,7 @@ function Waitlist() {
   };
 
   return (
-    <AppPage title={t.waitlist.title}>
+    <AppPage title={t.waitlist.title} action={<BackLink />}>
       <p className="muted">{t.waitlist.lead}</p>
       {notice && (
         <p className="alert alert-success" role="status">

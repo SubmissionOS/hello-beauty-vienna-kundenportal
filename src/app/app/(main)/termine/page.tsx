@@ -46,8 +46,10 @@ export default function AppointmentsPage() {
   if (state.status !== 'ready') return <PageSkeleton />;
   const { appts, services, payments } = state.data;
   const now = nowWall();
-  const upcoming = appts.filter((a) => a.start >= now && a.status !== 'completed');
-  const past = appts.filter((a) => !(a.start >= now && a.status !== 'completed')).reverse();
+  // Kommend = noch stattfindend; Abgesagtes und „nicht erschienen“ stehen bei „Vergangen“ (sonst zählen Absagen mit)
+  const isUpcoming = (a: Appointment) => a.start >= now && a.status !== 'completed' && a.status !== 'cancelled' && a.status !== 'no_show';
+  const upcoming = appts.filter(isUpcoming);
+  const past = appts.filter((a) => !isUpcoming(a)).reverse();
   const list = tab === 'upcoming' ? upcoming : past;
   const paymentOf = (a: Appointment) => payments.find((p) => p.appointmentId === a.id) ?? null;
 

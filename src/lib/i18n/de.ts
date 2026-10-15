@@ -225,7 +225,7 @@ export const de = {
     steps: ['Kategorie', 'Leistung', 'Mitarbeiterin', 'Termin', 'Bestätigung'],
     chooseCategory: 'Was dürfen wir für Sie tun?',
     chooseService: 'Welche Leistung möchten Sie?',
-    chooseStaff: 'Bei wem möchten Sie Ihren Termin?',
+    chooseStaff: 'Bei wem möchten Sie Ihren Termin buchen?',
     anyStaff: 'Keine Präferenz',
     anyStaffHint: 'Alle freien Termine anzeigen',
     chooseSlot: 'An welchem Tag, um wie viel Uhr?',
@@ -521,6 +521,7 @@ export const de = {
     switchLabel: '{kind}: {channel}',
     needsConsent: 'Werbung kommt per E-Mail, SMS oder Mitteilung nur mit Ihrer Einwilligung unten.',
     smsNeedsPhone: 'Für SMS bitte zuerst eine Telefonnummer eintragen.',
+    pushNeedsOn: "Mitteilungen aufs Handy sind aus – zuerst oben unter „Mitteilungen aufs Handy“ einschalten.",
     consentTitle: 'Werbe-Einwilligungen',
     consentHint: 'Freiwillig und jederzeit widerrufbar (§ 174 TKG). Ohne Einwilligung bekommen Sie keine Werbung.',
     consentChannels: {

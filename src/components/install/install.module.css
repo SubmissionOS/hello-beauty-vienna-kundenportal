@@ -228,6 +228,10 @@
   .showMain {
     grid-template-columns: 1fr;
   }
+  /* zwei Handys samt Schritten nebeneinander brauchen mehr als Tablet-Breite */
+  .showPhones {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 @media (max-width: 640px) {
   .show {

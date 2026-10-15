@@ -19,7 +19,10 @@ export default function OfflinePage() {
         textAlign: 'center',
       }}
     >
-      <Monogram size={72} />
+      {/* Monogramm wie das App-Symbol (helle Kachel mit Rundung) – im Dunkelmodus bewusst als Kachel, nicht als Fleck */}
+      <span style={{ display: 'grid', borderRadius: 18, overflow: 'hidden', boxShadow: 'var(--shadow-cells)' }}>
+        <Monogram size={72} />
+      </span>
       <IconWifiOff size={28} className="muted" />
       <h1>{t.offline.title}</h1>
       <p className="muted" style={{ maxWidth: 340 }}>

@@ -319,7 +319,8 @@ p {
 }
 a.row:hover,
 button.row:hover {
-  background: var(--bg);
+  /* leicht abgesetzt von der Karte – nicht in Seitenfarbe, sonst wirkt die Zeile im Dunkelmodus wie ein Loch */
+  background: color-mix(in srgb, var(--surface) 94%, var(--text));
   color: var(--text);
 }
 a.row:active,
@@ -401,6 +402,14 @@ button.row:active {
     border-color var(--dur-1) var(--ease-out),
     box-shadow var(--dur-1) var(--ease-out);
 }
+/* Auswahlfelder als solche erkennbar: Pfeil rechts (appearance: none entfernt den Browser-Pfeil) */
+select.select {
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23857a6a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
 .input:hover,
 .select:hover {
   border-color: var(--text-muted);

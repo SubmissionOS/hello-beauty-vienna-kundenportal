@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { AppPage, PageSkeleton } from '@/components/app/app-page';
+import { BackLink } from '@/components/app/back-link';
 import st from '@/components/app/app.module.css';
 import { clock, useNow } from '@/components/app/countdown';
 import { LoadError } from '@/components/app/load-state';
@@ -36,7 +37,7 @@ export default function OfferPage() {
   );
   if (state.status === 'error') {
     return (
-      <AppPage title={t.offer.title}>
+      <AppPage title={t.offer.title} action={<BackLink />}>
         <LoadError onRetry={reload} />
       </AppPage>
     );
@@ -44,7 +45,7 @@ export default function OfferPage() {
   if (state.status !== 'ready') return <PageSkeleton />;
   if (!state.data) {
     return (
-      <AppPage title={t.offer.title}>
+      <AppPage title={t.offer.title} action={<BackLink />}>
         <Outcome title={t.offer.closedTitle} text={t.offer.notFound} />
       </AppPage>
     );
@@ -79,35 +80,35 @@ function Offer({ offer }: { offer: WaitlistOffer }) {
 
   if (result === 'closed' || (!result && (offer.status === 'declined' || offer.status === 'withdrawn'))) {
     return (
-      <AppPage title={t.offer.title}>
+      <AppPage title={t.offer.title} action={<BackLink />}>
         <Outcome title={t.offer.closedTitle} text={t.offer.closed} />
       </AppPage>
     );
   }
   if ((result && result.result === 'booked') || (!result && offer.status === 'accepted')) {
     return (
-      <AppPage title={t.offer.title}>
+      <AppPage title={t.offer.title} action={<BackLink />}>
         <Outcome title={t.offer.bookedTitle} text={fmt(t.offer.booked, when)} success />
       </AppPage>
     );
   }
   if (result && result.result === 'declined') {
     return (
-      <AppPage title={t.offer.title}>
+      <AppPage title={t.offer.title} action={<BackLink />}>
         <Outcome title={t.offer.declinedTitle} text={t.offer.declined} />
       </AppPage>
     );
   }
   if ((result && result.result === 'expired') || offer.status === 'expired' || left <= 0) {
     return (
-      <AppPage title={t.offer.title}>
+      <AppPage title={t.offer.title} action={<BackLink />}>
         <Outcome title={t.offer.expiredTitle} text={t.offer.expired} />
       </AppPage>
     );
   }
 
   return (
-    <AppPage title={t.offer.title}>
+    <AppPage title={t.offer.title} action={<BackLink />}>
       <p className="muted">{t.offer.lead}</p>
       <div className={`card ${st.offerTimer}`}>
         <p className="eyebrow" id="offer-left">

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AppPage, PageSkeleton } from '@/components/app/app-page';
+import { BackLink } from '@/components/app/back-link';
 import st from '@/components/app/app.module.css';
 import { IconBell, IconCheck } from '@/components/icons';
 import { useI18n } from '@/lib/i18n/use-i18n';
@@ -48,7 +49,7 @@ export default function PushPage() {
   };
 
   return (
-    <AppPage title={t.push.title}>
+    <AppPage title={t.push.title} action={<BackLink href="/app/profil" />}>
       <div className={`card ${st.pushCard}`}>
         <span className={st.doneIcon} aria-hidden="true">
           <IconBell size={34} />

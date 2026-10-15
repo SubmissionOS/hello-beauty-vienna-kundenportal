@@ -30,7 +30,10 @@ export function ApptCard({
     payment === undefined
       ? null
       : !payment
-        ? t.appt.pay.none
+        ? // „Zahlung im Salon“ ergibt bei abgesagten Terminen keinen Sinn
+          appt.status === 'cancelled' || appt.status === 'no_show'
+          ? null
+          : t.appt.pay.none
         : payment.status === 'paid' && payment.kind === 'deposit'
           ? t.appt.pay.paidDeposit
           : t.appt.pay[payment.status];

@@ -407,6 +407,10 @@ function Profile({ initial, isDemo }: { initial: ProfileData; isDemo: boolean })
               <div className={st.prefChannels}>
                 {CHANNELS.map((ch) => {
                   const noPhone = ch === 'sms' && !profile.phone;
+                  // Werbung nur mit Einwilligung für diesen Kanal; Mitteilungen nur, wenn sie am Handy eingeschaltet sind
+                  const noConsent = (kind === 'offer' || kind === 'news') && ch !== 'inapp' && !consents[ch as MarketingChannel]?.granted;
+                  const noPush = ch === 'push' && push !== null && push !== 'on';
+                  const blocked = noPhone || noConsent || noPush;
                   return (
                     <label key={ch} className={st.prefChannel}>
                       <input
@@ -414,8 +418,8 @@ function Profile({ initial, isDemo }: { initial: ProfileData; isDemo: boolean })
                         role="switch"
                         className="switch"
                         aria-label={fmt(t.account.switchLabel, { kind: t.account.kinds[kind], channel: t.account.channels[ch] })}
-                        checked={prefs[kind][ch] && !noPhone}
-                        disabled={noPhone}
+                        checked={prefs[kind][ch] && !blocked}
+                        disabled={blocked}
                         onChange={(e) => setPref(kind, ch, e.target.checked)}
                       />
                       <span aria-hidden="true">{t.account.channels[ch]}</span>
@@ -427,6 +431,7 @@ function Profile({ initial, isDemo }: { initial: ProfileData; isDemo: boolean })
           ))}
         </div>
         {!profile.phone && <p className="hint">{t.account.smsNeedsPhone}</p>}
+        {push !== null && push !== 'on' && <p className="hint">{t.account.pushNeedsOn}</p>}
       </section>
 
       <section className={st.section} aria-labelledby="p-consent">

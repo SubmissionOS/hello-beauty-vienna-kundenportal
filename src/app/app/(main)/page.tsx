@@ -59,7 +59,8 @@ export default function StartPage() {
   const wallNow = nowWall();
   const next = appts.find((a) => a.start >= wallNow && (a.status === 'confirmed' || a.status === 'pending'));
   const hour = Number(wallNow.slice(11, 13));
-  const greet = hour < 11 ? t.home.morning : hour < 18 ? t.home.day : t.home.evening;
+  // Nachts (bis 5 Uhr) gilt noch „Guten Abend“
+  const greet = hour >= 5 && hour < 11 ? t.home.morning : hour >= 5 && hour < 18 ? t.home.day : t.home.evening;
 
   let relative = '';
   if (next) {

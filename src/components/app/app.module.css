@@ -37,7 +37,8 @@
   z-index: 30;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  padding: var(--s-1) max(var(--s-2), var(--safe-right)) calc(var(--safe-bottom) + var(--s-1)) max(var(--s-2), var(--safe-left));
+  padding: var(--s-1) max(var(--s-2), var(--safe-right), calc((100% - 560px) / 2)) calc(var(--safe-bottom) + var(--s-1)) max(var(--s-2), var(--safe-left), calc((100% - 560px) / 2));
+  /* Linie über die ganze Breite, die Reiter aber nur so breit wie der Inhalt (560 px) */
   background: var(--bg);
   border-top: 1px solid var(--line);
   view-transition-name: tabbar;

@@ -30,6 +30,14 @@ const must = ({ data, error }, what) => {
   return data;
 };
 const inMinutes = (m) => new Date(Date.now() + m * 60_000).toISOString();
+// Uhrzeit in Wien (Sommer-/Winterzeit) an einem Tag relativ zu heute – Demo-Nachrichten liegen in den Öffnungszeiten
+const viennaAt = (dayOffset, hhmm) => {
+  const d = new Date(Date.now() + dayOffset * 86_400_000);
+  const day = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Vienna' }).format(d);
+  const off = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Vienna', timeZoneName: 'longOffset' }).formatToParts(d).find((p) => p.type === 'timeZoneName').value.replace('GMT', '') || '+00:00';
+  return new Date(`${day}T${hhmm}:00${off}`).toISOString();
+};
+const replyAt = Date.parse(viennaAt(0, '09:30')) < Date.now() ? viennaAt(0, '09:30') : viennaAt(-1, '18:40');
 
 const tenant = must(await db.from('tenants').select('id, time_zone').eq('slug', 'hello-beauty').single(), 'tenant');
 const lena = must(await db.from('customers').select('id').eq('tenant_id', tenant.id).eq('email', DEMO_EMAIL).single(), 'Demo-Kundin');
@@ -105,8 +113,8 @@ must(
       customer_id: lena.id,
       sender: 'customer',
       body: 'Hallo! Haben Sie die Shellac-Farbe „Bordeaux“ wieder lagernd?',
-      created_at: inMinutes(-26 * 60),
-      read_by_salon_at: inMinutes(-25 * 60),
+      created_at: viennaAt(-1, '17:55'),
+      read_by_salon_at: viennaAt(-1, '18:30'),
     },
     {
       tenant_id: tenant.id,
@@ -114,7 +122,7 @@ must(
       sender: 'salon',
       sender_name: 'Petra',
       body: 'Hallo Lena, ja – seit heute wieder da. Wir legen sie Ihnen für den nächsten Termin bereit. Liebe Grüße, Petra',
-      created_at: inMinutes(-90),
+      created_at: replyAt,
     },
   ]),
   'chat',
@@ -137,7 +145,8 @@ must(
     time_from: '09:00',
     time_to: '19:00',
     short_notice: true,
-    created_at: '2026-01-01T09:00:00Z',
+    // vor allen Testeinträgen (FIFO), aber plausibel: eine Stunde vor dem Einspielen
+    created_at: new Date(Date.now() - 3_600_000).toISOString(),
   }),
   'waitlist',
 );

@@ -522,6 +522,7 @@ export const en: Dict = {
     switchLabel: '{kind}: {channel}',
     needsConsent: 'Promotions by email, SMS or notification only with your consent below.',
     smsNeedsPhone: 'For SMS, please add a phone number first.',
+    pushNeedsOn: "Phone notifications are off – turn them on first under “Phone notifications” above.",
     consentTitle: 'Marketing consent',
     consentHint: 'Voluntary and can be withdrawn at any time (§ 174 TKG). Without consent, you get no promotions.',
     consentChannels: {

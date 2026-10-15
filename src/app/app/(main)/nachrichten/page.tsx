@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { AppPage, PageSkeleton } from '@/components/app/app-page';
+import { BackLink } from '@/components/app/back-link';
 import st from '@/components/app/app.module.css';
 import { LoadError } from '@/components/app/load-state';
 import { useLoad } from '@/components/app/use-load';
@@ -68,7 +69,7 @@ export default function MessagesPage() {
   if (state.status === 'loading') return <PageSkeleton />;
 
   return (
-    <AppPage title={t.chat.title}>
+    <AppPage title={t.chat.title} action={<BackLink />}>
       <p className="muted">{t.chat.lead}</p>
       {state.status === 'error' ? (
         <LoadError onRetry={reload} />

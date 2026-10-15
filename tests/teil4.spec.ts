@@ -116,7 +116,10 @@ test('Termine: Test-Zahlung, Absage mit Erstattung, Verschieben, Erneut buchen',
   await expect(page.getByText(/Ihre Zahlung von 18(,00)?\s€ wird erstattet\./)).toBeVisible();
   await page.getByRole('button', { name: 'Ja, absagen' }).click();
   await expect(page.getByRole('status')).toContainText(/Erstattung: 18(,00)?\s€/);
+  // Abgesagte Termine stehen unter „Vergangen“ (zählen nicht mehr als kommend)
+  await page.getByRole('tab', { name: /Vergangen/ }).click();
   await expect(paid.getByTestId('pay-status')).toContainText('Erstattet');
+  await page.getByRole('tab', { name: /Kommend/ }).click();
 
   // Verschieben (eigene Mitarbeiterin, freie Zeit wählen)
   const move = page.locator('article', { hasText: 'Pediküre Spa' });
@@ -191,6 +194,10 @@ test('Profil: Kundennummer + QR, Foto, Benachrichtigungen, Einwilligungen, Expor
 
   const news = page.getByRole('switch', { name: 'Infos aus dem Salon: E-Mail' });
   await expect(news).not.toBeChecked();
+  // Werbung per E-Mail erst nach der Einwilligung für E-Mail – vorher ist der Schalter gesperrt
+  await expect(news).toBeDisabled();
+  await page.getByRole('switch', { name: 'Neuigkeiten & Angebote per E-Mail' }).check();
+  await expect(news).toBeEnabled();
   await news.check();
   await expect(page.getByTestId('consent-sms-at')).toHaveText('Nicht erteilt');
   await page.getByRole('switch', { name: 'Angebote per SMS' }).check();
