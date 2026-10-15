@@ -81,3 +81,17 @@ Ordner: `qa/durchlauf-B1/`, `qa/durchlauf-B2/`.
 | 62 | CRM | Team | EN-Datumsformat | EN | britisch | US-Format „October 15, 2026“ | B2/C1440/h/064 | niedrig | kein Fehler: CRM-Englisch ist US-Englisch (next-intl „en“); [PLATZHALTER] falls britisch gewünscht |
 | 63 | CRM | Team | allgemeine 404 | unbekannte Adresse | wie App | ohne Kopfleiste | B2/C390/h/060 | niedrig | kein Fehler: liegt bewusst außerhalb des angemeldeten Bereichs, mit Link „Zum Dashboard“ |
 | 64 | WebKit | – | CRM alle Seiten | sichtbar (headed) | keine CSP-Meldung | „Refused to apply a stylesheet“ (inline, Zeile 5) | B2/WK | – | kein App-Fehler: HTML enthält kein `<style>`, headless WebKit ohne Meldung – Hervorhebungs-Stil des Test-Treibers |
+
+## Durchlauf B3 – neue Befunde
+
+B3: 592 Screenshots, automatisch (Breite jetzt gegen die Gerätebreite) + Sichtprüfung aller 8 Kombinationen. Ordner `qa/durchlauf-B3/`.
+
+| Nr | App | Rolle | Seite | Schritte | Erwartet | Tatsächlich | Screenshot | Schwere | Status |
+|---|---|---|---|---|---|---|---|---|---|
+| 65 | CRM | Team | 404 im App-Rahmen | dunkel | dunkel | weiter hell: React baut `<html>` bei der Fehler-Hülle neu auf und entfernt das Attribut | B3/C1440/d/049 | mittel | behoben CRM e32b507 (vorab im Browser geprüft: dunkel) |
+| 66 | CRM | Team | Tabellen | Tablet | Umbruch an Wortgrenzen | Trennung mitten im Wort/Wert, Aktionsspalte zusammengedrückt (Folge von Nr. 51) | B3/C768/h/056, 047 | hoch | behoben CRM e32b507 |
+| 67 | CRM | Team | Tabellen Verknüpfungen/Kunden/Leistungen | iPhone 390 | Aktionen und Spalten erreichbar | „Vorschlag bestätigen“ nur im inneren Querscrollen | B3/WK/h/050 | hoch | behoben CRM 67ab7ad (Karten-Ansicht am Handy; vorab geprüft) |
+| 68 | CRM | Team | Zahlungen/Anfragen | Filter | wie Formularfelder | Safari-Stil | B3/WK/h/054 | niedrig | behoben CRM 5e85a40 |
+| 69 | CRM | Demo | Kundenstatus | Liste | passend | „Stammkundin“ bei 2 Besuchen | B3/C1440/h/046 | niedrig | behoben Portal 1f9338a (Seed) |
+| 70 | Portal | Demo | Profil HU (768) | laden | ohne Fehler | einmalig CORS/Netzwerkfehler zu Supabase, Seite trotzdem vollständig | B3/C768/h/028 | – | kein App-Fehler: einmaliger Netzaussetzer der Gegenstelle (1 von 592), App lud neu |
+| 71 | Tests | – | Sicherheitstests | Lauf | grün | 2 Prüfungen auf alte Semantik (Fehlermeldung statt „ohne Wirkung“; Team-Zugriff per Host) | – | – | angepasst Portal 1f9338a – Schutzziel unverändert geprüft (41/41, 62/62, 80/80) |
