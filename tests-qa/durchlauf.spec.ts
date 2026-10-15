@@ -33,7 +33,7 @@ class Run {
 
   watch(page: Page, label: string) {
     page.on('console', (m) => {
-      if (m.type() === 'error' || /MISSING_MESSAGE|IntlError/.test(m.text())) this.findings.push({ step: this.current, kind: `console(${label})`, detail: m.text().slice(0, 400) });
+      if (m.type() === 'error' || /MISSING_MESSAGE|IntlError|^CSPV/.test(m.text())) this.findings.push({ step: this.current, kind: `console(${label})`, detail: m.text().slice(0, 400) });
     });
     page.on('pageerror', (e) => this.findings.push({ step: this.current, kind: `pageerror(${label})`, detail: String(e).slice(0, 400) }));
     page.on('response', (r) => {
@@ -106,6 +106,10 @@ function contextOptions(info: TestInfo, theme: 'light' | 'dark') {
 
 async function newCtx(browser: Browser, info: TestInfo, theme: 'light' | 'dark', run: Run, label: string, standalone = false) {
   const context = await browser.newContext(contextOptions(info, theme));
+  // CSP-Verstöße mit genauer Quelle protokollieren (Konsole zeigt sonst nur „Refused …“)
+  await context.addInitScript(() =>
+    document.addEventListener('securitypolicyviolation', (e) => console.log(`CSPV ${e.violatedDirective} ${e.blockedURI} ${e.sourceFile}:${e.lineNumber} ${e.sample}`)),
+  );
   await context.addInitScript(
     ([t, sa]) => {
       try {
@@ -281,6 +285,8 @@ for (const theme of ['light', 'dark'] as const) {
         contexts.push(context);
         await run.step('portal-neu-registrierung', async () => {
           await page.goto(`${PORTAL}/app/registrieren`);
+          // erst nach dem Hydrieren ausfüllen (sonst übernimmt React die Eingaben nicht)
+          await page.waitForLoadState('networkidle');
           await page.getByLabel('Vorname', { exact: true }).fill('Quinn');
           await page.getByLabel('Nachname', { exact: true }).fill(`Qualität${RUN}`);
           await page.getByLabel('E-Mail', { exact: true }).fill(fresh.email);
@@ -313,6 +319,7 @@ for (const theme of ['light', 'dark'] as const) {
         contexts.push(context);
         await run.step('portal-zweite-anmelden', async () => {
           await page.goto(`${PORTAL}/app/anmelden`);
+          await page.waitForLoadState('networkidle');
           await page.getByLabel('E-Mail').fill(second.email);
           await page.locator('#password').fill(second.password);
           await click(page.getByRole('button', { name: 'Anmelden', exact: true }));
