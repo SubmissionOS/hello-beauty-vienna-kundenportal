@@ -477,7 +477,7 @@ export const hu: Dict = {
     points: [
       'Emlékeztető az időpontja előtt',
       'Válaszok az üzeneteire',
-      'Felszabadult időpontok a várólistáról – aki előbb koppint, azé',
+      'Felszabadult időpontok a várólistáról – csak Önnek fenntartva, amíg a válaszidő le nem jár',
     ],
     note: 'Reklámot csak akkor küldünk, ha a profiljában külön engedélyezi. Az értesítéseket bármikor kikapcsolhatja.',
     allow: 'Értesítések engedélyezése',

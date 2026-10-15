@@ -33,7 +33,8 @@ test('Demo-Kundin: Termine aus der DB, Buchung, Export', async ({ page }) => {
   expect(await page.context().cookies()).toEqual([]);
 
   await page.getByRole('link', { name: 'Termine', exact: true }).click();
-  await expect(page.getByRole('tab', { name: /Vergangen \(3\)/ })).toBeVisible();
+  // 3 abgeschlossene + 1 abgesagter (Seed Teil 4) – Abgesagtes steht unter „Vergangen“
+  await expect(page.getByRole('tab', { name: /Vergangen \(4\)/ })).toBeVisible();
   const before = Number((await page.getByRole('tab', { name: /Kommend/ }).innerText()).match(/\((\d+)\)/)![1]);
 
   await page.getByRole('link', { name: 'Buchen', exact: true }).click();

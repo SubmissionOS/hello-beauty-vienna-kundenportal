@@ -88,7 +88,11 @@ const dayIso = (offset) => {
 const HISTORY = ['Maniküre + Shellac', 'Pediküre Spa', 'Gesichtsbehandlung klassisch', 'Auffüllen + Lack', 'Wimpernlifting', 'Laser Achseln'];
 let customers = 0;
 let appts = 0;
-for (const [i, [first, last, phone, email, status, allergies, notes]] of LEGACY.entries()) {
+for (const [i, [first, last, phone, email, seedStatus, allergies, notes]] of LEGACY.entries()) {
+  // Status passend zu den Besuchen: VIP bleibt, Inaktive kamen vor über einem Jahr zuletzt, sonst Neu (≤ 2) / Stammkundin (≥ 3)
+  const visits = 2 + (i % 3);
+  const status = seedStatus === 'vip' || seedStatus === 'inactive' ? seedStatus : visits >= 3 ? 'regular' : 'new';
+  const firstVisitDaysAgo = seedStatus === 'inactive' ? 420 : 20;
   const c = must(
     await db.from('customers').insert({ tenant_id: tenant.id, user_id: null, first_name: first, last_name: last, phone, email, language: last === 'Nagy' || last === 'Kovács' ? 'hu' : 'de', notify_email: !!email }).select('id').single(),
     `${first} ${last}`,
@@ -107,11 +111,10 @@ for (const [i, [first, last, phone, email, status, allergies, notes]] of LEGACY.
     'private',
   );
   // 2–4 vergangene Besuche, bei jeder dritten Kundin ein kommender Termin
-  const visits = 2 + (i % 3);
   for (let v = 0; v < visits; v++) {
     const s = svc(HISTORY[(i + v) % HISTORY.length]);
     const m = staff[(i + v) % staff.length];
-    const start = viennaToUtc(`${dayIso(-20 - v * 41 - i * 3)}T${String(9 + ((i + v) % 8)).padStart(2, '0')}:00`);
+    const start = viennaToUtc(`${dayIso(-firstVisitDaysAgo - v * 41 - i * 3)}T${String(9 + ((i + v) % 8)).padStart(2, '0')}:00`);
     const { error } = await db.from('appointments').insert({
       tenant_id: tenant.id, customer_id: c.id, service_id: s.id, staff_id: m.id, service_name: s.name,
       category_key: s.service_categories.key, staff_name: m.display_name, starts_at: start,

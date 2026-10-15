@@ -475,7 +475,7 @@ export const de = {
     points: [
       'Erinnerung vor Ihrem Termin',
       'Antworten auf Ihre Nachrichten',
-      'Frei gewordene Termine von der Warteliste – wer zuerst tippt, bekommt ihn',
+      'Frei gewordene Termine von der Warteliste – nur für Sie reserviert, bis die Antwortzeit abläuft',
     ],
     note: 'Werbung schicken wir nur, wenn Sie das im Profil eigens erlauben. Sie können Mitteilungen jederzeit wieder abschalten.',
     allow: 'Mitteilungen erlauben',

@@ -222,6 +222,7 @@ for (const theme of ['light', 'dark'] as const) {
           if (await banner.isVisible()) {
             await click(banner);
             await page.waitForURL(/\/app\/angebot\//);
+            await page.getByTestId('offer-clock').waitFor({ timeout: 15_000 });
             await run.shot(page, 'portal-demo-angebot');
           }
         });
@@ -323,7 +324,9 @@ for (const theme of ['light', 'dark'] as const) {
           await page.getByLabel('E-Mail').fill(second.email);
           await page.locator('#password').fill(second.password);
           await click(page.getByRole('button', { name: 'Anmelden', exact: true }));
-          await page.waitForURL(/\/app(\/.*)?$/, { timeout: 20_000 });
+          // nur die Startseite zählt – /app/anmelden selbst passt sonst auch auf das Muster
+          await page.waitForURL(/\/app$/, { timeout: 20_000 });
+          await expect(page.getByRole('heading', { name: /Zora/ })).toBeVisible({ timeout: 15_000 });
           await run.shot(page, 'portal-zweite-nach-anmeldung');
         });
       }

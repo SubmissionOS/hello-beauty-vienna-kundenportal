@@ -476,7 +476,7 @@ export const en: Dict = {
     points: [
       'Reminder before your appointment',
       'Replies to your messages',
-      'Free appointments from the waiting list – whoever taps first gets it',
+      'Free appointments from the waiting list – reserved for you until the response time runs out',
     ],
     note: 'We only send promotions if you allow them separately in your profile. You can switch notifications off at any time.',
     allow: 'Allow notifications',

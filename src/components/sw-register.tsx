@@ -58,14 +58,24 @@ export function SwRegister() {
     }
     let reg: ServiceWorkerRegistration | null = null;
 
+    /**
+     * Nur eine ECHTE neue Version meldet sich: Es läuft schon eine (controller) und die wartende hat eine andere
+     * Versionsnummer im Skript-Pfad (?v=…). Safari meldet gelegentlich auch dieselbe Version als „wartend“ –
+     * die wird still übernommen (ohne Hinweis, ohne Neuladen), die allererste Installation ebenso.
+     */
+    const offer = (sw: ServiceWorker) => {
+      const current = navigator.serviceWorker.controller;
+      if (!current) return;
+      if (current.scriptURL !== sw.scriptURL) setWaiting(sw);
+      else sw.postMessage({ type: 'SKIP_WAITING' });
+    };
     const watch = (r: ServiceWorkerRegistration) => {
       // schon eine wartende Version (z. B. aus einem früheren Besuch)
-      if (r.waiting && navigator.serviceWorker.controller) setWaiting(r.waiting);
+      if (r.waiting) offer(r.waiting);
       r.addEventListener('updatefound', () => {
         const sw = r.installing;
         sw?.addEventListener('statechange', () => {
-          // nur ein UPDATE meldet sich – die allererste Installation übernimmt still
-          if (sw.state === 'installed' && navigator.serviceWorker.controller) setWaiting(sw);
+          if (sw.state === 'installed') offer(sw);
         });
       });
     };

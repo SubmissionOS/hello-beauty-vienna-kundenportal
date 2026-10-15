@@ -74,7 +74,7 @@ const news = must(
         image_path: await upload('cosmetics.webp'),
         valid_until: inMinutes(14 * 24 * 60),
         status: 'published',
-        published_at: inMinutes(-60),
+        published_at: viennaAt(-1, '10:15'),
         created_by: SEED,
       },
       {
@@ -84,7 +84,7 @@ const news = must(
         body: 'Zwölf neue Herbstfarben warten im Salon. Fragen Sie bei Ihrem nächsten Termin danach.',
         image_path: await upload('nails.webp'),
         status: 'published',
-        published_at: inMinutes(-26 * 60),
+        published_at: viennaAt(-2, '11:00'),
         created_by: SEED,
       },
       {
@@ -94,7 +94,7 @@ const news = must(
         body: 'Bei Ivana ist kurzfristig ein Termin für Pediküre frei geworden. Jetzt in der App buchen.',
         valid_until: inMinutes(2 * 24 * 60),
         status: 'published',
-        published_at: inMinutes(-3 * 24 * 60),
+        published_at: viennaAt(-3, '09:30'),
         created_by: SEED,
       },
     ])

@@ -202,6 +202,11 @@
   display: grid;
   gap: 4px;
 }
+/* Die Karte ist immer hell (QR braucht Kontrast) – also auch Nebentexte immer dunkel, im Dunkelmodus ebenso */
+.qrCard figcaption,
+.qrCard figcaption * {
+  color: var(--c-ink);
+}
 .qrCard .url {
   word-break: normal;
   overflow-wrap: anywhere;
