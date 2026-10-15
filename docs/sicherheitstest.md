@@ -1,6 +1,6 @@
 # Sicherheitstest Supabase (RLS, Tenants, Doppelbuchung)
 
-Lauf: 2026-10-15 02:17 UTC gegen das echte Projekt. Angriffe ausschließlich mit dem **Publishable Key** (wie ein Browser); Secret Key nur für Auf- und Abbau. Skript: `scripts/security-test.mjs` (`npm run test:security`).
+Lauf: 2026-10-15 05:58 UTC gegen das echte Projekt. Angriffe ausschließlich mit dem **Publishable Key** (wie ein Browser); Secret Key nur für Auf- und Abbau. Skript: `scripts/security-test.mjs` (`npm run test:security`).
 
 Aufbau: Tenant A = `hello-beauty` (Host localhost), Tenant B = `sicherheitstest-b` (eigener Host), je 2 Kundinnen (a1, a2, b1, b2). Danach wurden Tenant B und alle Testkundinnen wieder gelöscht.
 
