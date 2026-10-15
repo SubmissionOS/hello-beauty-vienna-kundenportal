@@ -108,3 +108,17 @@ B4: 592 Screenshots, automatisch 0 Befunde; Sichtprüfung aller 8 Kombinationen.
 | 75 | CRM | Team | 404, Nachrichten | Knöpfe | Knopfoptik | „Zum Dashboard“ unterstrichen; deaktiviertes „Senden“ unlesbar | B4/WK/h/049, 061 | niedrig | behoben CRM 182e9c2 |
 | 76 | Portal | Demo | Start, Buchen (Touch) | tippen | keine hängende Hervorhebung | Hover-Stil bleibt nach dem Tippen | B4/WK/h/016 | niedrig | behoben Portal cef9d27 |
 | 77 | Portal | Demo | Termine vergangen, Texte | lesen | Abstand, einheitliche Formate | „Erneut buchen“ ohne Abstand; Frist mit Jahr; „Egal“; EN „9 am – 7 pm“ | B4/WK/h/014, C768/h/023 | niedrig | behoben Portal cef9d27 |
+
+## Durchlauf B5 – neue Befunde (4. vollständige Runde mit Sichtprüfung; B1 war nur automatisch)
+
+B5: 592 Screenshots, automatisch 0 Befunde; Sichtprüfung 7 von 8 Kombinationen vollständig, WebKit hell nur 37/74 und dunkel 0/74 (Bildlimit des Prüf-Agenten). Ordner `qa/durchlauf-B5/`.
+
+| Nr | App | Rolle | Seite | Schritte | Erwartet | Tatsächlich | Screenshot | Schwere | Status |
+|---|---|---|---|---|---|---|---|---|---|
+| 78 | Portal | Demo | Start (Touch) | „Weiteren Termin buchen“ | lesbar | Gold auf Gold: allgemeine Link-Hover-Farbe griff auf Touch (Folge von Nr. 76) | B5/WK/h/011, C390/d/011 | mittel | behoben Portal e847bd3 – nicht mehr in vollem Durchlauf bestätigt |
+| 79 | CRM | Team | Karten | 390/768 | Werte beschriftet, einheitliche Farbe | Warteliste teils ohne Beschriftung, Werte teils grau wie Label, „Zeit:“ fett | B5/C768/h/052, C390/h/046 | niedrig | behoben CRM 06400c7 – nicht mehr in vollem Durchlauf bestätigt |
+| 80 | CRM | Team | Beträge (HU) | Ungarisch | „€“ | „EUR“ | B5/C1440/h/068 | niedrig | behoben CRM 06400c7 – nicht mehr in vollem Durchlauf bestätigt |
+| 81 | Portal | Demo | Termine (DE/HU, 390) | Karten | gleicher Innenabstand | Knopfzeile verbreitert die Karte | B5/C390/h/013 | niedrig | behoben Portal ea7f022 – nicht mehr in vollem Durchlauf bestätigt |
+| 82 | Portal | – | Neuigkeiten-Zähler, Hover dunkel | Aufnahme | – | Zähler kurz vor Gelesen-Markierung aufgenommen; Hover-Farbe während Übergang | B5/C1440/d/034 | – | kein App-Fehler: gemessen (Hover dunkel mit Maus: dunkle Schrift auf Gold) |
+
+**Ergebnis der Abschlussprüfung:** Auch die 4. vollständige Runde (B5) hatte noch neue, niedrige bis mittlere Befunde. Die Bedingung „null neue Fehler“ ist damit **nicht erfüllt** → main wurde **nicht** aktualisiert. Alle Befunde sind auf den Nacht-Branches behoben; Nr. 78–81 sind noch nicht in einem vollen Durchlauf bestätigt.
