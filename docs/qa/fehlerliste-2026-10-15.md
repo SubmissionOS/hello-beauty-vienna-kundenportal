@@ -95,3 +95,16 @@ B3: 592 Screenshots, automatisch (Breite jetzt gegen die Gerätebreite) + Sichtp
 | 69 | CRM | Demo | Kundenstatus | Liste | passend | „Stammkundin“ bei 2 Besuchen | B3/C1440/h/046 | niedrig | behoben Portal 1f9338a (Seed) |
 | 70 | Portal | Demo | Profil HU (768) | laden | ohne Fehler | einmalig CORS/Netzwerkfehler zu Supabase, Seite trotzdem vollständig | B3/C768/h/028 | – | kein App-Fehler: einmaliger Netzaussetzer der Gegenstelle (1 von 592), App lud neu |
 | 71 | Tests | – | Sicherheitstests | Lauf | grün | 2 Prüfungen auf alte Semantik (Fehlermeldung statt „ohne Wirkung“; Team-Zugriff per Host) | – | – | angepasst Portal 1f9338a – Schutzziel unverändert geprüft (41/41, 62/62, 80/80) |
+
+## Durchlauf B4 – neue Befunde
+
+B4: 592 Screenshots, automatisch 0 Befunde; Sichtprüfung aller 8 Kombinationen. Ordner `qa/durchlauf-B4/`.
+
+| Nr | App | Rolle | Seite | Schritte | Erwartet | Tatsächlich | Screenshot | Schwere | Status |
+|---|---|---|---|---|---|---|---|---|---|
+| 72 | CRM | Team | Leistungen, Verknüpfungen, Kunden, Zahlungen | 768 px | Aktionen ohne Querscrollen | „Bearbeiten“/„Vorschlag bestätigen“ teils abgeschnitten | B4/C768/h/056, 050 | mittel | behoben CRM 182e9c2 (Karten bis 900 px) |
+| 73 | CRM | Team | Karten (Akte, Team, Warteliste, Zahlungen) | 390 px | Werte beschriftet | teils ohne Beschriftung („20“, „Vor Ort“, Frist), Einheit doppelt, leeres „E‑Mail:“ | B4/C390/h/047, 057, 052 | mittel | behoben CRM 182e9c2 |
+| 74 | CRM | Team | Zahlungen | Liste | Anzahlung als solche | „Bezahlt“, obwohl nur die Anzahlung bezahlt ist | B4/C1440/h/054 | niedrig | behoben CRM 182e9c2 |
+| 75 | CRM | Team | 404, Nachrichten | Knöpfe | Knopfoptik | „Zum Dashboard“ unterstrichen; deaktiviertes „Senden“ unlesbar | B4/WK/h/049, 061 | niedrig | behoben CRM 182e9c2 |
+| 76 | Portal | Demo | Start, Buchen (Touch) | tippen | keine hängende Hervorhebung | Hover-Stil bleibt nach dem Tippen | B4/WK/h/016 | niedrig | behoben Portal cef9d27 |
+| 77 | Portal | Demo | Termine vergangen, Texte | lesen | Abstand, einheitliche Formate | „Erneut buchen“ ohne Abstand; Frist mit Jahr; „Egal“; EN „9 am – 7 pm“ | B4/WK/h/014, C768/h/023 | niedrig | behoben Portal cef9d27 |
