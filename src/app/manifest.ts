@@ -12,9 +12,9 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: '/',
     display: 'standalone',
     orientation: 'portrait',
-    // Werte = --c-cream / --c-paper aus src/styles/tokens.css (geprüft von scripts/check-tokens.mjs)
-    background_color: '#f5f2eb',
-    theme_color: '#fbf9f4',
+    // Werte = --c-ios-bg aus src/styles/tokens.css (geprüft von scripts/check-tokens.mjs)
+    background_color: '#f4f2ee',
+    theme_color: '#f4f2ee',
     categories: ['beauty', 'lifestyle'],
     icons: [
       { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },

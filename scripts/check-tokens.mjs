@@ -56,7 +56,7 @@ for (const f of files) {
 }
 
 // Literale in Manifest/Layout müssen Token-Werten entsprechen
-const tokenHex = new Set([...tokens.matchAll(/--c-[a-z-]+:\s*(#[0-9a-f]{6})/g)].map((m) => m[1].toLowerCase()));
+const tokenHex = new Set([...tokens.matchAll(/--c-[a-z0-9-]+:\s*(#[0-9a-f]{6})/g)].map((m) => m[1].toLowerCase()));
 for (const path of literalAllowed) {
   const f = files.find((x) => x.path === path);
   for (const m of f?.text.matchAll(/#[0-9a-fA-F]{6}\b/g) ?? []) {

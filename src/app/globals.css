@@ -28,7 +28,7 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
-  font-family: var(--font-sans);
+  font-family: var(--font-ui);
   font-size: var(--fs-body);
   font-weight: var(--fw-regular);
   line-height: var(--lh-body);
@@ -39,7 +39,6 @@ body {
   text-rendering: optimizeLegibility;
   overflow-wrap: break-word;
   font-synthesis: none;
-  font-variant-numeric: oldstyle-nums proportional-nums;
   overscroll-behavior: none;
   touch-action: manipulation;
 }
@@ -146,7 +145,7 @@ p {
   align-items: center;
   gap: var(--s-3);
   margin: 0;
-  font-family: var(--font-sans);
+  font-family: var(--font-ui);
   font-size: var(--fs-xs);
   font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-eyebrow);
@@ -165,18 +164,20 @@ p {
 /* Website .summary__title – Überschrift über Zellen-Gruppen */
 .section-title {
   margin: 0 0 var(--s-2);
-  font-family: var(--font-sans);
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-medium);
-  letter-spacing: var(--ls-label);
+  font-family: var(--font-ui);
+  padding-inline: var(--s-4);
+  font-size: var(--fs-footnote);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
-/* ---------- Buttons (Website .btn) ---------- */
+/* ---------- Buttons (iOS: Umrandung + Tönung, nie vollflächig gefüllt) ---------- */
 .btn {
-  --btn-bg: var(--primary);
-  --btn-fg: var(--on-primary);
+  --btn-bg: var(--primary-tint);
+  --btn-bg-press: var(--primary-tint-press);
+  --btn-fg: var(--primary);
   --btn-bd: var(--primary);
   display: inline-flex;
   align-items: center;
@@ -184,16 +185,15 @@ p {
   gap: var(--s-2);
   min-height: var(--btn-h);
   max-width: 100%;
-  padding: 0 1.5rem;
-  border: 1px solid var(--btn-bd);
-  border-radius: var(--r-pill);
+  padding: 0 1.25rem;
+  border: var(--hairline) solid var(--btn-bd);
+  border-radius: var(--r-control);
   background: var(--btn-bg);
   color: var(--btn-fg);
-  font-family: var(--font-sans);
-  font-size: var(--fs-button);
-  font-weight: var(--fw-medium);
+  font-family: var(--font-ui);
+  font-size: var(--fs-headline);
+  font-weight: var(--fw-semibold);
   line-height: 1.2;
-  letter-spacing: 0.01em;
   text-align: center;
   text-decoration: none;
   text-wrap: balance;
@@ -205,20 +205,13 @@ p {
     color var(--dur-1) var(--ease-out),
     transform var(--dur-1) var(--ease-out);
 }
-/* Hover nur bei Maus/Trackpad – auf Touch-Geräten bleibt :hover sonst nach dem Tippen hängen */
-@media (hover: hover) {
-  .btn:hover {
-    --btn-bg: var(--primary-hover);
-    --btn-bd: var(--primary-hover);
-    color: var(--btn-fg);
-  }
-}
-/* Knopf-Links behalten ihre Schriftfarbe – sonst greift auf Touch-Geräten die allgemeine Link-Hover-Farbe (Gold auf Gold) */
+/* Knopf-Links behalten ihre Schriftfarbe (allgemeine Link-Hover-Farbe greift nicht) */
 .btn:hover {
   color: var(--btn-fg);
 }
 .btn:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(var(--press-scale));
+  background: var(--btn-bg-press);
 }
 .btn svg {
   width: 20px;
@@ -228,54 +221,48 @@ p {
 .btn-primary {
   /* Standard */
 }
+/* Sekundär: nur Haarlinie, Text in Textfarbe */
 .btn-secondary {
   --btn-bg: transparent;
+  --btn-bg-press: var(--state-active);
   --btn-fg: var(--text);
-  --btn-bd: var(--field);
+  --btn-bd: var(--line-strong);
 }
-@media (hover: hover) {
-  .btn-secondary:hover {
-    --btn-bg: var(--surface);
-    --btn-fg: var(--text);
-    --btn-bd: var(--link);
-  }
-}
-/* Website .flow__back: Textknopf in Gold */
+/* Text-Knopf */
 .btn-ghost {
   --btn-bg: transparent;
+  --btn-bg-press: var(--state-active);
   --btn-bd: transparent;
   --btn-fg: var(--link);
   min-height: var(--tap);
   padding: 0 10px;
 }
-@media (hover: hover) {
-  .btn-ghost:hover {
-    --btn-bg: var(--surface-soft);
-    --btn-bd: var(--surface-soft);
-    --btn-fg: var(--link);
-  }
-}
+/* Gefährlich: roter Text, ohne Umrandung (Umrandung nur im Bestätigungsdialog) */
 .btn-danger {
-  --btn-bg: var(--error);
+  --btn-bg: transparent;
+  --btn-bg-press: color-mix(in srgb, var(--error) 12%, transparent);
+  --btn-bd: transparent;
+  --btn-fg: var(--error);
+}
+dialog .btn-danger,
+.sheet .btn-danger {
   --btn-bd: var(--error);
-  --btn-fg: var(--bg);
 }
 @media (hover: hover) {
-  .btn-danger:hover {
-    --btn-bg: var(--error);
-    --btn-bd: var(--error);
+  .btn:hover:not(:disabled) {
+    --btn-bg: var(--btn-bg-press);
   }
 }
 .btn-block {
   width: 100%;
 }
 .btn-lg {
-  /* Website kennt nur eine Button-Höhe (--btn-h); Klasse bleibt für die Lesbarkeit */
+  /* eine Button-Höhe (--btn-h); Klasse bleibt für die Lesbarkeit */
 }
 .btn:disabled,
 .btn[aria-disabled='true'] {
   --btn-bg: var(--disabled-bg);
-  --btn-bd: var(--disabled-bg);
+  --btn-bd: var(--disabled-line);
   --btn-fg: var(--disabled-fg);
   cursor: not-allowed;
   transform: none;
@@ -299,7 +286,7 @@ p {
 .card,
 .group {
   background: var(--surface);
-  border-radius: var(--r-md);
+  border-radius: var(--r-group);
   box-shadow: var(--shadow-cells);
 }
 .group {
@@ -410,8 +397,8 @@ button.row:active {
   line-height: 1.4;
   color: var(--text);
   background: var(--surface);
-  border: 1px solid var(--field);
-  border-radius: var(--r-md);
+  border: var(--hairline) solid var(--line-strong);
+  border-radius: var(--r-control);
   appearance: none;
   transition:
     border-color var(--dur-1) var(--ease-out),
@@ -425,9 +412,11 @@ select.select {
   background-position: right 16px center;
 }
 
-.input:hover,
-.select:hover {
-  border-color: var(--text-muted);
+@media (hover: hover) {
+  .input:hover,
+  .select:hover {
+    border-color: var(--field);
+  }
 }
 .input:focus-visible,
 .select:focus-visible {
@@ -481,7 +470,7 @@ select.select {
   height: 27px;
   border-radius: 50%;
   background: var(--c-white);
-  box-shadow: var(--sh-1);
+  box-shadow: var(--shadow-knob);
   transition: transform var(--dur-2) var(--ease-out);
 }
 .switch:checked {
@@ -499,15 +488,15 @@ select.select {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  padding: 4px;
-  border-radius: var(--r-pill);
+  padding: 2px;
+  border-radius: 10px;
   background: var(--surface-soft);
 }
 .segmented button {
-  min-height: var(--tap);
+  min-height: 36px;
   padding: 0 18px;
   border: 0;
-  border-radius: var(--r-pill);
+  border-radius: 8px;
   background: transparent;
   font-size: var(--fs-small);
   font-weight: var(--fw-medium);
@@ -519,9 +508,13 @@ select.select {
 }
 .segmented button[aria-pressed='true'],
 .segmented button[aria-selected='true'] {
-  background: var(--surface);
-  box-shadow: var(--shadow-cells);
+  background: var(--bg);
+  box-shadow: var(--shadow-knob);
   color: var(--text);
+}
+:root[data-theme='dark'] .segmented button[aria-pressed='true'],
+:root[data-theme='dark'] .segmented button[aria-selected='true'] {
+  background: var(--line-strong);
 }
 @media (hover: hover) {
   .segmented button:hover {
@@ -535,9 +528,9 @@ select.select {
   gap: var(--s-3);
   align-items: flex-start;
   padding: 12px 16px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-md);
-  background: var(--surface-soft);
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--r-group);
+  background: var(--surface);
   font-size: var(--fs-small);
   color: var(--text);
 }
@@ -592,10 +585,18 @@ select.select {
   margin: 0 auto;
   padding: 10px 20px calc(20px + var(--safe-bottom));
   border: 0;
-  border-radius: var(--r-xl) var(--r-xl) 0 0;
-  background: var(--bg);
+  border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  border-top: var(--hairline) solid var(--glass-line);
   color: var(--text);
   box-shadow: var(--shadow-sheet);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sheet {
+    background: var(--glass-solid);
+  }
 }
 .sheet[open] {
   animation: sheet-in 420ms var(--ease-sheet);
@@ -702,10 +703,17 @@ html[lang='hu'] [data-l]:not([data-l='hu']) {
   max-width: 560px;
   margin: 0 auto;
   padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4);
-  border-radius: var(--r-lg);
-  background: var(--surface);
+  border-radius: var(--r-sheet);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
   color: var(--text);
   font-weight: var(--fw-medium);
   box-shadow: var(--shadow-raised);
-  border: 1px solid var(--line);
+  border: var(--hairline) solid var(--glass-line);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .update-bar {
+    background: var(--glass-solid);
+  }
 }

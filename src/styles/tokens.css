@@ -4,9 +4,8 @@
  *
  * Abschnitt 1 ist wortgleich aus der Website übernommen (hellobeautyvienna-website, src/styles/tokens.css,
  * Stand main 1b37682). Werte dort ändern → hier mitziehen. Abgleich: docs/design-abgleich.md.
- * Abschnitt 2 ordnet die Werte Rollen zu (hell = wie Website). Abschnitt 3 ist der Dunkelmodus des Portals –
- * die Website hat keinen; er ist ausschließlich aus Website-Farben abgeleitet (Ink-Flächen wie Footer/CTA-Band).
- * Abschnitt 4 sind die Farben der gezeichneten iPhone-/Android-Oberfläche (Installations-Animation).
+ * Abschnitt 2/3 ordnen die Werte Rollen zu: iOS-Look in Hell und Dunkel (3b Typografie, 3c Aliase fürs CRM).
+ * Abschnitt 4 sind die Farben der gezeichneten iPhone-/Android-Oberfläche (Installations-Animation, unverändert).
  */
 
 /* ======================================================================= 1. Website-Tokens (1:1) */
@@ -133,69 +132,159 @@
   --qr-bg: var(--c-white);
 }
 
-/* ======================================================================= 2. Rollen (hell = Website) */
+/* ======================================================================= 2. Rollen – Hell (iOS-Look: warmes Systemgrau, weiße Karten, Haarlinien) */
 :root {
-  --bg: var(--c-paper);
-  --surface: var(--c-white); /* Zellen-Gruppen, Felder (Website .cells, .input) */
-  --surface-soft: var(--c-cream); /* Flächen, Notices, Segmented (Website .notice, .segmented) */
+  --c-ios-bg: #f4f2ee; /* Grund wie iOS-Systemgrau, warm */
+  --c-ios-bg-dark: #0f0e0c; /* Grund Dunkel, ruhiges Fast-Schwarz mit Warmton */
+  --c-ios-card-dark: #1b1a17;
+  --c-ios-card-dark-2: #26241f;
+
+  --bg: var(--c-ios-bg);
+  --surface: var(--c-white); /* Karten, Felder */
+  --surface-soft: #ece9e2; /* Segmented, Symbolflächen, gedrückte Zeilen */
   --text: var(--c-ink);
   --text-muted: var(--c-ink-muted);
   --link: var(--c-gold-text);
   --link-hover: var(--c-gold-deep);
   --brand-line: var(--c-gold);
-  --line: var(--c-line);
-  --line-strong: var(--c-line-strong);
-  --field: var(--c-field);
+  --line: rgb(43 38 24 / 0.14); /* Haarlinie */
+  --line-strong: rgb(43 38 24 / 0.24);
+  --field: #8c8270;
   --primary: var(--c-gold-text);
   --primary-hover: var(--c-gold-deep);
+  --primary-tint: color-mix(in srgb, var(--primary) 10%, transparent); /* Primärknopf: Hintergrund */
+  --primary-tint-press: color-mix(in srgb, var(--primary) 18%, transparent);
   --on-primary: var(--c-white);
-  --disabled-bg: var(--c-line);
-  --disabled-fg: var(--c-ink-muted);
+  --disabled-bg: transparent;
+  --disabled-fg: #9a917f;
+  --disabled-line: rgb(43 38 24 / 0.14);
   --error: var(--c-error);
   --error-bg: var(--c-error-bg);
   --success: var(--c-success);
   --success-bg: var(--c-success-bg);
-  --overlay: var(--c-overlay);
-  --shadow-cells: var(--sh-1);
-  --shadow-raised: var(--sh-2);
-  --shadow-sheet: var(--sh-3);
-  --skeleton: var(--c-cream);
-  --skeleton-shine: var(--c-paper);
-  --theme-light: var(--c-paper);
+  --overlay: rgb(20 18 10 / 0.38);
+  --shadow-cells: none;
+  --shadow-raised: 0 8px 28px rgb(20 18 10 / 0.12);
+  --shadow-sheet: 0 -1px 0 rgb(43 38 24 / 0.08);
+  --skeleton: #e8e5de;
+  --skeleton-shine: #f4f2ee;
+  --theme-light: var(--c-ios-bg);
+  --focus-color: var(--c-gold-text);
+  /* Glas – nur Tab-Leiste, Kopfleiste, Sheets, Dialoge, Menüs */
+  --glass-bg: rgb(251 249 244 / 0.78);
+  --glass-solid: #fbf9f4; /* Fallback ohne backdrop-filter */
+  --glass-filter: saturate(180%) blur(22px);
+  --glass-line: rgb(43 38 24 / 0.16);
 }
 
-/* ======================================================================= 3. Dunkelmodus (nur Portal) */
+/* ======================================================================= 3. Dunkelmodus (Vorlage auch fürs CRM) */
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: var(--c-ink); /* wie Website-Footer und CTA-Band */
-  --surface: color-mix(in srgb, var(--c-ink) 90%, var(--c-on-dark));
-  --surface-soft: color-mix(in srgb, var(--c-ink) 94%, var(--c-on-dark));
-  --text: var(--c-on-dark); /* 13,48:1 */
-  --text-muted: var(--c-on-dark-muted); /* 6,87:1 */
-  --link: var(--c-gold-soft); /* 9,06:1 – Website: Gold auf Ink */
+  --bg: var(--c-ios-bg-dark);
+  --surface: var(--c-ios-card-dark);
+  --surface-soft: var(--c-ios-card-dark-2);
+  --text: var(--c-on-dark); /* 16:1 */
+  --text-muted: #aaa391; /* 7:1 auf Karte */
+  --link: var(--c-gold-soft); /* 9:1 */
   --link-hover: var(--c-accent);
   --brand-line: var(--c-gold-soft);
-  --line: color-mix(in srgb, var(--c-ink) 84%, var(--c-on-dark));
-  --line-strong: color-mix(in srgb, var(--c-ink) 74%, var(--c-on-dark));
-  --field: var(--c-on-dark-muted);
+  --line: rgb(245 242 235 / 0.12);
+  --line-strong: rgb(245 242 235 / 0.22);
+  --field: #8f8878;
   --primary: var(--c-gold-soft);
   --primary-hover: var(--c-accent);
+  --primary-tint: color-mix(in srgb, var(--primary) 12%, transparent);
+  --primary-tint-press: color-mix(in srgb, var(--primary) 20%, transparent);
   --on-primary: var(--c-ink);
-  --disabled-bg: color-mix(in srgb, var(--c-ink) 80%, var(--c-on-dark));
-  --disabled-fg: var(--c-on-dark-muted);
-  --error: color-mix(in srgb, var(--c-error) 40%, var(--c-on-dark));
-  --error-bg: color-mix(in srgb, var(--c-error) 28%, var(--c-ink));
-  --success: color-mix(in srgb, var(--c-success) 40%, var(--c-on-dark));
-  --success-bg: color-mix(in srgb, var(--c-success) 30%, var(--c-ink));
-  --error-line: color-mix(in srgb, var(--c-error) 50%, var(--c-ink));
-  --success-line: color-mix(in srgb, var(--c-success) 50%, var(--c-ink));
-  --overlay: rgb(0 0 0 / 0.55);
+  --disabled-bg: transparent;
+  --disabled-fg: #7a7466;
+  --disabled-line: rgb(245 242 235 / 0.12);
+  --error: #ff8f86;
+  --error-bg: color-mix(in srgb, var(--c-error) 22%, var(--c-ios-bg-dark));
+  --success: #7fcb91;
+  --success-bg: color-mix(in srgb, var(--c-success) 26%, var(--c-ios-bg-dark));
+  --error-line: color-mix(in srgb, var(--c-error) 45%, var(--c-ios-bg-dark));
+  --success-line: color-mix(in srgb, var(--c-success) 45%, var(--c-ios-bg-dark));
+  --overlay: rgb(0 0 0 / 0.6);
   --shadow-cells: none;
-  --shadow-raised: 0 10px 30px -12px rgb(0 0 0 / 0.6);
-  --shadow-sheet: 0 -10px 40px rgb(0 0 0 / 0.5);
-  --skeleton: color-mix(in srgb, var(--c-ink) 88%, var(--c-on-dark));
-  --skeleton-shine: color-mix(in srgb, var(--c-ink) 82%, var(--c-on-dark));
-  --focus-ring: 0 0 0 3px rgb(221 200 124 / 0.35); /* Gold-Soft 35 % */
+  --shadow-raised: 0 8px 28px rgb(0 0 0 / 0.5);
+  --shadow-sheet: 0 -1px 0 rgb(245 242 235 / 0.08);
+  --skeleton: var(--c-ios-card-dark);
+  --skeleton-shine: var(--c-ios-card-dark-2);
+  --theme-light: var(--c-ios-bg-dark);
+  --focus-color: var(--c-gold-soft);
+  --focus-ring: 0 0 0 3px rgb(221 200 124 / 0.35);
+  --glass-bg: rgb(22 21 18 / 0.72);
+  --glass-solid: #161512;
+  --glass-filter: saturate(160%) blur(24px);
+  --glass-line: rgb(245 242 235 / 0.14);
+}
+
+/* ======================================================================= 3b. iOS-Typografie und Maße (Portal und CRM) */
+:root {
+  --font-ui: system-ui, -apple-system, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fs-large-title: clamp(1.875rem, 1.6rem + 1vw, 2.125rem); /* 30 → 34 */
+  --fs-title: 1.375rem; /* 22 */
+  --fs-headline: 1.0625rem; /* 17, semibold */
+  --fs-callout: 1rem; /* 16 */
+  --fs-footnote: 0.8125rem; /* 13 */
+  --r-group: 12px; /* gruppierte Listen */
+  --r-control: 12px; /* Felder, Knöpfe */
+  --r-sheet: 16px;
+  --press-scale: 0.98;
+  --hairline: 1px;
+  --shadow-knob: 0 1px 3px rgb(0 0 0 / 0.2); /* Schalter-Knopf, aktives Segment */
+}
+
+/* ======================================================================= 3c. Namen des CRM (Aliase auf die Rollen oben) */
+:root {
+  --surface-raised: var(--surface);
+  --surface-sunken: var(--surface-soft);
+  --border: var(--line);
+  --border-strong: var(--line-strong);
+  --text-primary: var(--text);
+  --text-secondary: var(--text-muted);
+  --text-disabled: var(--disabled-fg);
+  --text-on-accent: var(--on-primary);
+  --accent: var(--primary);
+  --accent-hover: var(--primary-hover);
+  --accent-active: var(--primary-hover);
+  --accent-subtle: var(--primary-tint);
+  --accent-border: color-mix(in srgb, var(--primary) 55%, transparent);
+  --state-hover: color-mix(in srgb, var(--text) 5%, transparent);
+  --state-active: color-mix(in srgb, var(--text) 9%, transparent);
+  --state-selected: var(--primary-tint);
+  --status-positive: var(--success);
+  --status-warning: #8a6a14;
+  --status-negative: var(--error);
+  --category-nails: #a8546d;
+  --category-pedicure: #4f7f5c;
+  --category-cosmetics: #9a6f2a;
+  --category-laser: #4b7183;
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --sidebar-width: 248px;
+  --sidebar-width-collapsed: 56px;
+  --topbar-height: 52px;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-md: 13px;
+  --font-size-lg: 15px;
+  --font-size-xl: 20px;
+  --line-height: 1.45;
+}
+:root[data-theme='dark'] {
+  --status-warning: #e0b861;
+  --category-nails: #e0a3b4;
+  --category-pedicure: #93c9a2;
+  --category-cosmetics: #dcb676;
+  --category-laser: #9bbccb;
 }
 
 /* ======================================================================= 4. Gezeichnete Handy-Oberfläche */
