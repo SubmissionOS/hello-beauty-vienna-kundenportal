@@ -196,7 +196,7 @@ test('Profil: Kundennummer + QR, Foto, Benachrichtigungen, Einwilligungen, Expor
   await expect(news).not.toBeChecked();
   // Werbung per E-Mail erst nach der Einwilligung für E-Mail – vorher ist der Schalter gesperrt
   await expect(news).toBeDisabled();
-  await page.getByRole('switch', { name: 'Neuigkeiten & Angebote per E-Mail' }).check();
+  await page.getByRole('switch', { name: /Neuigkeiten & Angebote per E.Mail/ }).check();
   await expect(news).toBeEnabled();
   await news.check();
   await expect(page.getByTestId('consent-sms-at')).toHaveText('Nicht erteilt');

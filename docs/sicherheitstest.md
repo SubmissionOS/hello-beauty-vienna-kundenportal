@@ -1,6 +1,6 @@
 # Sicherheitstest Supabase (RLS, Tenants, Doppelbuchung)
 
-Lauf: 2026-10-14 19:44 UTC gegen das echte Projekt. Angriffe ausschließlich mit dem **Publishable Key** (wie ein Browser); Secret Key nur für Auf- und Abbau. Skript: `scripts/security-test.mjs` (`npm run test:security`).
+Lauf: 2026-10-15 01:20 UTC gegen das echte Projekt. Angriffe ausschließlich mit dem **Publishable Key** (wie ein Browser); Secret Key nur für Auf- und Abbau. Skript: `scripts/security-test.mjs` (`npm run test:security`).
 
 Aufbau: Tenant A = `hello-beauty` (Host localhost), Tenant B = `sicherheitstest-b` (eigener Host), je 2 Kundinnen (a1, a2, b1, b2). Danach wurden Tenant B und alle Testkundinnen wieder gelöscht.
 
@@ -29,7 +29,7 @@ Aufbau: Tenant A = `hello-beauty` (Host localhost), Tenant B = `sicherheitstest-
 | A1 ↔ A2 | a1 kann Termin von a2 nicht lesen | bestanden |
 | A1 ↔ A2 | a1 kann Termin von a2 nicht absagen | bestanden |
 | A1 ↔ A2 | a1 kann Termin von a2 nicht verschieben | bestanden |
-| A1 ↔ A2 | Update auf fremden Kundendatensatz verweigert | bestanden |
+| A1 ↔ A2 | Update auf fremden Kundendatensatz verweigert oder ohne Wirkung | bestanden |
 | A1 ↔ A2 | Delete auf Termine verweigert | bestanden |
 | A1 ↔ A2 | Insert in appointments verweigert | bestanden |
 | A1 ↔ A2 | Datensatz a2 unverändert | bestanden |

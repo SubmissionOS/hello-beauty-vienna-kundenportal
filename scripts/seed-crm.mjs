@@ -89,9 +89,9 @@ const HISTORY = ['Maniküre + Shellac', 'Pediküre Spa', 'Gesichtsbehandlung kla
 let customers = 0;
 let appts = 0;
 for (const [i, [first, last, phone, email, seedStatus, allergies, notes]] of LEGACY.entries()) {
-  // Status passend zu den Besuchen: VIP bleibt, Inaktive kamen vor über einem Jahr zuletzt, sonst Neu (≤ 2) / Stammkundin (≥ 3)
+  // Status passend zu den Besuchen: Stammkundin (VIP) ab 4, Aktiv 3, Neu bis 2; Inaktive kamen vor über einem Jahr zuletzt
   const visits = 2 + (i % 3);
-  const status = seedStatus === 'vip' || seedStatus === 'inactive' ? seedStatus : visits >= 3 ? 'regular' : 'new';
+  const status = seedStatus === 'inactive' ? 'inactive' : visits >= 4 ? 'vip' : visits >= 3 ? 'regular' : 'new';
   const firstVisitDaysAgo = seedStatus === 'inactive' ? 420 : 20;
   const c = must(
     await db.from('customers').insert({ tenant_id: tenant.id, user_id: null, first_name: first, last_name: last, phone, email, language: last === 'Nagy' || last === 'Kovács' ? 'hu' : 'de', notify_email: !!email }).select('id').single(),

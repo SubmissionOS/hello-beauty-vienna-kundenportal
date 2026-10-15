@@ -80,7 +80,11 @@ try {
   must(await a1.client.rpc('send_chat_message', { p_body: 'Hallo Salon' }), 'chat a1');
   check('Chat', 'a2 sieht Chat von a1 nicht', rows(await a2.client.from('chat_messages').select('id')) === 0);
   check('Chat', 'Salon-Team A sieht Chat von a1', rows(await salonA.client.from('chat_messages').select('id').eq('customer_id', a1.customerId)) >= 1);
-  check('Chat', 'Salon-Team A unter Host B: kein Zugriff', rows(await pub(ORIGIN_B, salonA.token).from('chat_messages').select('id')) === 0);
+  // Seit der gemeinsamen DB gilt Team-Zugriff über die Mitgliedschaft (salon_members), nicht über den Host.
+  // Schutzziel: auch unter fremdem Host nur Daten des EIGENEN Tenants, nie die von Tenant B.
+  must(await b1.client.rpc('send_chat_message', { p_body: 'Hallo Salon B' }), 'chat b1');
+  const underB = (await pub(ORIGIN_B, salonA.token).from('chat_messages').select('tenant_id')).data ?? [];
+  check('Chat', 'Salon-Team A unter Host B: keine Chats von Tenant B', underB.every((m) => m.tenant_id === tenantA.id));
   check('Chat', 'Kundin kann nicht als Salon schreiben', errIs(await a2.client.rpc('salon_send_chat_message', { p_customer_id: a1.customerId, p_body: 'x' }), 'forbidden'));
   check('Chat', 'anon kann nichts lesen', rows(await pub(ORIGIN_A).from('chat_messages').select('id')) <= 0);
   const reply = await salonA.client.rpc('salon_send_chat_message', { p_customer_id: a1.customerId, p_body: 'Gerne!' });

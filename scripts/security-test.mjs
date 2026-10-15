@@ -150,7 +150,9 @@ try {
     check('A1 ↔ A2', 'a1 kann Termin von a2 nicht absagen', errIs(await a1.client.rpc('cancel_appointment', { p_id: a2Appt.id }), 'not_found'));
     check('A1 ↔ A2', 'a1 kann Termin von a2 nicht verschieben', errIs(await a1.client.rpc('reschedule_appointment', { p_id: a2Appt.id, p_new_start: slotA.start }), 'not_found'));
   }
-  check('A1 ↔ A2', 'Update auf fremden Kundendatensatz verweigert', denied(await a1.client.from('customers').update({ first_name: 'HACK' }).eq('id', a2.customerId)));
+  // verweigert ODER wirkungslos (RLS filtert auf 0 Zeilen) – maßgeblich ist, dass nichts geändert wird (Prüfung unten)
+  const foreignUpdate = await a1.client.from('customers').update({ first_name: 'HACK' }).eq('id', a2.customerId).select('id');
+  check('A1 ↔ A2', 'Update auf fremden Kundendatensatz verweigert oder ohne Wirkung', denied(foreignUpdate) || rows(foreignUpdate) === 0);
   check('A1 ↔ A2', 'Delete auf Termine verweigert', denied(await a1.client.from('appointments').delete().eq('customer_id', a2.customerId)));
   check('A1 ↔ A2', 'Insert in appointments verweigert', denied(await a1.client.from('appointments').insert({ ...copy, customer_id: a1.customerId })));
   const a2Still = (await admin.from('customers').select('first_name').eq('id', a2.customerId).single()).data;

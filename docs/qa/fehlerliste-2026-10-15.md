@@ -75,7 +75,7 @@ Ordner: `qa/durchlauf-B1/`, `qa/durchlauf-B2/`.
 | 56 | Portal | alle | alle (WebKit) | erster Besuch | kein Update-Hinweis | „Neue Version verfügbar“ beim ersten Besuch (Safari meldet gleiche Version als wartend) | B2/WK/h/001, 030 | mittel | behoben Portal e66f449 |
 | 57 | Portal | Demo-Kundin | Mitteilungen | lesen | eine Regel | „wer zuerst tippt“ vs. Warteliste | B2/C1440/h/021 | mittel | behoben Portal e66f449 |
 | 58 | Portal | anonym | Start (dunkel) | QR-Karte | lesbar | Adresse hellgrau auf Weiß | B2/C768/d/001 | niedrig | behoben Portal e66f449 |
-| 59 | Portal | Demo-Kundin | Start (EN, 390) | öffnen | 390 px | 409 px – Folge von Nr. 42 (unumbrechbare Knöpfe) | B2/C390/h/023 | hoch | behoben (Nr. 42 zurückgenommen) |
+| 59 | Portal | Demo-Kundin | Start (EN, 390) | öffnen | 390 px | 409 px – Folge von Nr. 42 (unumbrechbare Knöpfe) | B2/C390/h/023 | hoch | behoben Portal cda2177 (Nr. 42 zurückgenommen) |
 | 60 | Portal/CRM | Demo | Neuigkeiten, Kundenstatus | Demo-Daten | plausibel | Veröffentlichung nachts, „Neu“ bei 3–4 Besuchen | B2/C1440/h/053, 046 | niedrig | behoben Portal e66f449 (Seeds neu eingespielt) |
 | 61 | Portal | zweite Kundin | Anmelden | anmelden | Startseite | Aufnahme zu früh (Muster passte auch auf /app/anmelden) | B2/C768/h/035 | – | kein App-Fehler: QA-Werkzeug korrigiert |
 | 62 | CRM | Team | EN-Datumsformat | EN | britisch | US-Format „October 15, 2026“ | B2/C1440/h/064 | niedrig | kein Fehler: CRM-Englisch ist US-Englisch (next-intl „en“); [PLATZHALTER] falls britisch gewünscht |
