@@ -205,11 +205,6 @@ p {
     color var(--dur-1) var(--ease-out),
     transform var(--dur-1) var(--ease-out);
 }
-/* Kurze Knöpfe nicht mitten im Wort/Begriff umbrechen („In den / Kalender“) – lieber rückt der Text daneben */
-.btn:not(.btn-block) {
-  white-space: nowrap;
-  flex-shrink: 0;
-}
 .btn:hover {
   --btn-bg: var(--primary-hover);
   --btn-bd: var(--primary-hover);

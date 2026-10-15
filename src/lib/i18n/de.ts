@@ -525,7 +525,7 @@ export const de = {
     consentTitle: 'Werbe-Einwilligungen',
     consentHint: 'Freiwillig und jederzeit widerrufbar (§ 174 TKG). Ohne Einwilligung bekommen Sie keine Werbung.',
     consentChannels: {
-      email: 'Neuigkeiten & Angebote per E-Mail',
+      email: 'Neuigkeiten & Angebote per E‑Mail',
       sms: 'Angebote per SMS',
       push: 'Angebote als Mitteilung',
     },

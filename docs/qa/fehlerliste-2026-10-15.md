@@ -50,9 +50,34 @@ Kürzel Gerät: C390/C768/C1440 = Chromium, WK = WebKit iPhone; h/d = hell/dunke
 | 39 | Portal | anonym | Offline (dunkel) | öffnen | kein heller Fleck | Logo im weißen Quadrat | C1440/d/009 | niedrig | behoben Portal 5ee4293 |
 | 40 | Portal | Demo-Kundin | Unterseiten (Nachrichten, Warteliste, Mitteilungen) | öffnen | Zurück-Weg | kein Zurück, kein aktiver Reiter | C390/h/019–021 | niedrig | behoben Portal 5ee4293 |
 | 41 | Portal | Demo-Kundin | Mitteilungen vs. Warteliste | lesen | eine Regel | „wer zuerst tippt“ vs. „immer nur eine Person“ | C390/h/020, 021 | mittel | kein Fehler: zwei Wege – Warteliste (genau eine Person, FIFO) und Neuigkeit „Freier Termin“ (an alle, wer zuerst bucht) |
-| 42 | Portal | Demo-Kundin | Profil / Start | Buttons | einzeilig | „In den / Kalender“, „QR- / Code“ umgebrochen | C390/d/011, 022 | niedrig | behoben Portal 07d57b0 |
+| 42 | Portal | Demo-Kundin | Profil / Start | Buttons | einzeilig | „In den / Kalender“, „QR- / Code“ umgebrochen | C390/d/011, 022 | niedrig | zurückgenommen (B2: Überlauf in EN bei 390 px) – Umbruch kurzer Knöpfe bleibt bewusst erlaubt, kein Abschneiden; „E‑Mail“ geschützt |
 | 43 | Portal | Demo-Kundin | Termine | Anzahlung bei „Angefragt“ | verständlich | „Angefragt“ + „Jetzt bezahlen“, HU beide „FÜGGŐBEN“ | C390/d/013 | niedrig | behoben Portal 5ee4293 (HU-Begriff); Anzahlung vor Bestätigung ist so gewollt |
 | 44 | Portal | alle | Neuigkeiten | Bild | passend | Wimpernlifting mit Gesichtsmasken-Foto | C1440/h/018 | niedrig | [PLATZHALTER]: echtes Wimpern-Foto vom Salon nötig (im Projekt nur 4 Kategorie-Fotos) |
 | 45 | beide | Demo | Nachrichten | Zeitstempel | in Öffnungszeiten | Salon-Antwort 22:28 (Testlauf-Rest) | C1440/h/019 | niedrig | behoben Portal 5ee4293 (Demo-Seed) |
 | 46 | Portal | anonym | Termine ohne Anmeldung | aufrufen | zur Anmeldung | landet auf Willkommen | C390/h/010 | niedrig | kein Fehler: geschützte Seiten führen bewusst zur Willkommen-Seite (Konto erstellen oder anmelden) |
 | 47 | CRM | anonym | Login | laden | keine 404-Ressource | einmal „404“ in der Konsole ohne erfasste Antwort | C1440/h/036 | niedrig | in B prüfen |
+
+## Durchlauf B1/B2 – neue Befunde
+
+B1 (592 Screenshots, automatisch ausgewertet), B2 (592 Screenshots, automatisch + Sichtprüfung aller 8 Kombinationen).
+Ordner: `qa/durchlauf-B1/`, `qa/durchlauf-B2/`.
+
+| Nr | App | Rolle | Seite | Schritte | Erwartet | Tatsächlich | Screenshot | Schwere | Status |
+|---|---|---|---|---|---|---|---|---|---|
+| 48 | CRM | Team | Einstellungen › Leistungen | öffnen (768/390) | Seite so breit wie das Gerät | 826/766 px: sr-only-Text im Tabellenkopf entkam dem Scrollbereich | B1/C768/056 | mittel | behoben CRM 416d712 |
+| 49 | CRM | anonym | Login | laden | keine 404 | Favicon fehlte (/favicon.ico → 404) | B2/C1440/h/032 | niedrig | behoben CRM e753f9b |
+| 50 | CRM | Team | 404 im App-Rahmen | dunkel, unbekannte Akte | dunkles Schema bleibt | springt auf hell (Fehler-Hülle führt Theme-Script nicht aus) | B2/C1440/d/049 | mittel | behoben CRM 475ef9e |
+| 51 | CRM | Team | Zahlungen, Verknüpfungen, Kunden, Warteliste | Tablet/Handy | Spalten sichtbar | Spalten (Status, Aktion, Letzter Besuch) im inneren Querscrollen versteckt | B2/C768/h/054, 050 | hoch | behoben CRM 475ef9e (Umbruch in Zellen) |
+| 52 | CRM | Team | Zahlungen | Liste | Anzahlung 24.10. in der Liste | stand unsortiert am Ende | B2/C1440/h/054 | mittel | behoben CRM 475ef9e |
+| 53 | CRM | Team | Kalender Woche | 768 px | sechs Tage sichtbar | nur Mo–Do | B2/C768/h/044 | niedrig | behoben CRM 475ef9e |
+| 54 | CRM | Team | Formulare | WebKit/Handy | Auswahlfelder wie Textfelder | Safari-Standardoptik, Platzhalter abgeschnitten | B2/WK/h/043 | mittel | behoben CRM 475ef9e |
+| 55 | CRM | Team | Texte | lesen | korrekt | gemischte Anführungszeichen, HU-Grammatik, „Strg + Enter“ am Handy, Hinweis Anzahlung missverständlich | B2/WK/h/053, 071, 061 | niedrig | behoben CRM 475ef9e |
+| 56 | Portal | alle | alle (WebKit) | erster Besuch | kein Update-Hinweis | „Neue Version verfügbar“ beim ersten Besuch (Safari meldet gleiche Version als wartend) | B2/WK/h/001, 030 | mittel | behoben Portal e66f449 |
+| 57 | Portal | Demo-Kundin | Mitteilungen | lesen | eine Regel | „wer zuerst tippt“ vs. Warteliste | B2/C1440/h/021 | mittel | behoben Portal e66f449 |
+| 58 | Portal | anonym | Start (dunkel) | QR-Karte | lesbar | Adresse hellgrau auf Weiß | B2/C768/d/001 | niedrig | behoben Portal e66f449 |
+| 59 | Portal | Demo-Kundin | Start (EN, 390) | öffnen | 390 px | 409 px – Folge von Nr. 42 (unumbrechbare Knöpfe) | B2/C390/h/023 | hoch | behoben (Nr. 42 zurückgenommen) |
+| 60 | Portal/CRM | Demo | Neuigkeiten, Kundenstatus | Demo-Daten | plausibel | Veröffentlichung nachts, „Neu“ bei 3–4 Besuchen | B2/C1440/h/053, 046 | niedrig | behoben Portal e66f449 (Seeds neu eingespielt) |
+| 61 | Portal | zweite Kundin | Anmelden | anmelden | Startseite | Aufnahme zu früh (Muster passte auch auf /app/anmelden) | B2/C768/h/035 | – | kein App-Fehler: QA-Werkzeug korrigiert |
+| 62 | CRM | Team | EN-Datumsformat | EN | britisch | US-Format „October 15, 2026“ | B2/C1440/h/064 | niedrig | kein Fehler: CRM-Englisch ist US-Englisch (next-intl „en“); [PLATZHALTER] falls britisch gewünscht |
+| 63 | CRM | Team | allgemeine 404 | unbekannte Adresse | wie App | ohne Kopfleiste | B2/C390/h/060 | niedrig | kein Fehler: liegt bewusst außerhalb des angemeldeten Bereichs, mit Link „Zum Dashboard“ |
+| 64 | WebKit | – | CRM alle Seiten | sichtbar (headed) | keine CSP-Meldung | „Refused to apply a stylesheet“ (inline, Zeile 5) | B2/WK | – | kein App-Fehler: HTML enthält kein `<style>`, headless WebKit ohne Meldung – Hervorhebungs-Stil des Test-Treibers |

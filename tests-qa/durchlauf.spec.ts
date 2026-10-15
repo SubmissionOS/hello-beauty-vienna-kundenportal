@@ -57,17 +57,19 @@ class Run {
       this.findings.push({ step: name, kind: 'screenshot', detail: String(e).slice(0, 200) });
     }
     try {
-      const m = await page.evaluate(() => {
+      // gegen die eingestellte Gerätebreite prüfen: mobile Browser vergrößern innerWidth bei zu breitem Inhalt mit
+      const deviceWidth = this.info.project.use.viewport?.width ?? 1440;
+      const m = await page.evaluate((deviceWidth) => {
         const de = document.documentElement;
         const text = document.body?.innerText ?? '';
         // Rohe Übersetzungsschlüssel (next-intl-Fallback „namespace.key“) oder Platzhalter
         const raw = text.match(/\b(?:[a-z]+[A-Z]?[a-zA-Z]*\.){1,3}[a-z][a-zA-Z_]*(?:\.[a-zA-Z_]+)*\b/g)?.filter((s) => !/@|\.(at|com|de|hu|png|jpg|js|css|html)$|^www\./.test(s) && /^(app|auth|login|nav|topbar|calendar|booking|payments|customers|dashboard|requests|links|messages|waitlist|news|settings|errors|t|common)\./.test(s)) ?? [];
         return {
-          overflow: de.scrollWidth > window.innerWidth + 1 ? `${de.scrollWidth}px > ${window.innerWidth}px` : '',
+          overflow: Math.max(de.scrollWidth, window.innerWidth) > deviceWidth + 1 ? `${Math.max(de.scrollWidth, window.innerWidth)}px > ${deviceWidth}px` : '',
           raw: [...new Set(raw)].slice(0, 5).join(', '),
           placeholder: /\{[a-z]+\}|undefined|NaN|\[object Object\]/.test(text) ? (text.match(/.{0,30}(\{[a-z]+\}|undefined|NaN|\[object Object\]).{0,30}/)?.[0] ?? '') : '',
         };
-      });
+      }, deviceWidth);
       if (m.overflow) this.findings.push({ step: name, kind: 'horizontal-scroll', detail: m.overflow, shot: file });
       if (m.raw) this.findings.push({ step: name, kind: 'raw-i18n-key', detail: m.raw, shot: file });
       if (m.placeholder) this.findings.push({ step: name, kind: 'placeholder-text', detail: m.placeholder, shot: file });
