@@ -405,7 +405,7 @@ export const hu: Dict = {
     services: 'Kezelések',
     category: 'Terület',
     staff: 'Munkatárs',
-    anyStaff: 'Mindegy',
+    anyStaff: 'Nincs preferencia',
     from: 'Ettől',
     to: 'Eddig',
     weekdays: 'Napok',

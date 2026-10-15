@@ -205,10 +205,13 @@ p {
     color var(--dur-1) var(--ease-out),
     transform var(--dur-1) var(--ease-out);
 }
-.btn:hover {
-  --btn-bg: var(--primary-hover);
-  --btn-bd: var(--primary-hover);
-  color: var(--btn-fg);
+/* Hover nur bei Maus/Trackpad – auf Touch-Geräten bleibt :hover sonst nach dem Tippen hängen */
+@media (hover: hover) {
+  .btn:hover {
+    --btn-bg: var(--primary-hover);
+    --btn-bd: var(--primary-hover);
+    color: var(--btn-fg);
+  }
 }
 .btn:active:not(:disabled) {
   transform: scale(0.97);
@@ -226,10 +229,12 @@ p {
   --btn-fg: var(--text);
   --btn-bd: var(--field);
 }
-.btn-secondary:hover {
-  --btn-bg: var(--surface);
-  --btn-fg: var(--text);
-  --btn-bd: var(--link);
+@media (hover: hover) {
+  .btn-secondary:hover {
+    --btn-bg: var(--surface);
+    --btn-fg: var(--text);
+    --btn-bd: var(--link);
+  }
 }
 /* Website .flow__back: Textknopf in Gold */
 .btn-ghost {
@@ -239,19 +244,23 @@ p {
   min-height: var(--tap);
   padding: 0 10px;
 }
-.btn-ghost:hover {
-  --btn-bg: var(--surface-soft);
-  --btn-bd: var(--surface-soft);
-  --btn-fg: var(--link);
+@media (hover: hover) {
+  .btn-ghost:hover {
+    --btn-bg: var(--surface-soft);
+    --btn-bd: var(--surface-soft);
+    --btn-fg: var(--link);
+  }
 }
 .btn-danger {
   --btn-bg: var(--error);
   --btn-bd: var(--error);
   --btn-fg: var(--bg);
 }
-.btn-danger:hover {
-  --btn-bg: var(--error);
-  --btn-bd: var(--error);
+@media (hover: hover) {
+  .btn-danger:hover {
+    --btn-bg: var(--error);
+    --btn-bd: var(--error);
+  }
 }
 .btn-block {
   width: 100%;
@@ -317,11 +326,13 @@ p {
   height: 1px;
   background: var(--line);
 }
-a.row:hover,
-button.row:hover {
-  /* leicht abgesetzt von der Karte – nicht in Seitenfarbe, sonst wirkt die Zeile im Dunkelmodus wie ein Loch */
-  background: color-mix(in srgb, var(--surface) 94%, var(--text));
-  color: var(--text);
+@media (hover: hover) {
+  a.row:hover,
+  button.row:hover {
+    /* leicht abgesetzt von der Karte – nicht in Seitenfarbe, sonst wirkt die Zeile im Dunkelmodus wie ein Loch */
+    background: color-mix(in srgb, var(--surface) 94%, var(--text));
+    color: var(--text);
+  }
 }
 a.row:active,
 button.row:active {

@@ -1,12 +1,12 @@
 # Sicherheits- und Funktionstest Teil 3/4 (Chat, Neuigkeiten, Push, Warteliste, Zahlungen)
 
-Lauf: 2026-10-15 01:21 UTC gegen das echte Projekt. Angriffe mit dem **Publishable Key**; Secret Key/Management-API nur für Auf-/Abbau und um Zeitablauf zu simulieren. Skript: `scripts/security-test-teil4.mjs`.
+Lauf: 2026-10-15 02:17 UTC gegen das echte Projekt. Angriffe mit dem **Publishable Key**; Secret Key/Management-API nur für Auf-/Abbau und um Zeitablauf zu simulieren. Skript: `scripts/security-test-teil4.mjs`.
 
 **Ergebnis: 62 von 62 Prüfungen bestanden.** Die CRM-Schnittstelle (Signatur, Wiederholung, fremder Tenant) wird über HTTP in `tests/crm-api.spec.ts` geprüft.
 
 | Bereich | Prüfung | Ergebnis |
 |---|---|---|
-| Kundennummer | Format HB-XXXXXX ohne 0/O/1/I | bestanden (HB-K9VDX7) |
+| Kundennummer | Format HB-XXXXXX ohne 0/O/1/I | bestanden (HB-744Q4V) |
 | Kundennummer | eindeutig im Tenant | bestanden |
 | Chat | a2 sieht Chat von a1 nicht | bestanden |
 | Chat | Salon-Team A sieht Chat von a1 | bestanden |

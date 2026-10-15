@@ -13,7 +13,7 @@ import { useLoad } from '@/components/app/use-load';
 import { IconPhone } from '@/components/icons';
 import { useSession } from '@/lib/auth/use-session';
 import { DataError, getData, type Appointment, type Payment, type Service } from '@/lib/data';
-import { formatDateFull, formatPrice, formatTime, instantToWall, nowWall, wallToInstant } from '@/lib/format';
+import { formatDateFull, formatDateLong, formatPrice, formatTime, instantToWall, nowWall, wallToInstant } from '@/lib/format';
 import { fmt } from '@/lib/i18n';
 import { useI18n } from '@/lib/i18n/use-i18n';
 import { salon } from '@/lib/salon';
@@ -93,6 +93,7 @@ export default function AppointmentsPage() {
                 <Link
                   href={`/app/buchen?service=${encodeURIComponent(a.serviceId)}&staff=${encodeURIComponent(a.staffId)}`}
                   className="btn btn-secondary"
+                  style={{ marginTop: 'var(--s-3)' }}
                 >
                   {t.appt.rebook}
                 </Link>
@@ -187,7 +188,7 @@ function UpcomingActions({
         ))}
       <p className="hint">
         {changeable
-          ? fmt(t.appt.freeUntil, { date: formatDateFull(deadlineWall, lang), time: formatTime(deadlineWall, lang) })
+          ? fmt(t.appt.freeUntil, { date: formatDateLong(deadlineWall, lang), time: formatTime(deadlineWall, lang) })
           : fmt(t.appt.tooLate, { hours: salon.changeNoticeHours })}
       </p>
       {changeable && (

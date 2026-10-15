@@ -403,7 +403,7 @@ export const de = {
     services: 'Leistungen',
     category: 'Bereich',
     staff: 'Mitarbeiterin',
-    anyStaff: 'Egal',
+    anyStaff: 'Keine Präferenz',
     from: 'Von',
     to: 'Bis',
     weekdays: 'Wochentage',

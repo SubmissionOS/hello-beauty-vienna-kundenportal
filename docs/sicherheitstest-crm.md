@@ -1,6 +1,6 @@
 # Sicherheitstest gemeinsame Datenbank (CRM + Kundenportal)
 
-Lauf: 2026-10-15 01:19 UTC gegen das echte Projekt. Alle Prüfungen mit dem **Publishable Key** und echten Logins (Kundinnen a, b, m · Mitarbeiterin · Inhaberin · anonym). Secret Key nur für Auf- und Abbau. Skript: `scripts/security-test-crm.mjs` (`npm run test:security:crm`).
+Lauf: 2026-10-15 02:18 UTC gegen das echte Projekt. Alle Prüfungen mit dem **Publishable Key** und echten Logins (Kundinnen a, b, m · Mitarbeiterin · Inhaberin · anonym). Secret Key nur für Auf- und Abbau. Skript: `scripts/security-test-crm.mjs` (`npm run test:security:crm`).
 
 **Ergebnis: 80 von 80 Prüfungen bestanden.**
 
